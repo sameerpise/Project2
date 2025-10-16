@@ -40,7 +40,7 @@ export default function AptitudePortal() {
     if (!student?._id) return;
     try {
       const res = await fetch(
-        `http://localhost:5000/api/results/check/${student._id}`
+        `https://project2-bkuo.onrender.com/api/results/check/${student._id}`
       );
       const data = await res.json();
       setModulesStatus({
