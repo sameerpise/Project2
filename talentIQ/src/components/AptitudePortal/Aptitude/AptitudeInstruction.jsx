@@ -49,6 +49,7 @@ export default function AptitudeInstructions() {
         overflow: "hidden",
         background: "linear-gradient(135deg, #2193b0, #6dd5ed)",
         position: "relative",
+        p: { xs: 2, sm: 3 },
       }}
     >
       {/* Interactive particles */}
@@ -80,7 +81,7 @@ export default function AptitudeInstructions() {
         sx={{
           maxWidth: 650,
           width: "100%",
-          p: 5,
+          p: { xs: 3, sm: 5 },
           borderRadius: 4,
           backgroundColor: "rgba(255, 255, 255, 0.97)",
           textAlign: "center",
@@ -94,6 +95,7 @@ export default function AptitudeInstructions() {
           fontWeight="bold"
           mb={3}
           sx={{
+            fontSize: { xs: 24, sm: 32 },
             background: "linear-gradient(90deg, #ff8a00, #e52e71)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
@@ -102,35 +104,48 @@ export default function AptitudeInstructions() {
           📝 Aptitude Test Instructions
         </Typography>
 
-        <Typography variant="body1" mb={3} sx={{ fontSize: 16, color: "#555" }}>
+        <Typography
+          variant="body1"
+          mb={3}
+          sx={{ fontSize: { xs: 14, sm: 16 }, color: "#555" }}
+        >
           Please read the following instructions carefully before starting the test:
         </Typography>
 
-        <List sx={{ textAlign: "left", mb: 4 }}>
+        <List sx={{ textAlign: "left", mb: 4, px: { xs: 0, sm: 2 } }}>
           {[
             "The test contains multiple-choice questions only.",
-            "Do not refresh the page or switch tabs during the test,after 3 Warning test Will automatically Submit.",
+            "Do not refresh the page or switch tabs during the test, after 3 warnings test will automatically submit.",
             "Each question has a time limit. Try to answer within the time.",
             "Click 'Start Test' when you are ready.",
           ].map((text, index) => (
-            <ListItem key={index}>
-              <ListItemIcon>
+            <ListItem key={index} sx={{ py: 0.5 }}>
+              <ListItemIcon sx={{ minWidth: 32 }}>
                 <CheckCircleOutline sx={{ color: "#1976d2" }} />
               </ListItemIcon>
-              <ListItemText primary={`${index + 1}. ${text}`} />
+              <ListItemText
+                primaryTypographyProps={{
+                  fontSize: { xs: 13, sm: 15 },
+                }}
+                primary={`${index + 1}. ${text}`}
+              />
             </ListItem>
           ))}
         </List>
 
-        {countdown > 0 ? (
+        {countdown > 0 && (
           <Typography
             variant="h3"
             fontWeight="bold"
-            sx={{ color: "#e52e71", mb: 2 }}
+            sx={{
+              color: "#e52e71",
+              mb: 2,
+              fontSize: { xs: 48, sm: 64 },
+            }}
           >
             {countdown}
           </Typography>
-        ) : null}
+        )}
 
         <Button
           variant="contained"
@@ -139,11 +154,12 @@ export default function AptitudeInstructions() {
             background: "linear-gradient(90deg, #ff8a00, #e52e71)",
             color: "#fff",
             fontWeight: "bold",
-            px: 5,
-            py: 1.5,
+            px: { xs: 3, sm: 5 },
+            py: { xs: 1.2, sm: 1.5 },
             borderRadius: 3,
             boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
             transition: "all 0.3s ease",
+            fontSize: { xs: 14, sm: 16 },
             "&:hover": {
               transform: "scale(1.05)",
               boxShadow: "0 8px 25px rgba(0,0,0,0.4)",
