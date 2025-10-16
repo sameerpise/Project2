@@ -436,6 +436,17 @@ export default function StudentRegistrationForm() {
                 Register
               </Button>
             </Box>
+             <Typography variant="body2">
+           have an Admin account?{" "}
+            <Typography
+              component="span"
+              color="error"
+              sx={{ cursor: "pointer", fontWeight: "bold" }}
+              onClick={() => navigate("/login")}
+            >
+              Register here
+            </Typography>
+          </Typography>
           </Box>
         </Paper>
 
