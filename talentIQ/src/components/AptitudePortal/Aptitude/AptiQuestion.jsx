@@ -144,7 +144,7 @@ const QuestionCard = ({
   totalQuestions,
 }) => {
   return (
-    <Card sx={{ p: 3, borderRadius: 3, boxShadow: 2 }}>
+    <Card sx={{ p: 1, borderRadius: 3, boxShadow: 2 }}>
       <CardContent>
         <Box
           sx={{
