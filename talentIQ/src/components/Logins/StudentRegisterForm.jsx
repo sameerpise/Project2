@@ -116,16 +116,17 @@ export default function StudentRegistrationForm() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box
-        sx={{
-          height: "100vh",
-          backgroundColor: "background.default",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          p: { xs: 1, sm: 2 },
-        }}
-      >
+    <Box
+  sx={{
+    minHeight: "100vh",
+    backgroundColor: "background.default",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    p: { xs: 1, sm: 2 },
+    pt: { xs: `calc(env(safe-area-inset-top, 20px) + 10px)`, md: 3 }, // <-- added top safe area
+  }}
+>
         <Paper
           elevation={4}
           sx={{
