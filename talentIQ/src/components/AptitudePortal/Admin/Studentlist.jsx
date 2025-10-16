@@ -31,7 +31,7 @@ export default function StudentList() {
 
   const fetchStudents = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/students");
+      const res = await fetch("https://project2-bkuo.onrender.com/api/students");
       const data = await res.json();
       setStudents(data);
     } catch (err) {
@@ -41,7 +41,7 @@ export default function StudentList() {
 
   const fetchResults = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/results");
+      const res = await fetch("https://project2-bkuo.onrender.com/api/results");
       const data = await res.json();
       setResults(data);
     } catch (err) {
