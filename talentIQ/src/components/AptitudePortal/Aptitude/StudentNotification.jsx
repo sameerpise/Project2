@@ -10,7 +10,7 @@ export default function StudentNotifications({ studentId }) {
 
   const fetchNotifications = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/notifications/${studentId}`);
+      const res = await fetch(`https://project2-bkuo.onrender.com/api/notifications/${studentId}`);
       const data = await res.json();
       setNotifications(data);
     } catch (err) {
@@ -29,7 +29,7 @@ export default function StudentNotifications({ studentId }) {
 
   const handleMarkRead = async (notifId) => {
     try {
-      await fetch(`http://localhost:5000/api/notifications/read/${notifId}`, {
+      await fetch(`https://project2-bkuo.onrender.com/api/notifications/read/${notifId}`, {
         method: "POST"
       });
       fetchNotifications();
