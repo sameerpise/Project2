@@ -1,0 +1,175 @@
+1.add Purcing/current Year which year student is Purcing field
+2.city/pincode,
+3.collage name
+
+samypise5_db_user
+aNSOvezt0cXQBTwD
+mongodb+srv://samypise5_db_user:aNSOvezt0cXQBTwD@cluster0.vdcvbq3.mongodb.net/
+
+
+
+colore code
+yeloww = #f6ae22
+black=#272425
+white=#eeeeee
+
+import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Paper,
+  Checkbox,
+  FormControlLabel,
+  Divider,
+} from "@mui/material";
+import EmailIcon from "@mui/icons-material/Email";
+import LockIcon from "@mui/icons-material/Lock";
+import GoogleIcon from "@mui/icons-material/Google";
+import LoginpageImage from '../../assets/LoginPage.jpeg'
+export default function Login() {
+  const [form, setForm] = useState({ email: "", password: "" });
+
+  const handleChange = (key) => (e) =>
+    setForm((prev) => ({ ...prev, [key]: e.target.value }));
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert("Login submitted: " + JSON.stringify(form));
+  };
+
+  return (
+    <Box
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "linear-gradient(to top, #f7c86a, #ffffff)",
+        p: 2,
+      }}
+    >
+      <Paper
+        elevation={6}
+        sx={{
+          display: "flex",
+          borderRadius: 4,
+          overflow: "hidden",
+          maxWidth: 900,
+          width: "100%",
+        }}
+      >
+        {/* Left Side - Form */}
+        <Box sx={{ flex: 1, p: 5 }}>
+          <Typography variant="h5" fontWeight="bold" gutterBottom>
+            WELCOME BACK
+          </Typography>
+          <Typography color="text.secondary" sx={{ mb: 3 }}>
+            Welcome back! Please enter your details.
+          </Typography>
+
+          <form onSubmit={handleSubmit}>
+            <TextField
+              fullWidth
+              placeholder="Enter your email"
+              label="Email"
+              variant="outlined"
+              value={form.email}
+              onChange={handleChange("email")}
+              InputProps={{
+                startAdornment: <EmailIcon sx={{ mr: 1, color: "gray" }} />,
+              }}
+              sx={{ mb: 2 }}
+            />
+
+            <TextField
+              fullWidth
+              placeholder="Enter your password"
+              label="Password"
+              type="password"
+              variant="outlined"
+              value={form.password}
+              onChange={handleChange("password")}
+              InputProps={{
+                startAdornment: <LockIcon sx={{ mr: 1, color: "gray" }} />,
+              }}
+              sx={{ mb: 1 }}
+            />
+
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 3,
+              }}
+            >
+              <FormControlLabel control={<Checkbox />} label="Remember me" />
+              <Typography
+                variant="body2"
+                sx={{ color: "primary.main", cursor: "pointer" }}
+              >
+                Forgot password
+              </Typography>
+            </Box>
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{
+                backgroundColor: "#f44336",
+                color: "white",
+                py: 1.2,
+                borderRadius: 3,
+                mb: 2,
+                "&:hover": { backgroundColor: "#d32f2f" },
+              }}
+            >
+              Sign in
+            </Button>
+
+            <Button
+              fullWidth
+              variant="outlined"
+              startIcon={<GoogleIcon />}
+              sx={{ py: 1.2, borderRadius: 3, mb: 2 }}
+            >
+              Sign in with Google
+            </Button>
+          </form>
+
+          <Typography variant="body2">
+            Don’t have an account?{" "}
+            <Typography
+              component="span"
+              color="error"
+              sx={{ cursor: "pointer", fontWeight: "bold" }}
+            >
+              Sign up for free!
+            </Typography>
+          </Typography>
+        </Box>
+
+        {/* Right Side - Image */}
+        <Box
+          sx={{
+            flex: 1,
+            backgroundColor: "#f5f7fa",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            p: 3,
+          }}
+        >
+          <img
+            src={LoginpageImage} // 👈 replace with your image path
+            alt="Login Illustration"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Box>
+      </Paper>
+    </Box>
+  );
+}

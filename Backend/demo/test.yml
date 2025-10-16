@@ -1,0 +1,16 @@
+config:
+  target: "http://localhost:5000"   # replace with your backend URL
+  phases:
+    - duration: 60                  # test duration in seconds
+      arrivalRate: 50               # 10 virtual users per second
+scenarios:
+  - flow:
+      - post:
+          url: "/api/results/save"
+          headers:
+            Content-Type: "application/json"
+          json:
+            studentId: "68cd04c71aada60bc4b89031"   # use dummy or test ID
+            questionIds: ["68ce3c20eecd3d40c73e2db5","68ce3c20eecd3d40c73e2db1","68ce3c20eecd3d40c73e2db3"]
+            answers: ["A","B","C","D"]
+            testMode: true                          # optional: avoid saving real results
