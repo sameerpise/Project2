@@ -404,10 +404,12 @@ export default function AptitudePortal() {
       sx={{
         display: "flex",
         flexDirection: { xs: "column", md: "row" },
-        gap: 2,
+        gap: { xs: 2, md: 3 },
         p: { xs: 2, md: 3 },
         background: "#f9fbff",
         minHeight: "90vh",
+        boxSizing: "border-box",
+        justifyContent: { md: "center" },
       }}
     >
       {/* Tracker */}
@@ -416,6 +418,7 @@ export default function AptitudePortal() {
           width: { xs: "100%", md: 320 },
           flexShrink: 0,
           mb: { xs: 2, md: 0 },
+          boxSizing: "border-box",
         }}
       >
         <QuestionTracker
@@ -427,30 +430,38 @@ export default function AptitudePortal() {
       </Box>
 
       {/* Questions */}
-      <motion.div
-        key={currentQuestion}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.32 }}
-        style={{ flex: 1 }}
+      <Box
+        sx={{
+          flexGrow: 1,
+          width: { xs: "100%", md: "calc(100% - 320px - 24px)" },
+          boxSizing: "border-box",
+        }}
       >
-        <TimerBar
-          timer={timer}
-          currentQuestion={currentQuestion}
-          totalQuestions={questions.length}
-        />
-        <QuestionCard
-          q={q}
-          userAnswer={userAnswer}
-          handleSelect={handleSelect}
-          showCorrect={showCorrect}
-          handleNext={handleNext}
-          handlePrev={handlePrev}
-          handleSkip={handleSkip}
-          currentQuestion={currentQuestion}
-          totalQuestions={questions.length}
-        />
-      </motion.div>
+        <motion.div
+          key={currentQuestion}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.32 }}
+          style={{ width: "100%" }}
+        >
+          <TimerBar
+            timer={timer}
+            currentQuestion={currentQuestion}
+            totalQuestions={questions.length}
+          />
+          <QuestionCard
+            q={q}
+            userAnswer={userAnswer}
+            handleSelect={handleSelect}
+            showCorrect={showCorrect}
+            handleNext={handleNext}
+            handlePrev={handlePrev}
+            handleSkip={handleSkip}
+            currentQuestion={currentQuestion}
+            totalQuestions={questions.length}
+          />
+        </motion.div>
+      </Box>
 
       <ModalManager openModal={openModal} setOpenModal={setOpenModal} />
 
