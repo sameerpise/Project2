@@ -15,7 +15,7 @@ import SchoolIcon from "@mui/icons-material/School";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../redux/studentSlice";
+import { logout } from "../Redux/studentslice";
 
 export default function SSidebar() {
   const navigate = useNavigate();
