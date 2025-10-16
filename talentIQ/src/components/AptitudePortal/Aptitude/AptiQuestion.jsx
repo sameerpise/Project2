@@ -61,7 +61,7 @@ const QuestionTracker = ({ questions, answers, currentQuestion, jumpToQuestion }
   return (
     <Box
       sx={{
-        width: 320,
+        width: "100%",
         border: "1px solid #e6eefc",
         borderRadius: 3,
         p: 2,
@@ -73,7 +73,13 @@ const QuestionTracker = ({ questions, answers, currentQuestion, jumpToQuestion }
       <Typography variant="h6" sx={{ mb: 2 }}>
         Questions
       </Typography>
-      <Box sx={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 1 }}>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "repeat(5, 1fr)", sm: "repeat(5, 1fr)" },
+          gap: 1,
+        }}
+      >
         {questions.map((_, idx) => {
           const ans = answers[idx];
           let bg = "#eef6ff"; // unattempted
@@ -107,7 +113,9 @@ const TimerBar = ({ timer, currentQuestion, totalQuestions }) => {
   const progress = ((currentQuestion + 1) / totalQuestions) * 100;
   return (
     <Box sx={{ mb: 2 }}>
-      <Typography sx={{ mb: 1, fontWeight: 600 }}>⏱ Timer: {formatTime(timer)}</Typography>
+      <Typography sx={{ mb: 1, fontWeight: 600 }}>
+        ⏱ Timer: {formatTime(timer)}
+      </Typography>
       <LinearProgress
         variant="determinate"
         value={progress}
@@ -138,7 +146,16 @@ const QuestionCard = ({
   return (
     <Card sx={{ p: 3, borderRadius: 3, boxShadow: 2 }}>
       <CardContent>
-        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: "space-between",
+            alignItems: { xs: "flex-start", sm: "center" },
+            mb: 2,
+            gap: { xs: 1, sm: 0 },
+          }}
+        >
           <Typography variant="h6">
             Question {currentQuestion + 1} / {totalQuestions}
           </Typography>
@@ -174,7 +191,15 @@ const QuestionCard = ({
             />
           ))}
         </RadioGroup>
-        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: "space-between",
+            mt: 3,
+            gap: 1,
+          }}
+        >
           <Button onClick={handlePrev} disabled={currentQuestion === 0} variant="outlined">
             ⬅ Previous
           </Button>
@@ -234,29 +259,21 @@ export default function AptitudePortal() {
   const [warningCount, setWarningCount] = useState(0);
   const [showCorrect, setShowCorrect] = useState(false);
 
-  const testCompleted = localStorage.getItem("aptiCompleted") === "true";
-
   // Fullscreen
- useEffect(() => {
-  const enterFullScreen = async () => {
-    const elem = document.documentElement;
-    try {
-      if (!document.fullscreenElement) {
-        await elem.requestFullscreen?.();
+  useEffect(() => {
+    const enterFullScreen = async () => {
+      const elem = document.documentElement;
+      try {
+        if (!document.fullscreenElement) await elem.requestFullscreen?.();
+      } catch (err) {
+        console.warn("Fullscreen failed:", err);
       }
-    } catch (err) {
-      console.warn("Fullscreen failed:", err);
-    }
-  };
-  enterFullScreen();
-
-  return () => {
-    if (document.fullscreenElement) {
-      document.exitFullscreen?.();
-    }
-  };
-}, []);
-
+    };
+    enterFullScreen();
+    return () => {
+      if (document.fullscreenElement) document.exitFullscreen?.();
+    };
+  }, []);
 
   // Eligibility check
   useEffect(() => {
@@ -366,7 +383,6 @@ export default function AptitudePortal() {
 
   const q = questions[currentQuestion];
   const userAnswer = answers[currentQuestion];
-
   const handleSelect = (value) =>
     dispatch(setAnswer({ questionIndex: currentQuestion, answer: value }));
 
@@ -374,29 +390,43 @@ export default function AptitudePortal() {
     if (currentQuestion < questions.length - 1) dispatch(nextQuestion());
     else handleFinish();
   };
-
   const handlePrev = () => {
     if (currentQuestion > 0) dispatch(prevQuestion());
   };
-
   const handleSkip = () => {
     dispatch(setAnswer({ questionIndex: currentQuestion, answer: "skipped" }));
     handleNext();
   };
-
   const jumpToQuestion = (idx) => dispatch(setCurrentQuestionDirectly(idx));
 
   return (
-    <Box sx={{ display: "flex", gap: 2, p: 3, background: "#f9fbff", minHeight: "90vh" }}>
-      {/* Left Tracker */}
-      <QuestionTracker
-        questions={questions}
-        answers={answers}
-        currentQuestion={currentQuestion}
-        jumpToQuestion={jumpToQuestion}
-      />
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: { xs: "column", md: "row" },
+        gap: 2,
+        p: { xs: 2, md: 3 },
+        background: "#f9fbff",
+        minHeight: "90vh",
+      }}
+    >
+      {/* Tracker */}
+      <Box
+        sx={{
+          width: { xs: "100%", md: 320 },
+          flexShrink: 0,
+          mb: { xs: 2, md: 0 },
+        }}
+      >
+        <QuestionTracker
+          questions={questions}
+          answers={answers}
+          currentQuestion={currentQuestion}
+          jumpToQuestion={jumpToQuestion}
+        />
+      </Box>
 
-      {/* Right Questions */}
+      {/* Questions */}
       <motion.div
         key={currentQuestion}
         initial={{ opacity: 0, y: 20 }}
