@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import StudentNotifications from "../AptitudePortal/Aptitude/StudentNotification";
-import { logout } from "../Redux/studentSlice";
+import { logout } from "../Redux/studentslice";
 import { useSelector, useDispatch } from "react-redux";
 import {
   LineChart,
