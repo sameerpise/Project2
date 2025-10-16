@@ -36,7 +36,7 @@ export default function QuestionManager() {
 
   // Fetch questions
   const fetchQuestions = async () => {
-    const res = await fetch("http://localhost:5000/api/questions");
+    const res = await fetch("https://project2-bkuo.onrender.com/api/questions");
     const data = await res.json();
     setQuestions(data);
   };
@@ -98,7 +98,7 @@ export default function QuestionManager() {
   const handleSubmitAll = async () => {
     if(!questions.length) return setError("No questions to submit.");
     try {
-      const res = await fetch("http://localhost:5000/api/questions/bulk-add", {
+      const res = await fetch("https://project2-bkuo.onrender.com/api/questions/bulk-add", {
         method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({questions})
       });
       const data = await res.json();
