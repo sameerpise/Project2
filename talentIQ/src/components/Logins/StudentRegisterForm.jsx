@@ -127,18 +127,18 @@ export default function StudentRegistrationForm() {
     pt: { xs: `calc(env(safe-area-inset-top, 20px) + 10px)`, md: 3 }, // <-- added top safe area
   }}
 >
-        <Paper
-          elevation={4}
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            width: "100%",
-            height: { xs: "auto", md: "90vh" },
-            maxWidth: 1300,
-            borderRadius: 3,
-            overflow: "hidden",
-          }}
-        >
+<Paper
+  elevation={4}
+  sx={{
+    display: "flex",
+    flexDirection: { xs: "column", md: "row" },
+    width: "100%",
+    maxWidth: 1300,
+    borderRadius: 3,
+    overflow: "hidden",
+    maxHeight: "calc(100vh - env(safe-area-inset-top))",
+  }}
+>
           {/* LEFT IMAGE */}
           <Box
             component="img"
@@ -153,16 +153,16 @@ export default function StudentRegistrationForm() {
           />
 
           {/* RIGHT FORM */}
-          <Box
-            sx={{
-              flex: 1,
-              p: { xs: 2, sm: 3, md: 4 },
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              overflowY: "auto",
-            }}
-          >
+        <Box
+  sx={{
+    flex: 1,
+    p: { xs: 2, sm: 3, md: 4 },
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    overflowY: "auto", // <-- allows scrolling
+  }}
+>
             <Box>
               <Typography
                 variant="h5"
