@@ -313,7 +313,7 @@ export default function StudentRegistrationForm() {
                     variant="outlined"
                     sx={textFieldStyle}
                   >
-                    <option value="">Select</option>
+                    <option value=""></option>
                     <option value="Completed">Completed</option>
                     <option value="Pursuing">Pursuing</option>
                   </TextField>
@@ -330,7 +330,7 @@ export default function StudentRegistrationForm() {
                       variant="outlined"
                       sx={textFieldStyle}
                     >
-                      <option value="">Select Year</option>
+                      <option value=""></option>
                       <option value="1st">1st Year</option>
                       <option value="2nd">2nd Year</option>
                       <option value="3rd">3rd Year</option>
