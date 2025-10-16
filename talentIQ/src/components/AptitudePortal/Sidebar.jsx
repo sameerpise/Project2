@@ -10,7 +10,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../redux/studentSlice";
+import { logout } from "../Redux/studentslice";
 import { nextQuestion, prevQuestion } from "../Redux/questionSlice";
 
 export default function Sidebar({ open = true }) {
