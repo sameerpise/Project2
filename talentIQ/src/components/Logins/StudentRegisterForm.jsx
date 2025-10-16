@@ -16,6 +16,7 @@ import {
   Divider,
   ThemeProvider,
   createTheme,
+  useMediaQuery,
 } from "@mui/material";
 
 import PersonIcon from "@mui/icons-material/Person";
@@ -26,13 +27,11 @@ import BusinessIcon from "@mui/icons-material/Business";
 import NumbersIcon from "@mui/icons-material/Numbers";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
 import LockIcon from "@mui/icons-material/Lock";
-import HomeIcon from "@mui/icons-material/Home";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import img1 from "../../assets/Lovepik_com-450092311-Creative design online registration flat illustration.png";
 
 import { useNavigate } from "react-router-dom";
 
-// ---------------- THEME ----------------
 const theme = createTheme({
   palette: {
     primary: { main: "#f6ae22" },
@@ -62,8 +61,8 @@ export default function StudentRegistrationForm() {
     confirmPassword: "",
   });
 
-  const [errors, setErrors] = useState({});
   const [snack, setSnack] = useState({ open: false, message: "", severity: "success" });
+  const isSmall = useMediaQuery("(max-width:900px)");
 
   const handleChange = (key) => (e) => {
     let value = e.target.value;
@@ -124,47 +123,50 @@ export default function StudentRegistrationForm() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          p: { xs: 1, sm: 2 },
         }}
       >
         <Paper
           elevation={4}
           sx={{
             display: "flex",
-            width: "95%",
-            height: "90vh",
+            flexDirection: { xs: "column", md: "row" },
+            width: "100%",
+            height: { xs: "auto", md: "90vh" },
             maxWidth: 1300,
             borderRadius: 3,
             overflow: "hidden",
           }}
         >
-          {/* Left Illustration */}
+          {/* LEFT IMAGE */}
           <Box
             component="img"
             src={img1}
             alt="Registration"
             sx={{
-              width: "42%",
-              height: "100%",
+              width: { xs: "100%", md: "42%" },
+              height: { xs: "200px", sm: "300px", md: "100%" },
               objectFit: "cover",
               backgroundColor: "#fff7e6",
             }}
           />
 
-          {/* Right Form */}
+          {/* RIGHT FORM */}
           <Box
             sx={{
               flex: 1,
-              p: 3,
+              p: { xs: 2, sm: 3, md: 4 },
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
+              overflowY: "auto",
             }}
           >
-            <Box sx={{ overflowY: "auto", pr: 1 }}>
+            <Box>
               <Typography
                 variant="h5"
                 align="center"
-                sx={{ fontWeight: 600, color: "primary.main", mb: 1 }}
+                sx={{ fontWeight: 600, color: "primary.main", mb: 1, fontSize: { xs: 20, md: 24 } }}
               >
                 🎓 Student Registration
               </Typography>
@@ -249,9 +251,8 @@ export default function StudentRegistrationForm() {
                   />
                 </Grid>
 
-                {/* -- GENDER (ADDED) -- */}
                 <Grid item xs={12}>
-                  <FormControl component="fieldset" sx={{ ml: 0 }}>
+                  <FormControl component="fieldset">
                     <RadioGroup row value={form.gender} onChange={handleChange("gender")}>
                       <FormControlLabel value="Male" control={<Radio color="primary" />} label="Male" />
                       <FormControlLabel value="Female" control={<Radio color="primary" />} label="Female" />
@@ -343,7 +344,6 @@ export default function StudentRegistrationForm() {
                 🏠 Address
               </Typography>
               <Grid container spacing={1.5}>
-               
                 <Grid item xs={12} sm={6}>
                   <TextField
                     label="PIN Code"
@@ -425,28 +425,38 @@ export default function StudentRegistrationForm() {
             </Box>
 
             {/* REGISTER BUTTON */}
-            <Box sx={{ textAlign: "center", mt: 1 }}>
+            <Box sx={{ textAlign: "center", mt: 2 }}>
               <Button
                 variant="contained"
                 color="primary"
                 size="medium"
                 onClick={handleSubmit}
-                sx={{ px: 5, fontWeight: 600, textTransform: "none" }}
+                sx={{
+                  px: { xs: 4, sm: 6 },
+                  py: 1.2,
+                  fontWeight: 600,
+                  textTransform: "none",
+                  borderRadius: 2,
+                }}
               >
                 Register
               </Button>
+
+              <Typography
+                variant="body2"
+                sx={{ mt: 2, textAlign: "center", fontSize: { xs: 13, sm: 14 } }}
+              >
+                Have an Admin account?{" "}
+                <Typography
+                  component="span"
+                  color="error"
+                  sx={{ cursor: "pointer", fontWeight: "bold" }}
+                  onClick={() => navigate("/login")}
+                >
+                  Register here
+                </Typography>
+              </Typography>
             </Box>
-             <Typography variant="body2">
-           have an Admin account?{" "}
-            <Typography
-              component="span"
-              color="error"
-              sx={{ cursor: "pointer", fontWeight: "bold" }}
-              onClick={() => navigate("/login")}
-            >
-              Register here
-            </Typography>
-          </Typography>
           </Box>
         </Paper>
 
