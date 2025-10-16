@@ -454,7 +454,7 @@ export default function StudentRegistrationForm() {
                   sx={{ cursor: "pointer", fontWeight: "bold" }}
                   onClick={() => navigate("/login")}
                 >
-                  Register here
+                  Login here
                 </Typography>
               </Typography>
             </Box>
