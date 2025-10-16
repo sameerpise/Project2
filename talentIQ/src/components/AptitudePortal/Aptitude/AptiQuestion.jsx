@@ -264,7 +264,7 @@ export default function AptitudePortal() {
     const checkEligibility = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/results/check/${student._id}`
+          `https://project2-bkuo.onrender.com/api/results/check/${student._id}`
         );
         const data = await res.json();
         if (!data.allowed) {
