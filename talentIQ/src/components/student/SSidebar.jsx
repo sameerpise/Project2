@@ -25,10 +25,11 @@ export default function SSidebar() {
 
   const [collapsed, setCollapsed] = useState(false);
 
-  const handleLogout = () => {
-    dispatch(logout());
-    window.location.href = "/login";
-  };
+ const handleLogout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    navigate('/login')
+  }
 
   const menuItems = [
     { label: "Dashboard", path: "/student", icon: <DashboardIcon /> },
