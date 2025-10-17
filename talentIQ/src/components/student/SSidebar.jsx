@@ -32,7 +32,7 @@ export default function SSidebar() {
   }
 
   const menuItems = [
-    { label: "Dashboard", path: "/student", icon: <DashboardIcon /> },
+   
     { label: "Aptitude", path: "/student/AptitudePortal", icon: <SchoolIcon /> },
   ];
 
