@@ -192,115 +192,118 @@ export default function Kpicards() {
 
 
       {/* Charts Section */}
-      <Grid container spacing={3} mb={4}>
-        <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 3, borderRadius: 3 }}>
-            <Typography variant="subtitle1" mb={2} fontWeight="bold">
-              Performance Over Time
-            </Typography>
-            <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={chartData}>
-                <XAxis dataKey="test" />
-                <YAxis />
-                <RechartTooltip />
-                <Line type="monotone" dataKey="score" stroke="#0288d1" strokeWidth={3} />
-              </LineChart>
-            </ResponsiveContainer>
-          </Paper>
-        </Grid>
+    {/* Charts */}
+<Grid container spacing={3} mb={4} justifyContent="center">
+  <Grid item xs={12} sm={10} md={5}>
+    <Paper sx={{ p: 3, borderRadius: 3, width: "100%" }}>
+      <Typography variant="subtitle1" mb={2} fontWeight="bold">
+        Performance Over Time
+      </Typography>
+      <ResponsiveContainer width="100%" height={250}>
+        <LineChart data={chartData}>
+          <XAxis dataKey="test" />
+          <YAxis />
+          <RechartTooltip />
+          <Line type="monotone" dataKey="score" stroke="#0288d1" strokeWidth={3} />
+        </LineChart>
+      </ResponsiveContainer>
+    </Paper>
+  </Grid>
 
-        <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 3, borderRadius: 3 }}>
-            <Typography variant="subtitle1" mb={2} fontWeight="bold">
-              Latest Test Breakdown
-            </Typography>
-            {results.length > 0 ? (
-              <ResponsiveContainer width="100%" height={250}>
-                <PieChart>
-                  <Pie
-                    dataKey="value"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={80}
-                    data={[
-                      { name: "Correct", value: getStats(results[results.length - 1]).correct },
-                      { name: "Wrong", value: getStats(results[results.length - 1]).wrong },
-                      { name: "Unanswered", value: getStats(results[results.length - 1]).unanswered },
-                    ]}
-                  >
-                    {COLORS.map((color, i) => (
-                      <Cell key={i} fill={color} />
-                    ))}
-                  </Pie>
-                  <Legend verticalAlign="bottom" height={36} />
-                </PieChart>
-              </ResponsiveContainer>
-            ) : (
-              <Typography>No test data available</Typography>
-            )}
-          </Paper>
-        </Grid>
+  <Grid item xs={12} sm={10} md={5}>
+    <Paper sx={{ p: 3, borderRadius: 3, width: "100%" }}>
+      <Typography variant="subtitle1" mb={2} fontWeight="bold">
+        Latest Test Breakdown
+      </Typography>
+      {results.length > 0 ? (
+        <ResponsiveContainer width="100%" height={250}>
+          <PieChart>
+            <Pie
+              dataKey="value"
+              cx="50%"
+              cy="50%"
+              outerRadius={90}
+              data={[
+                { name: "Correct", value: getStats(results[results.length - 1]).correct },
+                { name: "Wrong", value: getStats(results[results.length - 1]).wrong },
+                { name: "Unanswered", value: getStats(results[results.length - 1]).unanswered },
+              ]}
+            >
+              {COLORS.map((color, i) => (
+                <Cell key={i} fill={color} />
+              ))}
+            </Pie>
+            <Legend verticalAlign="bottom" height={36} />
+          </PieChart>
+        </ResponsiveContainer>
+      ) : (
+        <Typography>No test data available</Typography>
+      )}
+    </Paper>
+  </Grid>
+</Grid>
+
+{/* Badges */}
+<Card sx={{ mb: 4, p: 3, borderRadius: 3, width: "100%" }}>
+  <Typography variant="subtitle1" mb={2} fontWeight="bold">
+    Achievements
+  </Typography>
+  <Stack direction="row" spacing={2} sx={{ overflowX: "auto" }}>
+    {badges.map((badge, i) => (
+      <Chip
+        key={i}
+        label={badge.name}
+        avatar={<Avatar src={badge.icon} />}
+        sx={{
+          fontWeight: "bold",
+          minWidth: 140,
+          height: 50,
+          background: "#f1f8e9",
+        }}
+      />
+    ))}
+  </Stack>
+</Card>
+
+{/* Recent Tests */}
+<Grid container spacing={3} justifyContent="center">
+  {results.slice(-4).map((r, idx) => {
+    const stats = getStats(r);
+    const testTitle = r.testName || `Test ${idx + 1}`;
+    return (
+      <Grid item xs={12} sm={10} md={5} lg={3} key={idx}>
+        <Card
+          onClick={() => {
+            setSelectedTest(r);
+            setOpenModal(true);
+          }}
+          sx={{
+            p: 3,
+            borderRadius: 3,
+            cursor: "pointer",
+            transition: "all 0.3s",
+            width: "100%",
+            "&:hover": {
+              transform: "translateY(-5px)",
+              boxShadow: "0 6px 15px rgba(0,0,0,0.1)",
+            },
+          }}
+        >
+          <Typography variant="subtitle1" fontWeight="bold">
+            {testTitle}
+          </Typography>
+          <Typography color="green">✔ Correct: {stats.correct}</Typography>
+          <Typography color="red">✖ Wrong: {stats.wrong}</Typography>
+          <Typography color="orange">⚪ Unanswered: {stats.unanswered}</Typography>
+          <Typography variant="body1" fontWeight="bold">
+            Score: {stats.score} ({stats.percentage}%)
+          </Typography>
+        </Card>
       </Grid>
+    );
+  })}
+</Grid>
 
-      {/* Badges */}
-      <Card sx={{ mb: 4, p: 3, borderRadius: 3 }}>
-        <Typography variant="subtitle1" mb={2} fontWeight="bold">
-          Achievements
-        </Typography>
-        <Stack direction="row" spacing={2} sx={{ overflowX: "auto" }}>
-          {badges.map((badge, i) => (
-            <Chip
-              key={i}
-              label={badge.name}
-              avatar={<Avatar src={badge.icon} />}
-              sx={{
-                fontWeight: "bold",
-                minWidth: 130,
-                height: 48,
-                background: "#f1f8e9",
-              }}
-            />
-          ))}
-        </Stack>
-      </Card>
-
-      {/* Recent Tests */}
-      <Grid container spacing={3}>
-        {results.slice(-4).map((r, idx) => {
-          const stats = getStats(r);
-          const testTitle = r.testName || `Test ${idx + 1}`;
-          return (
-            <Grid item xs={12} sm={6} md={3} key={idx}>
-              <Card
-                onClick={() => {
-                  setSelectedTest(r);
-                  setOpenModal(true);
-                }}
-                sx={{
-                  p: 3,
-                  borderRadius: 3,
-                  cursor: "pointer",
-                  transition: "all 0.3s",
-                  "&:hover": {
-                    transform: "translateY(-5px)",
-                    boxShadow: "0 6px 15px rgba(0,0,0,0.1)",
-                  },
-                }}
-              >
-                <Typography variant="subtitle1" fontWeight="bold">
-                  {testTitle}
-                </Typography>
-                <Typography color="green">✔ Correct: {stats.correct}</Typography>
-                <Typography color="red">✖ Wrong: {stats.wrong}</Typography>
-                <Typography color="orange">⚪ Unanswered: {stats.unanswered}</Typography>
-                <Typography variant="body1" fontWeight="bold">
-                  Score: {stats.score} ({stats.percentage}%)
-                </Typography>
-              </Card>
-            </Grid>
-          );
-        })}
-      </Grid>
 
       {/* Export PDF Button */}
       <Box textAlign="center" mt={4}>
