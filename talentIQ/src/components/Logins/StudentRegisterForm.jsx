@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { LoadingButton } from "@mui/lab";
 import {
   Box,
   Grid,
@@ -44,6 +45,7 @@ const theme = createTheme({
 
 export default function StudentRegistrationForm() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -90,21 +92,24 @@ export default function StudentRegistrationForm() {
     }
   };
 
-  const handleSubmit = async () => {
-    try {
-      const res = await fetch("https://project2-bkuo.onrender.com/api/students/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
-      setSnack({ open: true, message: "Registered successfully!", severity: "success" });
-      setTimeout(() => navigate("/login"), 1500);
-    } catch (err) {
-      setSnack({ open: true, message: err.message, severity: "error" });
-    }
-  };
+ const handleSubmit = async () => {
+  setLoading(true);
+  try {
+    const res = await fetch("https://project2-bkuo.onrender.com/api/students/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message);
+    setSnack({ open: true, message: "Registered successfully!", severity: "success" });
+    setTimeout(() => navigate("/login"), 1500);
+  } catch (err) {
+    setSnack({ open: true, message: err.message, severity: "error" });
+  } finally {
+    setLoading(false);
+  }
+};
 
   const textFieldStyle = {
     "& .MuiOutlinedInput-root": {
@@ -427,21 +432,23 @@ export default function StudentRegistrationForm() {
 
             {/* REGISTER BUTTON */}
             <Box sx={{ textAlign: "center", mt: 2 }}>
-              <Button
-                variant="contained"
-                color="primary"
-                size="medium"
-                onClick={handleSubmit}
-                sx={{
-                  px: { xs: 4, sm: 6 },
-                  py: 1.2,
-                  fontWeight: 600,
-                  textTransform: "none",
-                  borderRadius: 2,
-                }}
-              >
-                Register
-              </Button>
+              <LoadingButton
+  loading={loading}
+  loadingPosition="start"
+  variant="contained"
+  color="primary"
+  size="medium"
+  onClick={handleSubmit}
+  sx={{
+    px: { xs: 4, sm: 6 },
+    py: 1.2,
+    fontWeight: 600,
+    textTransform: "none",
+    borderRadius: 2,
+  }}
+>
+  {loading ? "Registering..." : "Register"}
+</LoadingButton>
 
               <Typography
                 variant="body2"
