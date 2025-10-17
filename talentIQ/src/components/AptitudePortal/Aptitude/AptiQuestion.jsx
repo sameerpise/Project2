@@ -286,7 +286,7 @@ export default function AptitudePortal() {
         const data = await res.json();
         if (!data.allowed) {
           alert("You have already submitted the test.");
-          navigate("/student");
+          navigate("/student/AptitudePortal");
         } else {
           dispatch(resetQuiz());
           localStorage.setItem("aptiCompleted", "false");
