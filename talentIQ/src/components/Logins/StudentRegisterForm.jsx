@@ -95,7 +95,7 @@ export default function StudentRegistrationForm() {
  const handleSubmit = async () => {
   setLoading(true);
   try {
-    const res = await fetch("https://project2-bkuo.onrender.com/api/students/register", {
+    const res = await fetch("https://project2-f2lk.onrender.com/api/students/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
