@@ -147,9 +147,7 @@ export default function StudentDashboard() {
               <Typography variant="h4" fontWeight="bold" sx={{ color: "#1565c0" }}>
                
               </Typography>
- <StudentNotifications studentId={student._id} />
-  </Box>
-</Card>
+              <StudentNotifications studentId={student._id} />
             </Box>
 
             {/* Nested Routes */}
