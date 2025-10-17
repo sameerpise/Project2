@@ -128,55 +128,68 @@ export default function Kpicards() {
       </Stack>
 
       {/* KPI Cards */}
-      <Grid container spacing={3} mb={4}>
-        {[
-          { title: "Total Tests", value: results.length, color: "#0288d1" },
-          {
-            title: "Average Score",
-            value: results.length
-              ? Math.round(results.reduce((acc, r) => acc + getStats(r).score, 0) / results.length)
-              : 0,
-            color: "#43a047",
+     <Grid container spacing={3} mb={4} justifyContent="center">
+  {[
+    { title: "Total Tests", value: results.length, color: "#0288d1" },
+    {
+      title: "Average Score",
+      value: results.length
+        ? Math.round(
+            results.reduce((acc, r) => acc + getStats(r).score, 0) / results.length
+          )
+        : 0,
+      color: "#43a047",
+    },
+    {
+      title: "Retests Taken",
+      value: results.filter((r) => r.retestScore != null).length,
+      color: "#ff9800",
+    },
+  ].map((kpi, i) => (
+    <Grid
+      item
+      xs={12}  // full width on mobile
+      sm={10}  // wider on small screens
+      md={6}   // half width on medium screens
+      lg={4}   // one-third width on large screens
+      key={i}
+      sx={{ display: "flex", justifyContent: "center" }} // center card in its grid
+    >
+      <Card
+        sx={{
+          width: "100%",       // make card take full width of grid
+          maxWidth: 400,       // optional max width for large screens
+          p: 3,
+          borderRadius: 4,
+          transition: "all 0.3s ease",
+          "&:hover": {
+            transform: "translateY(-6px)",
+            boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
           },
-          {
-            title: "Retests Taken",
-            value: results.filter((r) => r.retestScore != null).length,
-            color: "#ff9800",
-          },
-        ].map((kpi, i) => (
-          <Grid item xs={12} sm={6} md={4} key={i}>
-            <Card
-              sx={{
-                p: 3,
-                borderRadius: 4,
-                transition: "all 0.3s ease",
-                "&:hover": {
-                  transform: "translateY(-6px)",
-                  boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
-                },
-                background: `linear-gradient(145deg, ${kpi.color}15, #ffffff)`,
-              }}
-            >
-              <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                {kpi.title}
-              </Typography>
-              <Typography variant="h3" fontWeight="bold" sx={{ color: kpi.color }}>
-                {kpi.value}
-              </Typography>
-              <LinearProgress
-                variant="determinate"
-                value={Math.min(kpi.value, 100)}
-                sx={{
-                  mt: 2,
-                  height: 10,
-                  borderRadius: 5,
-                  "& .MuiLinearProgress-bar": { bgcolor: kpi.color },
-                }}
-              />
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+          background: `linear-gradient(145deg, ${kpi.color}15, #ffffff)`,
+        }}
+      >
+        <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+          {kpi.title}
+        </Typography>
+        <Typography variant="h3" fontWeight="bold" sx={{ color: kpi.color }}>
+          {kpi.value}
+        </Typography>
+        <LinearProgress
+          variant="determinate"
+          value={Math.min(kpi.value, 100)}
+          sx={{
+            mt: 2,
+            height: 10,
+            borderRadius: 5,
+            "& .MuiLinearProgress-bar": { bgcolor: kpi.color },
+          }}
+        />
+      </Card>
+    </Grid>
+  ))}
+</Grid>
+
 
       {/* Charts Section */}
       <Grid container spacing={3} mb={4}>
