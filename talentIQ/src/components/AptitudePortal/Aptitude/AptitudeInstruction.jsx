@@ -47,16 +47,16 @@ export default function AptitudeInstructions() {
         justifyContent: "center",
         alignItems: "center",
         overflow: "hidden",
-        background: "linear-gradient(135deg, #2193b0, #6dd5ed)",
+        background: "linear-gradient(135deg, #F6AE22, #FFD966)",
         position: "relative",
-        p: { xs: 2, sm: 3 },
+        p: 2,
       }}
     >
       {/* Interactive particles */}
-      {[...Array(20)].map((_, i) => {
-        const size = Math.random() * 10 + 5;
-        const offsetX = (Math.random() - 0.5) * 200;
-        const offsetY = (Math.random() - 0.5) * 200;
+      {[...Array(12)].map((_, i) => {
+        const size = Math.random() * 6 + 4;
+        const offsetX = (Math.random() - 0.5) * 150;
+        const offsetY = (Math.random() - 0.5) * 150;
         return (
           <Box
             key={i}
@@ -77,15 +77,15 @@ export default function AptitudeInstructions() {
 
       {/* Paper Container */}
       <Paper
-        elevation={12}
+        elevation={10}
         sx={{
-          maxWidth: 650,
+          maxWidth: 500,
           width: "100%",
-          p: { xs: 3, sm: 5 },
-          borderRadius: 4,
-          backgroundColor: "rgba(255, 255, 255, 0.97)",
+          p: 3,
+          borderRadius: 3,
+          backgroundColor: "rgba(255, 255, 255, 0.95)",
           textAlign: "center",
-          boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
+          boxShadow: "0 6px 15px rgba(0,0,0,0.25)",
           position: "relative",
           zIndex: 1,
         }}
@@ -93,10 +93,10 @@ export default function AptitudeInstructions() {
         <Typography
           variant="h4"
           fontWeight="bold"
-          mb={3}
+          mb={2}
           sx={{
-            fontSize: { xs: 24, sm: 32 },
-            background: "linear-gradient(90deg, #ff8a00, #e52e71)",
+            fontSize: { xs: 20, sm: 28 },
+            background: "linear-gradient(90deg, #F6AE22, #FFB84C)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}
@@ -105,27 +105,27 @@ export default function AptitudeInstructions() {
         </Typography>
 
         <Typography
-          variant="body1"
-          mb={3}
-          sx={{ fontSize: { xs: 14, sm: 16 }, color: "#555" }}
+          variant="body2"
+          mb={2}
+          sx={{ fontSize: { xs: 13, sm: 15 }, color: "#555" }}
         >
-          Please read the following instructions carefully before starting the test:
+          Read the instructions carefully before starting:
         </Typography>
 
-        <List sx={{ textAlign: "left", mb: 4, px: { xs: 0, sm: 2 } }}>
+        <List sx={{ textAlign: "left", mb: 3, px: 1 }}>
           {[
-            "The test contains multiple-choice questions only.",
-            "Do not refresh the page or switch tabs during the test, after 3 warnings test will automatically submit.",
-            "Each question has a time limit. Try to answer within the time.",
-            "Click 'Start Test' when you are ready.",
+            "Multiple-choice questions only.",
+            "Do not refresh or switch tabs; 3 warnings will auto-submit the test.",
+            "Each question has a time limit.",
+            "Click 'Start Test' when ready.",
           ].map((text, index) => (
             <ListItem key={index} sx={{ py: 0.5 }}>
               <ListItemIcon sx={{ minWidth: 32 }}>
-                <CheckCircleOutline sx={{ color: "#1976d2" }} />
+                <CheckCircleOutline sx={{ color: "#F6AE22" }} />
               </ListItemIcon>
               <ListItemText
                 primaryTypographyProps={{
-                  fontSize: { xs: 13, sm: 15 },
+                  fontSize: { xs: 12, sm: 14 },
                 }}
                 primary={`${index + 1}. ${text}`}
               />
@@ -138,9 +138,9 @@ export default function AptitudeInstructions() {
             variant="h3"
             fontWeight="bold"
             sx={{
-              color: "#e52e71",
+              color: "#F6AE22",
               mb: 2,
-              fontSize: { xs: 48, sm: 64 },
+              fontSize: { xs: 42, sm: 56 },
             }}
           >
             {countdown}
@@ -151,18 +151,18 @@ export default function AptitudeInstructions() {
           variant="contained"
           size="large"
           sx={{
-            background: "linear-gradient(90deg, #ff8a00, #e52e71)",
+            background: "linear-gradient(90deg, #F6AE22, #FFB84C)",
             color: "#fff",
             fontWeight: "bold",
-            px: { xs: 3, sm: 5 },
-            py: { xs: 1.2, sm: 1.5 },
+            px: { xs: 3, sm: 4 },
+            py: { xs: 1, sm: 1.5 },
             borderRadius: 3,
-            boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
             transition: "all 0.3s ease",
-            fontSize: { xs: 14, sm: 16 },
+            fontSize: { xs: 13, sm: 15 },
             "&:hover": {
               transform: "scale(1.05)",
-              boxShadow: "0 8px 25px rgba(0,0,0,0.4)",
+              boxShadow: "0 6px 18px rgba(0,0,0,0.35)",
             },
           }}
           onClick={handleStart}
