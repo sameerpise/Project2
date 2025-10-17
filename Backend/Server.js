@@ -13,7 +13,7 @@ const app = express();
 // Middleware
 const allowedOrigins = [
                // local dev
-  // "https://project2-1-n631.onrender.com",
+   "https://project2-1-bdjg.onrender.com",
    "http://localhost:5173"  // your deployed frontend
 ];
 app.use(cors({
