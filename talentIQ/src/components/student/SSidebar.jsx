@@ -31,10 +31,11 @@ export default function SSidebar() {
   const [collapsed, setCollapsed] = useState(isMobile); // collapsed on mobile by default
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const handleLogout = () => {
-    dispatch(logout());
-    window.location.href = "/login";
-  };
+   const handleLogout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    navigate('/login')
+  }
 
   const toggleSidebar = () => {
     if (isMobile) {
