@@ -71,7 +71,7 @@ export default function StudentDashboard() {
     if (!student?._id) return;
     setLoading(true);
     try {
-      const res = await fetch("https://project2-bkuo.onrender.com/api/results");
+      const res = await fetch("https://project2-f2lk.onrender.com/api/results");
       const data = await res.json();
       const studentResults = data.filter((r) => r.studentId?._id === student._id);
       setResults(studentResults);
