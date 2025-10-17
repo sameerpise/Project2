@@ -54,8 +54,8 @@ export default function SSidebar() {
   const sidebarContent = (
     <Box
       sx={{
-        width: collapsed ? 80 : 260,
-        bgcolor: "linear-gradient(180deg, #1565c0 0%, #1976d2 100%)",
+        width: collapsed ? 80 : 173,
+        background: "linear-gradient(180deg, #1565c0 0%, #1976d2 100%)",
         color: "#fff",
         minHeight: "100vh",
         p: 2,
