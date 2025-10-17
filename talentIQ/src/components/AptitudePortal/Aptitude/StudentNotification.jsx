@@ -10,7 +10,7 @@ export default function StudentNotifications({ studentId }) {
 
   const fetchNotifications = async () => {
     try {
-      const res = await fetch(`https://project2-bkuo.onrender.com/api/notifications/${studentId}`);
+      const res = await fetch(`https://project2-f2lk.onrender.com/api/notifications/${studentId}`);
       const data = await res.json();
       setNotifications(data);
     } catch (err) {
