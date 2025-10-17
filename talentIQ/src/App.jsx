@@ -52,8 +52,8 @@ function App() {
 
           {/* Actual aptitude rounds */}
           <Route path="apti" element={<AptiQuestion />} />
-          <Route path="dashboard/gd" element={<GD />} />
-          <Route path="dashboard/machine" element={<VirtualCodeEditor />} />
+          <Route path="gd" element={<GD />} />
+          <Route path="machine" element={<VirtualCodeEditor />} />
            <Route path="list" element={<StudentList />} />
            <Route path="set" element={<QuestionManager />} />
            
