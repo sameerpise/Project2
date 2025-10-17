@@ -2,7 +2,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 // Base URL (adjust if needed)
-const API_BASE = 'https://project2-bkuo.onrender.com/api';
+const API_BASE = 'https://project2-f2lk.onrender.com/api';
 
 export const fetchNotifications = createAsyncThunk(
   'notifications/fetch',
