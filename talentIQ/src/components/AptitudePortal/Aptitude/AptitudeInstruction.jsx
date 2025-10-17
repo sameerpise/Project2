@@ -42,12 +42,13 @@ export default function AptitudeInstructions() {
     <Box
       onMouseMove={handleMouseMove}
       sx={{
-        minHeight: "100vh",
+       margin:"auto",
+        width:700,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         overflow: "hidden",
-        background: "linear-gradient(135deg, #F6AE22, #FFD966)",
+       
         position: "relative",
         p: 2,
       }}
