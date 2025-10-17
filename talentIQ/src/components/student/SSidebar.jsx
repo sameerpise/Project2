@@ -19,7 +19,7 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../redux/studentSlice";
+import { logout } from "../Redux/studentslice";
 
 export default function SSidebar() {
   const navigate = useNavigate();
