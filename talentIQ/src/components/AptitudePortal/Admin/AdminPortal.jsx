@@ -70,7 +70,7 @@ export function StudentList() {
 
   const fetchStudents = async () => {
     try {
-      const res = await fetch("https://project2-bkuo.onrender.com/api/students");
+      const res = await fetch("https://project2-f2lk.onrender.com/api/students");
       const data = await res.json();
       setStudents(data);
     } catch (err) {
@@ -80,7 +80,7 @@ export function StudentList() {
 
   const fetchResults = async () => {
     try {
-      const res = await fetch("https://project2-bkuo.onrender.com/api/results");
+      const res = await fetch("https://project2-f2lk.onrender.com/api/results");
       const data = await res.json();
       setResults(data);
     } catch (err) {
@@ -316,7 +316,7 @@ export default function AdminPortal () {
 
   const fetchResults = async () => {
     try {
-      const res = await fetch('https://project2-bkuo.onrender.com/api/results')
+      const res = await fetch('https://project2-f2lk.onrender.com/api/results')
       if (!res.ok) throw new Error('Failed to fetch results')
       const data = await res.json()
       const uniqueResults = Object.values(
@@ -441,7 +441,7 @@ const handleExportPDF = () => {
     if (!window.confirm('Allow this student to retest?')) return
     try {
       const res = await fetch(
-        `https://project2-bkuo.onrender.com/api/results/retest/${studentId}`,
+        `https://project2-f2lk.onrender.com/api/results/retest/${studentId}`,
         { method: 'POST' }
       )
       const data = await res.json()
