@@ -62,10 +62,11 @@ export default function StudentDashboard() {
     { name: "Quick Learner", icon: "/badge3.png" },
   ];
 
-  const handleLogout = () => {
-    dispatch(logout());
-    window.location.href = "/login";
-  };
+    const handleLogout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    navigate('/login')
+  }
 
   const fetchResults = async () => {
     if (!student?._id) return;
