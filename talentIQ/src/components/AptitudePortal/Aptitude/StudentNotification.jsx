@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Badge, IconButton, Menu, MenuItem, ListItemText } from "@mui/material";
+import { Badge, IconButton, Menu, MenuItem, ListItemText, Typography } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 
 export default function StudentNotifications({ studentId }) {
@@ -30,7 +30,7 @@ export default function StudentNotifications({ studentId }) {
   const handleMarkRead = async (notifId) => {
     try {
       await fetch(`https://project2-bkuo.onrender.com/api/notifications/read/${notifId}`, {
-        method: "POST"
+        method: "POST",
       });
       fetchNotifications();
     } catch (err) {
@@ -38,7 +38,7 @@ export default function StudentNotifications({ studentId }) {
     }
   };
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
     <>
@@ -52,17 +52,41 @@ export default function StudentNotifications({ studentId }) {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        PaperProps={{ style: { maxHeight: 300, width: 300 } }}
+        PaperProps={{ style: { maxHeight: 300, width: 320, padding: 0 } }}
       >
         {notifications.length === 0 ? (
           <MenuItem disabled>No notifications</MenuItem>
         ) : (
-          notifications.map(n => (
-            <MenuItem key={n._id} onClick={() => handleMarkRead(n._id)}>
+          notifications.map((n) => (
+            <MenuItem
+              key={n._id}
+              onClick={() => handleMarkRead(n._id)}
+              sx={{ alignItems: "flex-start" }}
+            >
               <ListItemText
-                primary={n.message}
-                secondary={new Date(n.createdAt).toLocaleString()}
-                style={{ fontWeight: n.read ? 'normal' : 'bold' }}
+                primary={
+                  <Typography
+                    sx={{
+                      fontWeight: n.read ? "normal" : "bold",
+                      wordBreak: "break-word",
+                      whiteSpace: "normal",
+                    }}
+                  >
+                    {n.message}
+                  </Typography>
+                }
+                secondary={
+                  <Typography
+                    sx={{
+                      fontSize: "0.75rem",
+                      color: "text.secondary",
+                      mt: 0.3,
+                      wordBreak: "break-word",
+                    }}
+                  >
+                    {new Date(n.createdAt).toLocaleString()}
+                  </Typography>
+                }
               />
             </MenuItem>
           ))
