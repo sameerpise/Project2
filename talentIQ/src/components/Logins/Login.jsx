@@ -56,7 +56,7 @@ export default function Login() {
       }, 1000);
     } else {
       try {
-        const res = await fetch("https://project2-bkuo.onrender.com/api/students/login", {
+        const res = await fetch("https://project2-f2lk.onrender.com/api/students/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(form),
