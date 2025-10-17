@@ -147,7 +147,42 @@ export default function StudentDashboard() {
               <Typography variant="h4" fontWeight="bold" sx={{ color: "#1565c0" }}>
                
               </Typography>
-              <StudentNotifications studentId={student._id} />
+             <Card
+  sx={{
+    width: 320,
+    borderRadius: 3,
+    boxShadow: "0 6px 18px rgba(0,0,0,0.1)",
+    overflow: "hidden",
+    bgcolor: "white",
+  }}
+>
+  {/* Header */}
+  <Box
+    sx={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      px: 2,
+      py: 1.2,
+      bgcolor: "#1976d2",
+      color: "white",
+    }}
+  >
+    <Typography variant="subtitle1" fontWeight="bold">
+      Notifications
+    </Typography>
+    <Tooltip title="Close">
+      <IconButton size="small" sx={{ color: "white" }}>
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </Tooltip>
+  </Box>
+
+  {/* Body */}
+  <Box sx={{ maxHeight: 280, overflowY: "auto", p: 1.5 }}>
+    <StudentNotifications studentId={student._id} />
+  </Box>
+</Card>
             </Box>
 
             {/* Nested Routes */}
