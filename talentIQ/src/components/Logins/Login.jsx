@@ -9,6 +9,7 @@ import {
   FormControlLabel,
   ToggleButton,
   ToggleButtonGroup,
+  CircularProgress,
 } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
@@ -23,6 +24,7 @@ export default function Login() {
 
   const [form, setForm] = useState({ email: "", password: "" });
   const [loginType, setLoginType] = useState("student");
+  const [loading, setLoading] = useState(false); // <-- Loading state
 
   const adminCredentials = {
     email: "admin@example.com",
@@ -34,22 +36,24 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Clear previous session data
+    setLoading(true); // Start loading
     localStorage.clear();
 
     if (loginType === "admin") {
-      if (
-        form.email === adminCredentials.email &&
-        form.password === adminCredentials.password
-      ) {
-        const admin = { name: "Admin", email: form.email, role: "admin" };
-        localStorage.setItem("adminToken", "admin-token");
-        localStorage.setItem("adminUser", JSON.stringify(admin));
-        navigate("/admin");
-      } else {
-        alert("Invalid Admin Credentials");
-      }
+      setTimeout(() => {
+        if (
+          form.email === adminCredentials.email &&
+          form.password === adminCredentials.password
+        ) {
+          const admin = { name: "Admin", email: form.email, role: "admin" };
+          localStorage.setItem("adminToken", "admin-token");
+          localStorage.setItem("adminUser", JSON.stringify(admin));
+          navigate("/admin");
+        } else {
+          alert("Invalid Admin Credentials");
+        }
+        setLoading(false); // Stop loading
+      }, 1000);
     } else {
       try {
         const res = await fetch("https://project2-bkuo.onrender.com/api/students/login", {
@@ -71,6 +75,8 @@ export default function Login() {
         navigate("/student");
       } catch (err) {
         alert(err.message);
+      } finally {
+        setLoading(false); // Stop loading in all cases
       }
     }
   };
@@ -129,6 +135,7 @@ export default function Login() {
                 startAdornment: <EmailIcon sx={{ mr: 1, color: "gray" }} />,
               }}
               sx={{ mb: 2 }}
+              required
             />
 
             <TextField
@@ -142,6 +149,7 @@ export default function Login() {
                 startAdornment: <LockIcon sx={{ mr: 1, color: "gray" }} />,
               }}
               sx={{ mb: 2 }}
+              required
             />
 
             <Box
@@ -167,10 +175,12 @@ export default function Login() {
               type="submit"
               fullWidth
               variant="contained"
+              disabled={loading} // Disable during loading
               sx={{
                 py: 1.2,
                 mb: 2,
                 borderRadius: 3,
+                fontWeight: 600,
                 backgroundColor:
                   loginType === "admin" ? "#1976d2" : "#d32f2f",
                 "&:hover": {
@@ -179,7 +189,13 @@ export default function Login() {
                 },
               }}
             >
-              {loginType === "admin" ? "Login as Admin" : "Login as Student"}
+              {loading ? (
+                <CircularProgress size={24} sx={{ color: "white" }} />
+              ) : loginType === "admin" ? (
+                "Login as Admin"
+              ) : (
+                "Login as Student"
+              )}
             </Button>
           </form>
 
