@@ -169,7 +169,7 @@ export default function StudentRegistrationForm() {
                 align="center"
                 sx={{ fontWeight: 600, color: "primary.main", mb: 1, fontSize: { xs: 20, md: 24 } }}
               >
-                🎓 Student Registration
+               
               </Typography>
               <Divider sx={{ mb: 2, bgcolor: "primary.main" }} />
 
