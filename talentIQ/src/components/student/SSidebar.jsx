@@ -10,27 +10,29 @@ import {
   Divider,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import SchoolIcon from "@mui/icons-material/School";
 import LogoutIcon from "@mui/icons-material/Logout";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../Redux/studentslice";
 
 export default function SSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
   const student = useSelector((state) => state.student.student);
 
   const [collapsed, setCollapsed] = useState(false);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    navigate("/login");
-  };
+ const handleLogout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    navigate('/login')
+  }
 
   const menuItems = [
-    
+   
     { label: "Aptitude", path: "/student/AptitudePortal", icon: <SchoolIcon /> },
   ];
 
@@ -38,8 +40,8 @@ export default function SSidebar() {
     <Box
       sx={{
         width: collapsed ? 80 : 250,
-        minWidth: 80,
         bgcolor: "linear-gradient(180deg, #1565c0 0%, #1976d2 100%)",
+        background: "linear-gradient(180deg, #1565c0 0%, #1976d2 100%)",
         color: "#fff",
         minHeight: "100vh",
         p: 2,
@@ -61,8 +63,7 @@ export default function SSidebar() {
           sx={{
             color: "#fff",
             mb: 1,
-            "&:hover": { bgcolor: "rgba(255,255,255,0.1)", transform: "scale(1.1)" },
-            transition: "all 0.2s ease",
+            "&:hover": { bgcolor: "rgba(255,255,255,0.1)" },
           }}
         >
           <MenuIcon />
@@ -70,7 +71,7 @@ export default function SSidebar() {
 
         {/* Student Info */}
         {!collapsed && (
-          <Box textAlign="center" sx={{ mb: 2 }}>
+          <Box textAlign="center">
             <Avatar
               src={student?.avatar || "/profile.png"}
               sx={{
@@ -80,10 +81,10 @@ export default function SSidebar() {
                 border: "2px solid rgba(255,255,255,0.3)",
               }}
             />
-            <Typography variant="h6" mt={1} fontWeight="600" noWrap>
+            <Typography variant="h6" mt={1} fontWeight="600">
               {student?.fullName}
             </Typography>
-            <Typography variant="body2" sx={{ opacity: 0.8 }} noWrap>
+            <Typography variant="body2" sx={{ opacity: 0.8 }}>
               {student?.email}
             </Typography>
           </Box>
@@ -96,21 +97,15 @@ export default function SSidebar() {
           {menuItems.map((item, idx) => {
             const isActive = location.pathname === item.path;
             return (
-              <Tooltip
-                key={idx}
-                title={collapsed ? item.label : ""}
-                placement="right"
-                arrow
-              >
+              <Tooltip key={idx} title={collapsed ? item.label : ""} placement="right">
                 <Button
                   fullWidth
                   onClick={() => navigate(item.path)}
-                  startIcon={item.icon}
+                  startIcon={!collapsed ? item.icon : null}
                   sx={{
                     color: "#fff",
                     justifyContent: collapsed ? "center" : "flex-start",
-                    py: 1.5,
-                    px: 1.5,
+                    py: 1.2,
                     borderRadius: 2,
                     fontWeight: isActive ? 600 : 400,
                     fontSize: "0.95rem",
@@ -123,7 +118,6 @@ export default function SSidebar() {
                     },
                     textTransform: "none",
                     transition: "all 0.2s ease",
-                    minHeight: 50,
                   }}
                 >
                   {!collapsed && item.label}
@@ -135,15 +129,15 @@ export default function SSidebar() {
       </Stack>
 
       {/* Logout Button */}
-      <Tooltip title={collapsed ? "Logout" : ""} placement="right" arrow>
+      <Tooltip title={collapsed ? "Logout" : ""} placement="right">
         <Button
           fullWidth
           variant="contained"
-          startIcon={<LogoutIcon />}
+          startIcon={!collapsed ? <LogoutIcon /> : null}
           onClick={handleLogout}
           sx={{
             mt: 2,
-            py: 1.5,
+            py: 1.2,
             borderRadius: 2,
             background: "rgba(255, 255, 255, 0.2)",
             backdropFilter: "blur(8px)",
@@ -154,11 +148,9 @@ export default function SSidebar() {
               background: "rgba(255, 255, 255, 0.35)",
               transform: "scale(1.05)",
             },
-            transition: "all 0.2s ease",
-            minHeight: 50,
           }}
         >
-          {!collapsed && "Logout"}
+          {!collapsed ? "Logout" : <LogoutIcon />}
         </Button>
       </Tooltip>
     </Box>
