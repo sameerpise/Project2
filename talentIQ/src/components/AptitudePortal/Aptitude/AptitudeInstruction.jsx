@@ -8,6 +8,7 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
+  useMediaQuery,
 } from "@mui/material";
 import { CheckCircleOutline } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +18,8 @@ export default function AptitudeInstructions() {
   const [countdown, setCountdown] = useState(0);
   const [startClicked, setStartClicked] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   // Countdown logic
   useEffect(() => {
@@ -42,15 +45,17 @@ export default function AptitudeInstructions() {
     <Box
       onMouseMove={handleMouseMove}
       sx={{
-       margin:"auto",
-        width:700,
+        margin: "auto",
+        width: "100%",
+        maxWidth: 600,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         overflow: "hidden",
-       
+        minHeight: "100vh",
         position: "relative",
-        p: 2,
+        p: { xs: 1, sm: 2, md: 3 },
+        bgcolor: "#f0f2f5",
       }}
     >
       {/* Interactive particles */}
@@ -80,9 +85,8 @@ export default function AptitudeInstructions() {
       <Paper
         elevation={10}
         sx={{
-          maxWidth: 500,
           width: "100%",
-          p: 3,
+          p: { xs: 2, sm: 3, md: 4 },
           borderRadius: 3,
           backgroundColor: "rgba(255, 255, 255, 0.95)",
           textAlign: "center",
@@ -92,11 +96,10 @@ export default function AptitudeInstructions() {
         }}
       >
         <Typography
-          variant="h4"
+          variant={isMobile ? "h5" : "h4"}
           fontWeight="bold"
           mb={2}
           sx={{
-            fontSize: { xs: 20, sm: 28 },
             background: "linear-gradient(90deg, #F6AE22, #FFB84C)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
@@ -108,12 +111,12 @@ export default function AptitudeInstructions() {
         <Typography
           variant="body2"
           mb={2}
-          sx={{ fontSize: { xs: 13, sm: 15 }, color: "#555" }}
+          sx={{ fontSize: { xs: 12, sm: 14, md: 15 }, color: "#555" }}
         >
           Read the instructions carefully before starting:
         </Typography>
 
-        <List sx={{ textAlign: "left", mb: 3, px: 1 }}>
+        <List sx={{ textAlign: "left", mb: 3, px: { xs: 0, sm: 1 } }}>
           {[
             "Multiple-choice questions only.",
             "Do not refresh or switch tabs; 3 warnings will auto-submit the test.",
@@ -126,7 +129,7 @@ export default function AptitudeInstructions() {
               </ListItemIcon>
               <ListItemText
                 primaryTypographyProps={{
-                  fontSize: { xs: 12, sm: 14 },
+                  fontSize: { xs: 12, sm: 13, md: 14 },
                 }}
                 primary={`${index + 1}. ${text}`}
               />
@@ -136,12 +139,11 @@ export default function AptitudeInstructions() {
 
         {countdown > 0 && (
           <Typography
-            variant="h3"
+            variant={isMobile ? "h2" : "h3"}
             fontWeight="bold"
             sx={{
               color: "#F6AE22",
               mb: 2,
-              fontSize: { xs: 42, sm: 56 },
             }}
           >
             {countdown}
@@ -150,17 +152,17 @@ export default function AptitudeInstructions() {
 
         <Button
           variant="contained"
-          size="large"
+          size={isMobile ? "medium" : "large"}
           sx={{
             background: "linear-gradient(90deg, #F6AE22, #FFB84C)",
             color: "#fff",
             fontWeight: "bold",
-            px: { xs: 3, sm: 4 },
+            px: { xs: 2, sm: 4 },
             py: { xs: 1, sm: 1.5 },
             borderRadius: 3,
             boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
             transition: "all 0.3s ease",
-            fontSize: { xs: 13, sm: 15 },
+            fontSize: { xs: 12, sm: 14, md: 15 },
             "&:hover": {
               transform: "scale(1.05)",
               boxShadow: "0 6px 18px rgba(0,0,0,0.35)",
