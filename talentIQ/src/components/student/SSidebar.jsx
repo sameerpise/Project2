@@ -8,14 +8,18 @@ import {
   IconButton,
   Tooltip,
   Divider,
+  useMediaQuery,
+  Drawer,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SchoolIcon from "@mui/icons-material/School";
 import LogoutIcon from "@mui/icons-material/Logout";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import BarChartIcon from "@mui/icons-material/BarChart";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../Redux/studentslice";
+import { logout } from "../redux/studentSlice";
 
 export default function SSidebar() {
   const navigate = useNavigate();
@@ -23,43 +27,48 @@ export default function SSidebar() {
   const dispatch = useDispatch();
   const student = useSelector((state) => state.student.student);
 
-  const [collapsed, setCollapsed] = useState(false);
+  const isMobile = useMediaQuery("(max-width:900px)");
+  const [collapsed, setCollapsed] = useState(isMobile); // collapsed on mobile by default
+  const [mobileOpen, setMobileOpen] = useState(false);
 
- const handleLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    navigate('/login')
-  }
+  const handleLogout = () => {
+    dispatch(logout());
+    window.location.href = "/login";
+  };
+
+  const toggleSidebar = () => {
+    if (isMobile) {
+      setMobileOpen(!mobileOpen);
+    } else {
+      setCollapsed(!collapsed);
+    }
+  };
 
   const menuItems = [
-   
+
     { label: "Aptitude", path: "/student/AptitudePortal", icon: <SchoolIcon /> },
+    { label: "Results", path: "/student/AptitudePortal", icon: <BarChartIcon /> },
+    { label: "Assignments", path: "/student/AptitudePortal", icon: <AssignmentIcon /> },
   ];
 
-  return (
+  const sidebarContent = (
     <Box
       sx={{
-        width: collapsed ? 80 : 173,
+        width: collapsed ? 80 : 260,
         bgcolor: "linear-gradient(180deg, #1565c0 0%, #1976d2 100%)",
-        background: "linear-gradient(180deg, #1565c0 0%, #1976d2 100%)",
         color: "#fff",
         minHeight: "100vh",
         p: 2,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        boxShadow: "4px 0 15px rgba(0,0,0,0.2)",
         transition: "width 0.3s ease",
-        position: "sticky",
-        top: 0,
-        left: 0,
-        zIndex: 100,
       }}
     >
       <Stack spacing={2} alignItems={collapsed ? "center" : "flex-start"}>
         {/* Toggle Menu */}
         <IconButton
-          onClick={() => setCollapsed(!collapsed)}
+          onClick={toggleSidebar}
           sx={{
             color: "#fff",
             mb: 1,
@@ -100,12 +109,15 @@ export default function SSidebar() {
               <Tooltip key={idx} title={collapsed ? item.label : ""} placement="right">
                 <Button
                   fullWidth
-                  onClick={() => navigate(item.path)}
-                  startIcon={!collapsed ? item.icon : null}
+                  onClick={() => {
+                    navigate(item.path);
+                    if (isMobile) setMobileOpen(false);
+                  }}
+                  startIcon={item.icon}
                   sx={{
                     color: "#fff",
                     justifyContent: collapsed ? "center" : "flex-start",
-                    py: 1.2,
+                    py: 1.3,
                     borderRadius: 2,
                     fontWeight: isActive ? 600 : 400,
                     fontSize: "0.95rem",
@@ -133,11 +145,11 @@ export default function SSidebar() {
         <Button
           fullWidth
           variant="contained"
-          startIcon={!collapsed ? <LogoutIcon /> : null}
+          startIcon={<LogoutIcon />}
           onClick={handleLogout}
           sx={{
             mt: 2,
-            py: 1.2,
+            py: 1.3,
             borderRadius: 2,
             background: "rgba(255, 255, 255, 0.2)",
             backdropFilter: "blur(8px)",
@@ -150,9 +162,25 @@ export default function SSidebar() {
             },
           }}
         >
-          {!collapsed ? "Logout" : <LogoutIcon />}
+          {!collapsed && "Logout"}
         </Button>
       </Tooltip>
     </Box>
+  );
+
+  return isMobile ? (
+    <>
+      <IconButton
+        onClick={toggleSidebar}
+        sx={{ position: "fixed", top: 16, left: 16, zIndex: 200, color: "#1565c0" }}
+      >
+        <MenuIcon fontSize="large" />
+      </IconButton>
+      <Drawer anchor="left" open={mobileOpen} onClose={() => setMobileOpen(false)}>
+        {sidebarContent}
+      </Drawer>
+    </>
+  ) : (
+    sidebarContent
   );
 }
