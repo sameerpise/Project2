@@ -72,7 +72,7 @@ export default function Login() {
           JSON.stringify({ ...data.student, role: "student" })
         );
 
-        navigate("/student");
+        navigate("/student/AptitudePortal");
       } catch (err) {
         alert(err.message);
       } finally {
