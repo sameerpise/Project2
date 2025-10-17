@@ -118,6 +118,25 @@ export default function StudentRegistrationForm() {
       "&.Mui-focused fieldset": { borderColor: "#f6ae22" },
     },
   };
+// Helper function to check form validity
+const isFormValid = () => {
+  const requiredFields = [
+    "fullName",
+    "email",
+    "mobile",
+    "gender",
+    "dob",
+    "college",
+    "department",
+    "pursuingYear",
+    "whichYear",
+    "pincode",
+    "city",
+    "password",
+    "confirmPassword",
+  ];
+  return requiredFields.every((field) => form[field].trim() !== "") && form.password === form.confirmPassword;
+};
 
   return (
     <ThemeProvider theme={theme}>
@@ -432,13 +451,14 @@ export default function StudentRegistrationForm() {
 
             {/* REGISTER BUTTON */}
             <Box sx={{ textAlign: "center", mt: 2 }}>
-              <LoadingButton
+ <LoadingButton
   loading={loading}
   loadingPosition="start"
   variant="contained"
   color="primary"
   size="medium"
   onClick={handleSubmit}
+  disabled={!isFormValid()}
   sx={{
     px: { xs: 4, sm: 6 },
     py: 1.2,
@@ -449,6 +469,7 @@ export default function StudentRegistrationForm() {
 >
   {loading ? "Registering..." : "Register"}
 </LoadingButton>
+
 
               <Typography
                 variant="body2"
