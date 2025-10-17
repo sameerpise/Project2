@@ -21,7 +21,6 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import LogoutIcon from "@mui/icons-material/Logout";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import StudentNotifications from "../AptitudePortal/Aptitude/StudentNotification";
 import { logout } from "../Redux/studentslice";
 import { useSelector, useDispatch } from "react-redux";
@@ -173,6 +172,53 @@ export default function StudentDashboard() {
             <Outlet />
           ) : (
             <>
+              {/* Aptitude Card */}
+              <Grid container spacing={3} sx={{ mb: 4, justifyContent: "center" }}>
+                <Grid item xs={12} sm={8} md={6}>
+                  <Card
+                    sx={{
+                      p: 5,
+                      borderRadius: 4,
+                      background: "linear-gradient(135deg, #F6AE22, #FFD27F)",
+                      boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+                      textAlign: "center",
+                      transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                      "&:hover": {
+                        transform: "translateY(-5px)",
+                        boxShadow: "0 15px 35px rgba(0,0,0,0.25)",
+                      },
+                    }}
+                  >
+                    <Typography variant="h4" fontWeight="bold" sx={{ mb: 3, color: "#333" }}>
+                      📝 Aptitude Test
+                    </Typography>
+
+                    <Typography variant="body1" sx={{ mb: 4 }}>
+                      Ready to test your skills? Click below to start your aptitude test.
+                    </Typography>
+
+                    <Button
+                      variant="contained"
+                      sx={{
+                        px: 6,
+                        py: 1.5,
+                        borderRadius: 3,
+                        fontWeight: "bold",
+                        background: "linear-gradient(90deg, #FFD27F, #F6AE22)",
+                        color: "#333",
+                        "&:hover": {
+                          transform: "scale(1.05)",
+                          background: "linear-gradient(90deg, #F6AE22, #FFD27F)",
+                        },
+                      }}
+                      onClick={() => navigate("/student/apti")}
+                    >
+                      Start Test 🚀
+                    </Button>
+                  </Card>
+                </Grid>
+              </Grid>
+
               {/* KPI Cards */}
               <Grid container spacing={3} sx={{ mb: 4 }}>
                 {[
@@ -221,11 +267,7 @@ export default function StudentDashboard() {
                       <Typography variant="subtitle2" color="text.secondary">
                         {kpi.title}
                       </Typography>
-                      <Typography
-                        variant="h3"
-                        fontWeight="bold"
-                        sx={{ color: kpi.color, mb: 1 }}
-                      >
+                      <Typography variant="h3" fontWeight="bold" sx={{ color: kpi.color, mb: 1 }}>
                         {kpi.value}
                       </Typography>
                       <LinearProgress
