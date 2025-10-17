@@ -14,9 +14,14 @@ import {
   Modal,
   Divider,
   CircularProgress,
+  AppBar,
+  Toolbar,
   Tooltip,
+  useMediaQuery,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import LogoutIcon from "@mui/icons-material/Logout";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import StudentNotifications from "../AptitudePortal/Aptitude/StudentNotification";
 import { logout } from "../Redux/studentslice";
 import { useSelector, useDispatch } from "react-redux";
@@ -42,16 +47,14 @@ export default function StudentDashboard() {
   const location = useLocation();
   const isDashboardRoute = location.pathname === "/student";
   const isTestStarted = location.pathname.includes("/student/apti");
-  const TestIntructuion = location.pathname.includes("/student/AptitudePortal/aptii");
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const student = useSelector((state) => state.student.student);
-
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [selectedTest, setSelectedTest] = useState(null);
+  const isMobile = useMediaQuery("(max-width:900px)");
 
   const badges = [
     { name: "Math Whiz", icon: "/badge1.png" },
@@ -124,345 +127,329 @@ export default function StudentDashboard() {
     score: getStats(r).score,
   }));
 
+  if (isTestStarted) {
+    return <Box sx={{ width: "100%", height: "100vh" }}><Outlet /></Box>;
+  }
+
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "#f5f8ff" }}>
-      {/* ✅ Fullscreen Aptitude Test Mode */}
-      {isTestStarted? (
-        <Box sx={{ width: "100%", height: "100vh" }}>
-          <Outlet />
-        </Box>
-      ) : (
-        <>
-          <SSidebar />
-          <Box sx={{ flex: 1, p: { xs: 2, md: 4 } }}>
-            {/* Header */}
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                mb: 4,
-              }}
-            >
-              <Typography variant="h4" fontWeight="bold" sx={{ color: "#1565c0" }}>
-               
-              </Typography>
-              <StudentNotifications studentId={student._id} />
-            </Box>
+    <Box sx={{ display: "flex", bgcolor: "#f7f9fc", minHeight: "100vh" }}>
+      <SSidebar />
+      <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        {/* Header */}
+        <AppBar
+          position="sticky"
+          elevation={0}
+          sx={{
+            background: "linear-gradient(90deg, #1565c0, #42a5f5)",
+            p: 1,
+            boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+          }}
+        >
+          <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Typography variant="h5" fontWeight="bold" color="white">
+              Student Dashboard
+            </Typography>
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Tooltip title="Notifications">
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <StudentNotifications studentId={student._id} />
+                </Box>
+              </Tooltip>
+              <Tooltip title="Logout">
+                <IconButton onClick={handleLogout} color="inherit">
+                  <LogoutIcon />
+                </IconButton>
+              </Tooltip>
+              <Avatar sx={{ bgcolor: "white", color: "#1565c0", fontWeight: "bold" }}>
+                {student?.name?.[0]?.toUpperCase() || "S"}
+              </Avatar>
+            </Stack>
+          </Toolbar>
+        </AppBar>
 
-            {/* Nested Routes */}
-            {!isDashboardRoute && <Outlet />}
-
-            {/* Dashboard Main */}
-            {isDashboardRoute && (
-              <>
-                {/* KPI Cards */}
-                <Grid container spacing={3} sx={{ mb: 4 }}>
-                  {[
-                    {
-                      title: "Total Tests",
-                      value: results.length,
-                      color: "#1976d2",
-                      progress: results.length ? 70 : 0,
-                    },
-                    {
-                      title: "Average Score",
-                      value: results.length
-                        ? Math.round(
-                            results.reduce((acc, r) => acc + getStats(r).score, 0) / results.length
-                          )
-                        : 0,
-                      color: "#4caf50",
-                      progress: results.length
-                        ? Math.round(
-                            results.reduce((acc, r) => acc + getStats(r).score, 0) / results.length
-                          )
-                        : 0,
-                    },
-                    {
-                      title: "Retests Taken",
-                      value: results.filter((r) => r.retestScore != null).length,
-                      color: "#ff9800",
-                      progress: results.length
-                        ? Math.round(
-                            (results.filter((r) => r.retestScore != null).length / results.length) * 100
-                          )
-                        : 0,
-                    },
-                  ].map((kpi, i) => (
-                    <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
-                      <Card
-                        sx={{
-                          p: 3,
-                          borderRadius: 4,
-                          boxShadow: "0 6px 20px rgba(0,0,0,0.1)",
-                          transition: "transform 0.3s ease",
-                          "&:hover": { transform: "scale(1.03)" },
-                        }}
+        {/* Main Content */}
+        <Box sx={{ p: { xs: 2, sm: 3, md: 4 }, flexGrow: 1 }}>
+          {!isDashboardRoute ? (
+            <Outlet />
+          ) : (
+            <>
+              {/* KPI Cards */}
+              <Grid container spacing={3} sx={{ mb: 4 }}>
+                {[
+                  {
+                    title: "Total Tests",
+                    value: results.length,
+                    color: "#1976d2",
+                    progress: results.length ? 70 : 0,
+                  },
+                  {
+                    title: "Average Score",
+                    value: results.length
+                      ? Math.round(
+                          results.reduce((acc, r) => acc + getStats(r).score, 0) / results.length
+                        )
+                      : 0,
+                    color: "#4caf50",
+                    progress: results.length
+                      ? Math.round(
+                          results.reduce((acc, r) => acc + getStats(r).score, 0) / results.length
+                        )
+                      : 0,
+                  },
+                  {
+                    title: "Retests Taken",
+                    value: results.filter((r) => r.retestScore != null).length,
+                    color: "#ff9800",
+                    progress: results.length
+                      ? Math.round(
+                          (results.filter((r) => r.retestScore != null).length / results.length) * 100
+                        )
+                      : 0,
+                  },
+                ].map((kpi, i) => (
+                  <Grid item xs={12} sm={6} md={4} key={i}>
+                    <Card
+                      sx={{
+                        p: 3,
+                        borderRadius: 4,
+                        background: "white",
+                        boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+                        transition: "transform 0.3s ease",
+                        "&:hover": { transform: "translateY(-6px)" },
+                      }}
+                    >
+                      <Typography variant="subtitle2" color="text.secondary">
+                        {kpi.title}
+                      </Typography>
+                      <Typography
+                        variant="h3"
+                        fontWeight="bold"
+                        sx={{ color: kpi.color, mb: 1 }}
                       >
-                        <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
-                          {kpi.title}
-                        </Typography>
-                        <Typography
-                          variant="h3"
-                          fontWeight="bold"
-                          sx={{ color: kpi.color, mb: 2 }}
-                        >
-                          {kpi.value}
-                        </Typography>
-                        <LinearProgress
-                          variant="determinate"
-                          value={kpi.progress}
-                          sx={{
-                            height: 10,
-                            borderRadius: 5,
-                            "& .MuiLinearProgress-bar": { bgcolor: kpi.color },
-                          }}
-                        />
-                      </Card>
-                    </Grid>
-                  ))}
-                </Grid>
-
-                {/* Charts Section */}
-                <Grid container spacing={3} sx={{ mb: 4 }}>
-                  <Grid item xs={12} md={6}>
-                    <Card sx={{ p: 3, borderRadius: 3, minHeight: 280 }}>
-                      <Typography variant="subtitle1" mb={2} fontWeight="bold">
-                        Performance Over Time
+                        {kpi.value}
                       </Typography>
-                      <ResponsiveContainer width="100%" height={250}>
-                        <LineChart data={chartData}>
-                          <XAxis dataKey="test" />
-                          <YAxis />
-                          <RechartTooltip />
-                          <Line
-                            type="monotone"
-                            dataKey="score"
-                            stroke="#1976d2"
-                            strokeWidth={3}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </Card>
-                  </Grid>
-
-                  <Grid item xs={12} md={6}>
-                    <Card sx={{ p: 3, borderRadius: 3, minHeight: 280 }}>
-                      <Typography variant="subtitle1" mb={2} fontWeight="bold">
-                        Latest Test Breakdown
-                      </Typography>
-                      {results.length > 0 ? (
-                        <ResponsiveContainer width="100%" height={250}>
-                          <PieChart>
-                            <Pie
-                              dataKey="value"
-                              cx="50%"
-                              cy="50%"
-                              outerRadius={90}
-                              data={[
-                                {
-                                  name: "Correct",
-                                  value: getStats(results[results.length - 1]).correct,
-                                },
-                                {
-                                  name: "Wrong",
-                                  value: getStats(results[results.length - 1]).wrong,
-                                },
-                                {
-                                  name: "Unanswered",
-                                  value: getStats(results[results.length - 1]).unanswered,
-                                },
-                              ]}
-                            >
-                              {COLORS.map((color, i) => (
-                                <Cell key={i} fill={color} />
-                              ))}
-                            </Pie>
-                            <Legend verticalAlign="bottom" height={36} />
-                          </PieChart>
-                        </ResponsiveContainer>
-                      ) : (
-                        <Typography>No test data available</Typography>
-                      )}
-                    </Card>
-                  </Grid>
-                </Grid>
-
-                {/* Badges */}
-                <Card sx={{ mb: 4, p: 3 }}>
-                  <Typography variant="subtitle1" mb={2} fontWeight="bold">
-                    Achievements / Badges
-                  </Typography>
-                  <Stack direction="row" spacing={2} sx={{ overflowX: "auto", px: 1 }}>
-                    {badges.map((badge, i) => (
-                      <Chip
-                        key={i}
-                        label={badge.name}
-                        avatar={<Avatar src={badge.icon} />}
+                      <LinearProgress
+                        variant="determinate"
+                        value={kpi.progress}
                         sx={{
-                          fontWeight: "bold",
-                          minWidth: 140,
-                          height: 60,
-                          fontSize: "1rem",
-                          boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+                          height: 10,
+                          borderRadius: 5,
+                          "& .MuiLinearProgress-bar": { bgcolor: kpi.color },
                         }}
                       />
-                    ))}
-                  </Stack>
-                </Card>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
 
-                {/* Recent Tests */}
-                <Typography variant="h6" fontWeight="bold" mb={2}>
-                  Recent Tests
+              {/* Charts */}
+              <Grid container spacing={3} sx={{ mb: 4 }}>
+                <Grid item xs={12} md={6}>
+                  <Card sx={{ p: 3, borderRadius: 4, minHeight: 280 }}>
+                    <Typography variant="h6" mb={2}>
+                      Performance Over Time
+                    </Typography>
+                    <ResponsiveContainer width="100%" height={250}>
+                      <LineChart data={chartData}>
+                        <XAxis dataKey="test" />
+                        <YAxis />
+                        <RechartTooltip />
+                        <Line type="monotone" dataKey="score" stroke="#1976d2" strokeWidth={3} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </Card>
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Card sx={{ p: 3, borderRadius: 4, minHeight: 280 }}>
+                    <Typography variant="h6" mb={2}>
+                      Latest Test Breakdown
+                    </Typography>
+                    {results.length > 0 ? (
+                      <ResponsiveContainer width="100%" height={250}>
+                        <PieChart>
+                          <Pie
+                            dataKey="value"
+                            cx="50%"
+                            cy="50%"
+                            outerRadius={90}
+                            data={[
+                              { name: "Correct", value: getStats(results.at(-1)).correct },
+                              { name: "Wrong", value: getStats(results.at(-1)).wrong },
+                              { name: "Unanswered", value: getStats(results.at(-1)).unanswered },
+                            ]}
+                          >
+                            {COLORS.map((color, i) => (
+                              <Cell key={i} fill={color} />
+                            ))}
+                          </Pie>
+                          <Legend verticalAlign="bottom" height={36} />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    ) : (
+                      <Typography>No test data available</Typography>
+                    )}
+                  </Card>
+                </Grid>
+              </Grid>
+
+              {/* Badges */}
+              <Card sx={{ mb: 4, p: 3, borderRadius: 4 }}>
+                <Typography variant="h6" mb={2}>
+                  Achievements / Badges
                 </Typography>
-                <Grid container spacing={3}>
-                  {results.slice(-4).map((r, idx) => {
-                    const stats = getStats(r);
-                    const retestStats = r.retestScore ? getStats(r, true) : null;
-                    const testTitle = r.testName || `Test ${idx + 1}`;
-                    return (
-                      <React.Fragment key={idx}>
+                <Stack direction="row" spacing={2} sx={{ overflowX: "auto", pb: 1 }}>
+                  {badges.map((badge, i) => (
+                    <Chip
+                      key={i}
+                      label={badge.name}
+                      avatar={<Avatar src={badge.icon} />}
+                      sx={{
+                        fontWeight: "bold",
+                        minWidth: 140,
+                        height: 60,
+                        fontSize: "1rem",
+                        boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+                      }}
+                    />
+                  ))}
+                </Stack>
+              </Card>
+
+              {/* Recent Tests */}
+              <Typography variant="h6" fontWeight="bold" mb={2}>
+                Recent Tests
+              </Typography>
+              <Grid container spacing={3}>
+                {results.slice(-4).map((r, idx) => {
+                  const stats = getStats(r);
+                  const retestStats = r.retestScore ? getStats(r, true) : null;
+                  const testTitle = r.testName || `Test ${idx + 1}`;
+                  return (
+                    <React.Fragment key={idx}>
+                      <Grid item xs={12} sm={6} md={3}>
+                        <Card
+                          sx={{
+                            p: 3,
+                            borderRadius: 4,
+                            cursor: "pointer",
+                            transition: "0.3s",
+                            "&:hover": { boxShadow: "0 8px 20px rgba(0,0,0,0.15)" },
+                          }}
+                          onClick={() => {
+                            setSelectedTest(r);
+                            setOpenModal(true);
+                          }}
+                        >
+                          <Typography variant="subtitle1" fontWeight="bold">
+                            {testTitle}
+                          </Typography>
+                          <Typography color="green">✔ Correct: {stats.correct}</Typography>
+                          <Typography color="red">✖ Wrong: {stats.wrong}</Typography>
+                          <Typography color="orange">⚪ Unanswered: {stats.unanswered}</Typography>
+                          <Typography variant="body1" fontWeight="bold">
+                            Score: {stats.score} ({stats.percentage}%)
+                          </Typography>
+                        </Card>
+                      </Grid>
+
+                      {retestStats && (
                         <Grid item xs={12} sm={6} md={3}>
                           <Card
                             sx={{
                               p: 3,
-                              borderRadius: 3,
+                              borderRadius: 4,
+                              bgcolor: "#fff7e6",
                               cursor: "pointer",
-                              transition: "all 0.3s ease",
-                              "&:hover": { boxShadow: "0 6px 16px rgba(0,0,0,0.15)" },
+                              "&:hover": { boxShadow: "0 8px 20px rgba(0,0,0,0.15)" },
                             }}
                             onClick={() => {
                               setSelectedTest(r);
                               setOpenModal(true);
                             }}
                           >
-                            <Typography variant="subtitle1" fontWeight="bold">
-                              {testTitle}
+                            <Typography variant="subtitle1" fontWeight="bold" color="#ff9800">
+                              {testTitle} - Retest
                             </Typography>
-                            <Typography color="green">
-                              ✔ Correct: {stats.correct}
-                            </Typography>
-                            <Typography color="red">✖ Wrong: {stats.wrong}</Typography>
+                            <Typography color="green">✔ Correct: {retestStats.correct}</Typography>
+                            <Typography color="red">✖ Wrong: {retestStats.wrong}</Typography>
                             <Typography color="orange">
-                              ⚪ Unanswered: {stats.unanswered}
+                              ⚪ Unanswered: {retestStats.unanswered}
                             </Typography>
                             <Typography variant="body1" fontWeight="bold">
-                              Score: {stats.score} ({stats.percentage}%)
+                              Score: {retestStats.score} ({retestStats.percentage}%)
                             </Typography>
                           </Card>
                         </Grid>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
+              </Grid>
 
-                        {retestStats && (
-                          <Grid item xs={12} sm={6} md={3}>
-                            <Card
-                              sx={{
-                                p: 3,
-                                borderRadius: 3,
-                                backgroundColor: "#fff7e6",
-                                cursor: "pointer",
-                                "&:hover": { boxShadow: "0 6px 16px rgba(0,0,0,0.15)" },
-                              }}
-                              onClick={() => {
-                                setSelectedTest(r);
-                                setOpenModal(true);
-                              }}
-                            >
-                              <Typography
-                                variant="subtitle1"
-                                fontWeight="bold"
-                                color="#ff9800"
-                              >
-                                {testTitle} - Retest
-                              </Typography>
-                              <Typography color="green">
-                                ✔ Correct: {retestStats.correct}
-                              </Typography>
-                              <Typography color="red">
-                                ✖ Wrong: {retestStats.wrong}
-                              </Typography>
-                              <Typography color="orange">
-                                ⚪ Unanswered: {retestStats.unanswered}
-                              </Typography>
-                              <Typography variant="body1" fontWeight="bold">
-                                Score: {retestStats.score} ({retestStats.percentage}%)
-                              </Typography>
-                            </Card>
-                          </Grid>
-                        )}
-                      </React.Fragment>
-                    );
-                  })}
-                </Grid>
+              {/* Export Button */}
+              <Stack direction="row" spacing={2} mt={4}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleExportPDF}
+                  sx={{ borderRadius: 2, px: 4, py: 1.2 }}
+                >
+                  Export PDF
+                </Button>
+              </Stack>
 
-                {/* Export Button */}
-                <Stack direction="row" spacing={2} mt={4}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleExportPDF}
-                    sx={{ borderRadius: 2, px: 4, py: 1.2 }}
-                  >
-                    Export PDF
-                  </Button>
-                </Stack>
-
-                {/* Test Detail Modal */}
-                <Modal open={openModal} onClose={() => setOpenModal(false)}>
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                      width: 450,
-                      bgcolor: "background.paper",
-                      p: 3,
-                      borderRadius: 2,
-                      boxShadow: 24,
-                    }}
-                  >
-                    <Stack direction="row" justifyContent="space-between" mb={1}>
-                      <Typography variant="h6" fontWeight="bold">
-                        {selectedTest?.testName}
-                      </Typography>
-                      <IconButton onClick={() => setOpenModal(false)}>
-                        <CloseIcon />
-                      </IconButton>
-                    </Stack>
-                    <Divider sx={{ mb: 2 }} />
-                    {selectedTest && (
-                      <>
-                        <Typography>Total Questions: {selectedTest.answers.length}</Typography>
-                        <Typography>Score: {getStats(selectedTest).score}</Typography>
-                        <Typography>Correct: {getStats(selectedTest).correct}</Typography>
-                        <Typography>Wrong: {getStats(selectedTest).wrong}</Typography>
-                        <Typography>
-                          Unanswered: {getStats(selectedTest).unanswered}
-                        </Typography>
-                        <Typography>
-                          Percentage: {getStats(selectedTest).percentage}%
-                        </Typography>
-                        {selectedTest.retestScore && (
-                          <>
-                            <Divider sx={{ my: 1 }} />
-                            <Typography>
-                              Retest Score: {getStats(selectedTest, true).score}
-                            </Typography>
-                            <Typography>
-                              Retest Percentage: {getStats(selectedTest, true).percentage}%
-                            </Typography>
-                          </>
-                        )}
-                      </>
-                    )}
-                  </Box>
-                </Modal>
-              </>
-            )}
-          </Box>
-        </>
-      )}
+              {/* Test Details Modal */}
+              <Modal open={openModal} onClose={() => setOpenModal(false)}>
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    width: 450,
+                    bgcolor: "background.paper",
+                    p: 3,
+                    borderRadius: 2,
+                    boxShadow: 24,
+                  }}
+                >
+                  <Stack direction="row" justifyContent="space-between" mb={1}>
+                    <Typography variant="h6" fontWeight="bold">
+                      {selectedTest?.testName}
+                    </Typography>
+                    <IconButton onClick={() => setOpenModal(false)}>
+                      <CloseIcon />
+                    </IconButton>
+                  </Stack>
+                  <Divider sx={{ mb: 2 }} />
+                  {selectedTest && (
+                    <>
+                      <Typography>Total Questions: {selectedTest.answers.length}</Typography>
+                      <Typography>Score: {getStats(selectedTest).score}</Typography>
+                      <Typography>Correct: {getStats(selectedTest).correct}</Typography>
+                      <Typography>Wrong: {getStats(selectedTest).wrong}</Typography>
+                      <Typography>Unanswered: {getStats(selectedTest).unanswered}</Typography>
+                      <Typography>Percentage: {getStats(selectedTest).percentage}%</Typography>
+                      {selectedTest.retestScore && (
+                        <>
+                          <Divider sx={{ my: 1 }} />
+                          <Typography>
+                            Retest Score: {getStats(selectedTest, true).score}
+                          </Typography>
+                          <Typography>
+                            Retest Percentage: {getStats(selectedTest, true).percentage}%
+                          </Typography>
+                        </>
+                      )}
+                    </>
+                  )}
+                </Box>
+              </Modal>
+            </>
+          )}
+        </Box>
+      </Box>
     </Box>
   );
 }
