@@ -193,7 +193,7 @@ export default function AptitudeInstructions() {
   {/* Illustration Image */}
   <Box
     component="img"
-    src="https://undraw.co/api/illustrations/cc4b28b6-3477-4db4-8b8d-5a00735e2e56" // “All the Best” type SVG from unDraw
+    src="https://www.freepik.com/free-vector/hand-drawn-farewell-lettering-background_35017422.htm#fromView=image_search_similar&page=1&position=0&uuid=f061ad47-07d2-4c12-bf6b-0ce1eea996e4&query=all+the+best" // “All the Best” type SVG from unDraw
     alt="All the Best Illustration"
     sx={{
       width: { xs: "70%", sm: "60%", md: "50%" },
