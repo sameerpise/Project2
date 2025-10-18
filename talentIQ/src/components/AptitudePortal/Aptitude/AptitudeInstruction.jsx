@@ -38,24 +38,24 @@ export default function AptitudeInstructions() {
 
   const handleStart = () => {
     setStartClicked(true);
-    setCountdown(3); // 3-second countdown
+    setCountdown(3);
   };
 
   return (
     <Box
       onMouseMove={handleMouseMove}
       sx={{
-        margin: "auto",
-        width: "100%",
-        maxWidth: 600,
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        overflow: "hidden",
+        flexDirection: { xs: "column", md: "row" }, // horizontal on larger screens
+        justifyContent: "space-evenly",
+        alignItems: "stretch",
         minHeight: "100vh",
-        position: "relative",
-        p: { xs: 1, sm: 2, md: 3 },
+        width: "100%",
+        gap: 3,
         bgcolor: "#f0f2f5",
+        overflow: "hidden",
+        position: "relative",
+        p: { xs: 2, md: 4 },
       }}
     >
       {/* Interactive particles */}
@@ -81,18 +81,20 @@ export default function AptitudeInstructions() {
         );
       })}
 
-      {/* Paper Container */}
+      {/* Instruction Section */}
       <Paper
         elevation={10}
         sx={{
-          width: "100%",
+          flex: 1, // make both sides equal width
           p: { xs: 2, sm: 3, md: 4 },
           borderRadius: 3,
           backgroundColor: "rgba(255, 255, 255, 0.95)",
           textAlign: "center",
           boxShadow: "0 6px 15px rgba(0,0,0,0.25)",
-          position: "relative",
           zIndex: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
         }}
       >
         <Typography
@@ -141,10 +143,7 @@ export default function AptitudeInstructions() {
           <Typography
             variant={isMobile ? "h2" : "h3"}
             fontWeight="bold"
-            sx={{
-              color: "#F6AE22",
-              mb: 2,
-            }}
+            sx={{ color: "#F6AE22", mb: 2 }}
           >
             {countdown}
           </Typography>
@@ -173,6 +172,32 @@ export default function AptitudeInstructions() {
         >
           {startClicked ? "Get Ready..." : "Start Test 🚀"}
         </Button>
+      </Paper>
+
+      {/* Optional Right Section (you can put image or info later) */}
+      <Paper
+        elevation={8}
+        sx={{
+          flex: 1,
+          borderRadius: 3,
+          background:
+            "linear-gradient(135deg, rgba(246,174,34,0.1), rgba(255,184,76,0.2))",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          p: 3,
+          textAlign: "center",
+        }}
+      >
+        <Typography
+          sx={{
+            fontSize: { xs: 14, sm: 16, md: 18 },
+            fontWeight: 500,
+            color: "#444",
+          }}
+        >
+          Prepare to test your skills! Stay focused and give your best shot 💪
+        </Typography>
       </Paper>
     </Box>
   );
