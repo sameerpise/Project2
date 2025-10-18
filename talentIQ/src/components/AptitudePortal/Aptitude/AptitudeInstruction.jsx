@@ -191,7 +191,7 @@ export default function AptitudeInstructions() {
   }}
 >
   {/* Illustration Image */}
-  <Box
+  {/* <Box
     component="img"
     src="https://undraw.co/api/illustrations/cc4b28b6-3477-4db4-8b8d-5a00735e2e56" // “All the Best” type SVG from unDraw
     alt="All the Best Illustration"
@@ -225,7 +225,7 @@ export default function AptitudeInstructions() {
   >
     🎯 All the Best!
   </Typography>
-</Paper> */}
+</Paper> */} */}
 
     </Box>
   );
