@@ -175,30 +175,58 @@ export default function AptitudeInstructions() {
       </Paper>
 
       {/* Optional Right Section (you can put image or info later) */}
-      <Paper
-        elevation={8}
-        sx={{
-          flex: 1,
-          borderRadius: 3,
-          background:
-            "linear-gradient(135deg, rgba(246,174,34,0.1), rgba(255,184,76,0.2))",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          p: 3,
-          textAlign: "center",
-        }}
-      >
-        <Typography
-          sx={{
-            fontSize: { xs: 14, sm: 16, md: 18 },
-            fontWeight: 500,
-            color: "#444",
-          }}
-        >
-          Prepare to test your skills! Stay focused and give your best shot 💪
-        </Typography>
-      </Paper>
+     <Paper
+  elevation={8}
+  sx={{
+    flex: 1,
+    borderRadius: 3,
+    background:
+      "linear-gradient(135deg, rgba(246,174,34,0.1), rgba(255,184,76,0.2))",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    p: 3,
+    textAlign: "center",
+  }}
+>
+  {/* Illustration Image */}
+  <Box
+    component="img"
+    src="https://undraw.co/api/illustrations/cc4b28b6-3477-4db4-8b8d-5a00735e2e56" // “All the Best” type SVG from unDraw
+    alt="All the Best Illustration"
+    sx={{
+      width: { xs: "70%", sm: "60%", md: "50%" },
+      maxWidth: 400,
+      mb: 2,
+      objectFit: "contain",
+    }}
+  />
+
+  {/* Motivational Text */}
+  <Typography
+    sx={{
+      fontSize: { xs: 14, sm: 16, md: 18 },
+      fontWeight: 500,
+      color: "#444",
+      px: 2,
+    }}
+  >
+    Prepare to test your skills! Stay focused and give your best shot 💪
+  </Typography>
+
+  <Typography
+    sx={{
+      fontSize: { xs: 16, sm: 18, md: 20 },
+      fontWeight: "bold",
+      color: "#F6AE22",
+      mt: 1,
+    }}
+  >
+    🎯 All the Best!
+  </Typography>
+</Paper>
+
     </Box>
   );
 }
