@@ -175,7 +175,7 @@ export default function AptitudeInstructions() {
       </Paper>
 
       {/* Optional Right Section (you can put image or info later) */}
-     <Paper
+     {/* <Paper
   elevation={8}
   sx={{
     flex: 1,
@@ -225,7 +225,7 @@ export default function AptitudeInstructions() {
   >
     🎯 All the Best!
   </Typography>
-</Paper>
+</Paper> */}
 
     </Box>
   );
