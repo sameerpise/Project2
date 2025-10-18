@@ -137,36 +137,51 @@ export default function StudentDashboard() {
       <SSidebar />
       <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
         {/* Header */}
-        <AppBar
-          position="sticky"
-          elevation={0}
-          sx={{
-          background: "linear-gradient(180deg, #f6ae22 0%, #0505056c 100%)",
-            p: 1,
-            boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-          }}
+      <AppBar
+  position="sticky"
+  elevation={0}
+  sx={{
+    background: "linear-gradient(180deg, #f6ae22 0%, #0505056c 100%)",
+    p: 1,
+    boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+    zIndex: (theme) => theme.zIndex.drawer + 1, // ensures AppBar is above Drawer
+  }}
+>
+  <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+    <Stack direction="row" alignItems="center" spacing={2}>
+      {isMobile && (
+        <IconButton
+          onClick={() => setMobileOpen(true)}
+          sx={{ color: "#fff" }}
         >
-          <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="h5" fontWeight="bold" color="white">
-              Student Dashboard
-            </Typography>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Tooltip title="Notifications">
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <StudentNotifications studentId={student._id} />
-                </Box>
-              </Tooltip>
-              <Tooltip title="Logout">
-                <IconButton onClick={handleLogout} color="inherit">
-                  <LogoutIcon />
-                </IconButton>
-              </Tooltip>
-              <Avatar sx={{ bgcolor: "white", color: "#1565c0", fontWeight: "bold" }}>
-                {student?.name?.[0]?.toUpperCase() || "S"}
-              </Avatar>
-            </Stack>
-          </Toolbar>
-        </AppBar>
+          <MenuIcon />
+        </IconButton>
+      )}
+      <Typography variant="h5" fontWeight="bold" color="white">
+        Student Dashboard
+      </Typography>
+    </Stack>
+
+    <Stack direction="row" spacing={2} alignItems="center">
+      <Tooltip title="Notifications">
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <StudentNotifications studentId={student._id} />
+        </Box>
+      </Tooltip>
+
+      <Tooltip title="Logout">
+        <IconButton onClick={handleLogout} color="inherit">
+          <LogoutIcon />
+        </IconButton>
+      </Tooltip>
+
+      <Avatar sx={{ bgcolor: "white", color: "#1565c0", fontWeight: "bold" }}>
+        {student?.name?.[0]?.toUpperCase() || "S"}
+      </Avatar>
+    </Stack>
+  </Toolbar>
+</AppBar>
+
 
         {/* Main Content */}
         <Box sx={{ p: { xs: 2, sm: 3, md: 4 }, flexGrow: 1 }}>
