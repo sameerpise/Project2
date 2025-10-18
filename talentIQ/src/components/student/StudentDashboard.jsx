@@ -141,7 +141,7 @@ export default function StudentDashboard() {
           position="sticky"
           elevation={0}
           sx={{
-             background: "linear-gradient(90deg, #1565c0, #42a5f5)",
+             background: "linear-gradient(180deg, #F6AE22 0%, #FFB84C 100%)",
             p: 1,
             boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
           }}
