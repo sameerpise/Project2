@@ -18,7 +18,6 @@ export default function AptitudeInstructions() {
   const [countdown, setCountdown] = useState(0);
   const [startClicked, setStartClicked] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
   const isMobile = useMediaQuery("(max-width:600px)");
 
   // Countdown logic
@@ -31,7 +30,7 @@ export default function AptitudeInstructions() {
     }
   }, [countdown, startClicked, navigate]);
 
-  // Track mouse position
+  // Track mouse position for floating effects
   const handleMouseMove = (e) => {
     setMousePos({ x: e.clientX, y: e.clientY });
   };
@@ -46,20 +45,20 @@ export default function AptitudeInstructions() {
       onMouseMove={handleMouseMove}
       sx={{
         display: "flex",
-        flexDirection: { xs: "column", md: "row" }, // horizontal on larger screens
+        flexDirection: { xs: "column", md: "row" },
         justifyContent: "space-evenly",
         alignItems: "stretch",
         minHeight: "100vh",
         width: "100%",
-        gap: 3,
+        gap: { xs: 2, sm: 3, md: 4 },
         bgcolor: "#f0f2f5",
         overflow: "hidden",
         position: "relative",
-        p: { xs: 2, md: 4 },
+        p: { xs: 2, sm: 3, md: 4 },
       }}
     >
-      {/* Interactive particles */}
-      {[...Array(12)].map((_, i) => {
+      {/* Floating light particles */}
+      {[...Array(10)].map((_, i) => {
         const size = Math.random() * 6 + 4;
         const offsetX = (Math.random() - 0.5) * 150;
         const offsetY = (Math.random() - 0.5) * 150;
@@ -71,7 +70,7 @@ export default function AptitudeInstructions() {
               width: size,
               height: size,
               borderRadius: "50%",
-              background: "rgba(255,255,255,0.3)",
+              background: "rgba(255,255,255,0.25)",
               top: mousePos.y + offsetY,
               left: mousePos.x + offsetX,
               transition: "top 0.2s ease, left 0.2s ease",
@@ -81,11 +80,11 @@ export default function AptitudeInstructions() {
         );
       })}
 
-      {/* Instruction Section */}
+      {/* ===== Left Panel (Instructions) ===== */}
       <Paper
         elevation={10}
         sx={{
-          flex: 1, // make both sides equal width
+          flex: 1,
           p: { xs: 2, sm: 3, md: 4 },
           borderRadius: 3,
           backgroundColor: "rgba(255, 255, 255, 0.95)",
@@ -113,7 +112,10 @@ export default function AptitudeInstructions() {
         <Typography
           variant="body2"
           mb={2}
-          sx={{ fontSize: { xs: 12, sm: 14, md: 15 }, color: "#555" }}
+          sx={{
+            fontSize: { xs: 12, sm: 14, md: 15 },
+            color: "#555",
+          }}
         >
           Read the instructions carefully before starting:
         </Typography>
@@ -174,59 +176,59 @@ export default function AptitudeInstructions() {
         </Button>
       </Paper>
 
-      {/* Optional Right Section (you can put image or info later) */}
-     <Paper
-  elevation={8}
-  sx={{
-    flex: 1,
-    borderRadius: 3,
-    background:
-      "linear-gradient(135deg, rgba(246,174,34,0.1), rgba(255,184,76,0.2))",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    p: 3,
-    textAlign: "center",
-  }}
->
-  {/* Illustration Image */}
-  <Box
-    component="img"
-    src="https://www.freepik.com/free-vector/hand-drawn-farewell-lettering-background_35017422.htm#fromView=image_search_similar&page=1&position=0&uuid=f061ad47-07d2-4c12-bf6b-0ce1eea996e4&query=all+the+best" // “All the Best” type SVG from unDraw
-    alt="All the Best Illustration"
-    sx={{
-      width: { xs: "70%", sm: "60%", md: "50%" },
-      maxWidth: 400,
-      mb: 2,
-      objectFit: "contain",
-    }}
-  />
+      {/* ===== Right Panel (Illustration + Motivation) ===== */}
+      <Paper
+        elevation={8}
+        sx={{
+          flex: 1,
+          borderRadius: 3,
+          background:
+            "linear-gradient(135deg, rgba(246,174,34,0.1), rgba(255,184,76,0.2))",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          p: { xs: 2, sm: 3, md: 4 },
+          textAlign: "center",
+        }}
+      >
+        {/* Illustration Image */}
+        <Box
+          component="img"
+          src="https://cdn.dribbble.com/users/458522/screenshots/16285384/media/07dbbe09cb19b7e646d4b7a91fc7c161.png?resize=400x300&vertical=center"
+          alt="All the Best Illustration"
+          sx={{
+            width: { xs: "75%", sm: "65%", md: "60%" },
+            maxWidth: 420,
+            mb: { xs: 2, sm: 3 },
+            borderRadius: 2,
+            objectFit: "contain",
+          }}
+        />
 
-  {/* Motivational Text */}
-  <Typography
-    sx={{
-      fontSize: { xs: 14, sm: 16, md: 18 },
-      fontWeight: 500,
-      color: "#444",
-      px: 2,
-    }}
-  >
-    Prepare to test your skills! Stay focused and give your best shot 💪
-  </Typography>
+        {/* Motivational Text */}
+        <Typography
+          sx={{
+            fontSize: { xs: 14, sm: 16, md: 18 },
+            fontWeight: 500,
+            color: "#444",
+            px: { xs: 2, sm: 3 },
+          }}
+        >
+          Prepare to test your skills! Stay focused and give your best shot 💪
+        </Typography>
 
-  <Typography
-    sx={{
-      fontSize: { xs: 16, sm: 18, md: 20 },
-      fontWeight: "bold",
-      color: "#F6AE22",
-      mt: 1,
-    }}
-  >
-    🎯 All the Best!
-  </Typography>
-</Paper> 
-
+        <Typography
+          sx={{
+            fontSize: { xs: 16, sm: 18, md: 20 },
+            fontWeight: "bold",
+            color: "#F6AE22",
+            mt: { xs: 1.5, sm: 2 },
+          }}
+        >
+          🎯 All the Best!
+        </Typography>
+      </Paper>
     </Box>
   );
 }
