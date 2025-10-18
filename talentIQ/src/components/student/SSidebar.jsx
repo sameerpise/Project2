@@ -169,37 +169,54 @@ export default function SSidebar() {
 
   return (
     <>
-      {isMobile ? (
-        <>
-          {/* Menu Icon visible on mobile */}
-          <IconButton
-            onClick={() => setMobileOpen(true)}
-            sx={{
-              position: "fixed",
-              top: 16,
-              left: 16,
-              zIndex: 2000,
-              color: "#f6ae22",
-            }}
-          >
-            <MenuIcon fontSize="large" />
-          </IconButton>
+     {isMobile ? (
+  <>
+    {/* Mobile Menu Icon */}
+    <IconButton
+      onClick={() => setMobileOpen(true)}
+      sx={{
+        position: "fixed",
+        top: 16,
+        left: 16,
+        zIndex: 2000,
+        color: "#f6ae22",
+      }}
+    >
+      <MenuIcon fontSize="large" />
+    </IconButton>
 
-          {/* Drawer Sidebar for Mobile */}
-          <Drawer
-            anchor="left"
-            open={mobileOpen}
-            onClose={() => setMobileOpen(false)}
-            PaperProps={{
-              sx: { width: 220, background: "linear-gradient(180deg, #f6ae22 0%, #0505056c 100%)" },
-            }}
-          >
-            {sidebarContent}
-          </Drawer>
-        </>
-      ) : (
-        sidebarContent
-      )}
+    {/* Drawer Sidebar for Mobile */}
+    <Drawer
+      anchor="left"
+      open={mobileOpen}
+      onClose={() => setMobileOpen(false)}
+      sx={{
+        "& .MuiDrawer-paper": {
+          width: 220,
+          background: "linear-gradient(180deg, #f6ae22 0%, #0505056c 100%)",
+          color: "#fff",
+          boxShadow: "4px 0 15px rgba(0,0,0,0.3)",
+        },
+      }}
+    >
+      {/* ✅ Scrollable and properly visible sidebar content */}
+      <Box
+        sx={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          p: 2,
+          overflowY: "auto",
+        }}
+      >
+        {sidebarContent}
+      </Box>
+    </Drawer>
+  </>
+) : (
+  sidebarContent
+)}
     </>
   );
 }
