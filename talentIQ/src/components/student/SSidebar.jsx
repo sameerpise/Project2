@@ -56,7 +56,7 @@ export default function SSidebar() {
     <Box
       sx={{
         width: collapsed ? 80 : 173,
-        background: "linear-gradient(180deg, #1565c0 0%, #1976d2 100%)",
+         background: "linear-gradient(180deg, #F6AE22 0%, #FFB84C 100%)",,
         color: "#fff",
         minHeight: "100vh",
         p: 2,
