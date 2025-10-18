@@ -164,6 +164,7 @@ export default function AptitudeInstructions() {
             {countdown}
           </Typography>
         )}
+        
 
         {/* Start Button */}
         <Button
