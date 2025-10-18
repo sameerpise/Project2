@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Stack,
@@ -12,30 +12,32 @@ import {
   Drawer,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import SchoolIcon from "@mui/icons-material/School";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../Redux/studentslice";
+import { useSelector } from "react-redux";
 
 export default function SSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch();
   const student = useSelector((state) => state.student.student);
-
   const isMobile = useMediaQuery("(max-width:900px)");
-  const [collapsed, setCollapsed] = useState(isMobile); // collapsed on mobile by default
+  const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-   const handleLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    navigate('/login')
-  }
+  // ✅ Update collapse automatically when screen size changes
+  useEffect(() => {
+    if (isMobile) setCollapsed(true);
+    else setCollapsed(false);
+  }, [isMobile]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
 
   const toggleSidebar = () => {
     if (isMobile) {
@@ -46,17 +48,16 @@ export default function SSidebar() {
   };
 
   const menuItems = [
-
     { label: "Aptitude", path: "/student/AptitudePortal", icon: <SchoolIcon /> },
-    { label: "Results", path: "/student/AptitudePortal", icon: <BarChartIcon /> },
-    { label: "Assignments", path: "/student/AptitudePortal", icon: <AssignmentIcon /> },
+    { label: "Results", path: "/student/Results", icon: <BarChartIcon /> },
+    { label: "Assignments", path: "/student/Assignments", icon: <AssignmentIcon /> },
   ];
 
   const sidebarContent = (
     <Box
       sx={{
-        width: collapsed ? 80 : 173,
-         background: "linear-gradient(180deg, #f6ae22 0%, #0505056c 100%)",
+        width: collapsed ? 80 : 220,
+        background: "linear-gradient(180deg, #f6ae22 0%, #0505056c 100%)",
         color: "#fff",
         minHeight: "100vh",
         p: 2,
@@ -66,8 +67,8 @@ export default function SSidebar() {
         transition: "width 0.3s ease",
       }}
     >
+      {/* Top Section */}
       <Stack spacing={2} alignItems={collapsed ? "center" : "flex-start"}>
-        {/* Toggle Menu */}
         <IconButton
           onClick={toggleSidebar}
           sx={{
@@ -79,7 +80,6 @@ export default function SSidebar() {
           <MenuIcon />
         </IconButton>
 
-        {/* Student Info */}
         {!collapsed && (
           <Box textAlign="center">
             <Avatar
@@ -102,7 +102,7 @@ export default function SSidebar() {
 
         <Divider sx={{ bgcolor: "rgba(255,255,255,0.3)", width: "100%", my: 2 }} />
 
-        {/* Menu Buttons */}
+        {/* Menu Items */}
         <Stack spacing={1} width="100%">
           {menuItems.map((item, idx) => {
             const isActive = location.pathname === item.path;
@@ -114,7 +114,7 @@ export default function SSidebar() {
                     navigate(item.path);
                     if (isMobile) setMobileOpen(false);
                   }}
-                  startIcon={item.icon}
+                  startIcon={!collapsed ? item.icon : null}
                   sx={{
                     color: "#fff",
                     justifyContent: collapsed ? "center" : "flex-start",
@@ -122,9 +122,7 @@ export default function SSidebar() {
                     borderRadius: 2,
                     fontWeight: isActive ? 600 : 400,
                     fontSize: "0.95rem",
-                    backgroundColor: isActive
-                      ? "rgba(255,255,255,0.2)"
-                      : "transparent",
+                    backgroundColor: isActive ? "rgba(255,255,255,0.2)" : "transparent",
                     "&:hover": {
                       backgroundColor: "rgba(255,255,255,0.3)",
                       transform: "scale(1.03)",
@@ -141,12 +139,12 @@ export default function SSidebar() {
         </Stack>
       </Stack>
 
-      {/* Logout Button */}
+      {/* Bottom Section */}
       <Tooltip title={collapsed ? "Logout" : ""} placement="right">
         <Button
           fullWidth
           variant="contained"
-          startIcon={<LogoutIcon />}
+          startIcon={!collapsed ? <LogoutIcon /> : null}
           onClick={handleLogout}
           sx={{
             mt: 2,
@@ -163,25 +161,45 @@ export default function SSidebar() {
             },
           }}
         >
-          {!collapsed && "Logout"}
+          {!collapsed ? "Logout" : <LogoutIcon />}
         </Button>
       </Tooltip>
     </Box>
   );
 
-  return isMobile ? (
+  return (
     <>
-      <IconButton
-        onClick={toggleSidebar}
-        sx={{ position: "fixed", top: 16, left: 16, zIndex: 200, color: "#1565c0" }}
-      >
-        <MenuIcon fontSize="large" />
-      </IconButton>
-      <Drawer anchor="left" open={mobileOpen} onClose={() => setMobileOpen(false)}>
-        {sidebarContent}
-      </Drawer>
+      {isMobile ? (
+        <>
+          {/* Menu Icon visible on mobile */}
+          <IconButton
+            onClick={() => setMobileOpen(true)}
+            sx={{
+              position: "fixed",
+              top: 16,
+              left: 16,
+              zIndex: 2000,
+              color: "#f6ae22",
+            }}
+          >
+            <MenuIcon fontSize="large" />
+          </IconButton>
+
+          {/* Drawer Sidebar for Mobile */}
+          <Drawer
+            anchor="left"
+            open={mobileOpen}
+            onClose={() => setMobileOpen(false)}
+            PaperProps={{
+              sx: { width: 220, background: "linear-gradient(180deg, #f6ae22 0%, #0505056c 100%)" },
+            }}
+          >
+            {sidebarContent}
+          </Drawer>
+        </>
+      ) : (
+        sidebarContent
+      )}
     </>
-  ) : (
-    sidebarContent
   );
 }
