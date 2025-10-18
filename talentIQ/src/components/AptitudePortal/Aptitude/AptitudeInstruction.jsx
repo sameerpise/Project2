@@ -18,6 +18,7 @@ export default function AptitudeInstructions() {
   const [countdown, setCountdown] = useState(0);
   const [startClicked, setStartClicked] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
   const isMobile = useMediaQuery("(max-width:600px)");
 
   // Countdown logic
@@ -30,7 +31,7 @@ export default function AptitudeInstructions() {
     }
   }, [countdown, startClicked, navigate]);
 
-  // Track mouse position for floating effects
+  // Track mouse position
   const handleMouseMove = (e) => {
     setMousePos({ x: e.clientX, y: e.clientY });
   };
@@ -45,20 +46,17 @@ export default function AptitudeInstructions() {
       onMouseMove={handleMouseMove}
       sx={{
         display: "flex",
-        flexDirection: { xs: "column", md: "row" },
-        justifyContent: "space-evenly",
-        alignItems: "stretch",
+        alignItems: "center",
+        justifyContent: "center",
         minHeight: "100vh",
-        width: "100%",
-        gap: { xs: 2, sm: 3, md: 4 },
         bgcolor: "#f0f2f5",
         overflow: "hidden",
         position: "relative",
         p: { xs: 2, sm: 3, md: 4 },
       }}
     >
-      {/* Floating light particles */}
-      {[...Array(10)].map((_, i) => {
+      {/* Floating lights */}
+      {[...Array(12)].map((_, i) => {
         const size = Math.random() * 6 + 4;
         const offsetX = (Math.random() - 0.5) * 150;
         const offsetY = (Math.random() - 0.5) * 150;
@@ -70,7 +68,7 @@ export default function AptitudeInstructions() {
               width: size,
               height: size,
               borderRadius: "50%",
-              background: "rgba(255,255,255,0.25)",
+              background: "rgba(255,255,255,0.3)",
               top: mousePos.y + offsetY,
               left: mousePos.x + offsetX,
               transition: "top 0.2s ease, left 0.2s ease",
@@ -80,22 +78,21 @@ export default function AptitudeInstructions() {
         );
       })}
 
-      {/* ===== Left Panel (Instructions) ===== */}
+      {/* Single Main Paper */}
       <Paper
         elevation={10}
         sx={{
-          flex: 1,
-          p: { xs: 2, sm: 3, md: 4 },
-          borderRadius: 3,
-          backgroundColor: "rgba(255, 255, 255, 0.95)",
+          maxWidth: 700,
+          width: "100%",
+          p: { xs: 3, sm: 4, md: 5 },
+          borderRadius: 4,
+          backgroundColor: "rgba(255,255,255,0.95)",
           textAlign: "center",
-          boxShadow: "0 6px 15px rgba(0,0,0,0.25)",
+          boxShadow: "0 6px 20px rgba(0,0,0,0.2)",
           zIndex: 1,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
         }}
       >
+        {/* Header */}
         <Typography
           variant={isMobile ? "h5" : "h4"}
           fontWeight="bold"
@@ -109,18 +106,34 @@ export default function AptitudeInstructions() {
           📝 Aptitude Test Instructions
         </Typography>
 
-        <Typography
-          variant="body2"
-          mb={2}
+        {/* Illustration */}
+        <Box
+          component="img"
+          src="https://cdn.dribbble.com/users/458522/screenshots/16285384/media/07dbbe09cb19b7e646d4b7a91fc7c161.png?resize=400x300&vertical=center"
+          alt="All the Best"
           sx={{
-            fontSize: { xs: 12, sm: 14, md: 15 },
-            color: "#555",
+            width: { xs: "80%", sm: "60%", md: "50%" },
+            maxWidth: 350,
+            mb: { xs: 2, sm: 3 },
+            borderRadius: 2,
+            objectFit: "contain",
+          }}
+        />
+
+        {/* Motivational Text */}
+        <Typography
+          sx={{
+            fontSize: { xs: 14, sm: 16, md: 18 },
+            fontWeight: 500,
+            color: "#444",
+            mb: { xs: 2, sm: 3 },
           }}
         >
-          Read the instructions carefully before starting:
+          Prepare to test your skills! Stay focused and give your best shot 💪
         </Typography>
 
-        <List sx={{ textAlign: "left", mb: 3, px: { xs: 0, sm: 1 } }}>
+        {/* Instructions */}
+        <List sx={{ textAlign: "left", mb: 3, px: { xs: 1, sm: 2 } }}>
           {[
             "Multiple-choice questions only.",
             "Do not refresh or switch tabs; 3 warnings will auto-submit the test.",
@@ -141,6 +154,7 @@ export default function AptitudeInstructions() {
           ))}
         </List>
 
+        {/* Countdown */}
         {countdown > 0 && (
           <Typography
             variant={isMobile ? "h2" : "h3"}
@@ -151,6 +165,7 @@ export default function AptitudeInstructions() {
           </Typography>
         )}
 
+        {/* Start Button */}
         <Button
           variant="contained"
           size={isMobile ? "medium" : "large"}
@@ -158,7 +173,7 @@ export default function AptitudeInstructions() {
             background: "linear-gradient(90deg, #F6AE22, #FFB84C)",
             color: "#fff",
             fontWeight: "bold",
-            px: { xs: 2, sm: 4 },
+            px: { xs: 3, sm: 5 },
             py: { xs: 1, sm: 1.5 },
             borderRadius: 3,
             boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
@@ -174,56 +189,14 @@ export default function AptitudeInstructions() {
         >
           {startClicked ? "Get Ready..." : "Start Test 🚀"}
         </Button>
-      </Paper>
 
-      {/* ===== Right Panel (Illustration + Motivation) ===== */}
-      <Paper
-        elevation={8}
-        sx={{
-          flex: 1,
-          borderRadius: 3,
-          background:
-            "linear-gradient(135deg, rgba(246,174,34,0.1), rgba(255,184,76,0.2))",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          p: { xs: 2, sm: 3, md: 4 },
-          textAlign: "center",
-        }}
-      >
-        {/* Illustration Image */}
-        <Box
-          component="img"
-          src="https://cdn.dribbble.com/users/458522/screenshots/16285384/media/07dbbe09cb19b7e646d4b7a91fc7c161.png?resize=400x300&vertical=center"
-          alt="All the Best Illustration"
-          sx={{
-            width: { xs: "75%", sm: "65%", md: "60%" },
-            maxWidth: 420,
-            mb: { xs: 2, sm: 3 },
-            borderRadius: 2,
-            objectFit: "contain",
-          }}
-        />
-
-        {/* Motivational Text */}
-        <Typography
-          sx={{
-            fontSize: { xs: 14, sm: 16, md: 18 },
-            fontWeight: 500,
-            color: "#444",
-            px: { xs: 2, sm: 3 },
-          }}
-        >
-          Prepare to test your skills! Stay focused and give your best shot 💪
-        </Typography>
-
+        {/* All the Best Footer */}
         <Typography
           sx={{
             fontSize: { xs: 16, sm: 18, md: 20 },
             fontWeight: "bold",
             color: "#F6AE22",
-            mt: { xs: 1.5, sm: 2 },
+            mt: { xs: 2, sm: 3 },
           }}
         >
           🎯 All the Best!
