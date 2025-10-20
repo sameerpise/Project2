@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import {
   Box,
   Stack,
@@ -13,6 +12,7 @@ import {
   Drawer,
   Slide,
 } from "@mui/material";
+import { motion } from "framer-motion";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import SchoolIcon from "@mui/icons-material/School";
@@ -50,7 +50,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
       <Stack
         spacing={2}
         sx={{
-          height: "100vh",
+          height: "100vh", // ✅ full height
           justifyContent: "space-between",
           background:
             "linear-gradient(135deg, rgba(255,184,76,0.95), rgba(246,174,34,0.9))",
@@ -60,7 +60,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
           transition: "all 0.3s ease",
           p: 2,
           boxShadow: "4px 0 15px rgba(0,0,0,0.25)",
-          overflowY: "auto",
+          overflowY: "auto", // ✅ scrollable if content exceeds height
           "&::-webkit-scrollbar": { width: "6px" },
           "&::-webkit-scrollbar-thumb": {
             backgroundColor: "rgba(255,255,255,0.3)",
@@ -192,19 +192,15 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
             onBackdropClick: () => setMobileOpen(false),
           }}
           sx={{
-            zIndex: 1300, // ✅ ensure above AppBar
             "& .MuiDrawer-paper": {
               width: 250,
-              height: "100vh",
+              height: "100vh", // ✅ fix drawer height too
               boxShadow: "4px 0 15px rgba(0,0,0,0.25)",
               background:
                 "linear-gradient(135deg, rgba(255,184,76,0.95), rgba(246,174,34,0.9))",
               color: "#fff",
               backdropFilter: "blur(12px)",
               transition: "transform 0.4s ease-in-out",
-              position: "fixed", // ✅ ensures full overlay
-              top: 0,
-              left: 0,
             },
           }}
         >
@@ -213,11 +209,11 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
       ) : (
         <Box
           sx={{
-            position: "fixed", // ✅ fixed position to stay in view
+            position: "sticky",
             top: 0,
             left: 0,
-            height: "100vh",
-            zIndex: 1201, // ✅ above AppBar (usually 1100)
+            height: "100vh", // ✅ full height fix for desktop
+            zIndex: 100,
           }}
         >
           {sidebarContent}
