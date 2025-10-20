@@ -19,13 +19,13 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-export default function SSidebar() {
+export default function SSidebar({ mobileOpen, setMobileOpen }) {
   const navigate = useNavigate();
   const location = useLocation();
   const student = useSelector((state) => state.student.student);
   const isMobile = useMediaQuery("(max-width:900px)");
   const [collapsed, setCollapsed] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  // const [mobileOpen, setMobileOpen] = useState(false);
 
   // ✅ Update collapse automatically when screen size changes
   useEffect(() => {
