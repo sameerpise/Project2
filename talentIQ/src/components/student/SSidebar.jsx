@@ -42,8 +42,8 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
 
   const menuItems = [
     { label: "Aptitude", path: "/student/AptitudePortal", icon: <SchoolIcon /> },
-    { label: "Results", path: "/student/Results", icon: <BarChartIcon /> },
-    { label: "Assignments", path: "/student/Assignments", icon: <AssignmentIcon /> },
+    { label: "Results", path: "/student/AptitudePortal", icon: <BarChartIcon /> },
+    { label: "Assignments", path: "/student/AptitudePortal", icon: <AssignmentIcon /> },
   ];
 
   const sidebarContent = (
