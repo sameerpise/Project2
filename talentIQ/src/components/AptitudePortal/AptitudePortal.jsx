@@ -153,7 +153,7 @@ export default function AptitudePortal() {
       icon: modulesStatus.apti,
     },
     {
-      title: "Machine Coding Round",
+      title: "Machine Coding",
       link: "machine",
       gradient: "linear-gradient(90deg,#00b09b,#96c93d)",
       unlocked: modulesStatus.apti,
