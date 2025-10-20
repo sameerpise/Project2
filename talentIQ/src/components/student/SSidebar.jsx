@@ -64,7 +64,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
         }}
       >
         {/* --- TOP SECTION --- */}
-        <Stack spacing={2} alignItems={collapsed && !isMobile ? "center" : "flex-start"}>
+        {/* <Stack spacing={2} alignItems={collapsed && !isMobile ? "center" : "flex-start"}>
           {/* Collapse / Close Button */}
           <IconButton
             onClick={() =>
@@ -77,7 +77,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
             }}
           >
             {isMobile ? <CloseIcon /> : <MenuIcon />}
-          </IconButton>
+          </IconButton> */}
 
           {/* Profile Info */}
           {(!collapsed || isMobile) && (
