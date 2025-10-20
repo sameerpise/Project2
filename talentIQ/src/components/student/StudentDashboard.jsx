@@ -215,7 +215,7 @@ export default function StudentDashboard() {
                   },
                 }}
               >
-                <NotificationsActiveIcon sx={{ color: "#fff" }} />
+               
               </Badge>
               <StudentNotifications studentId={student._id} />
             </Box>
