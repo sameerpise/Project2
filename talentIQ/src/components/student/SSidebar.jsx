@@ -10,12 +10,14 @@ import {
   Divider,
   useMediaQuery,
   Drawer,
+  Slide,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
 import SchoolIcon from "@mui/icons-material/School";
-import LogoutIcon from "@mui/icons-material/Logout";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import BarChartIcon from "@mui/icons-material/BarChart";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -25,12 +27,10 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
   const student = useSelector((state) => state.student.student);
   const isMobile = useMediaQuery("(max-width:900px)");
   const [collapsed, setCollapsed] = useState(false);
-  // const [mobileOpen, setMobileOpen] = useState(false);
 
-  // ✅ Update collapse automatically when screen size changes
+  // Collapse automatically for mobile view
   useEffect(() => {
-    if (isMobile) setCollapsed(true);
-    else setCollapsed(false);
+    setCollapsed(isMobile);
   }, [isMobile]);
 
   const handleLogout = () => {
@@ -39,184 +39,197 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
     navigate("/login");
   };
 
-  const toggleSidebar = () => {
-    if (isMobile) {
-      setMobileOpen(!mobileOpen);
-    } else {
-      setCollapsed(!collapsed);
-    }
-  };
-
   const menuItems = [
     { label: "Aptitude", path: "/student/AptitudePortal", icon: <SchoolIcon /> },
-    { label: "Results", path: "/student/AptitudePortal", icon: <BarChartIcon /> },
-    { label: "Assignments", path: "/student/AptitudePortal", icon: <AssignmentIcon /> },
+    { label: "Results", path: "/student/Results", icon: <BarChartIcon /> },
+    { label: "Assignments", path: "/student/Assignments", icon: <AssignmentIcon /> },
   ];
 
   const sidebarContent = (
-    <Box
-      sx={{
-        width: collapsed ? 80 : 220,
-        background: "linear-gradient(180deg, #f6ae22 0%, #0505056c 100%)",
-        color: "#fff",
-        minHeight: "100vh",
-        p: 2,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        transition: "width 0.3s ease",
-      }}
-    >
-      {/* Top Section */}
-      <Stack spacing={2} alignItems={collapsed ? "center" : "flex-start"}>
-        <IconButton
-          onClick={toggleSidebar}
-          sx={{
-            color: "#fff",
-            mb: 1,
-            "&:hover": { bgcolor: "rgba(255,255,255,0.1)" },
-          }}
-        >
-          <MenuIcon />
-        </IconButton>
+    <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+      <Stack
+        spacing={2}
+        sx={{
+          height: "100%",
+          justifyContent: "space-between",
+          background:
+            "linear-gradient(135deg, rgba(255,184,76,0.95), rgba(246,174,34,0.9))",
+          backdropFilter: "blur(15px)",
+          color: "#fff",
+          width: collapsed ? 80 : 250,
+          transition: "all 0.3s ease",
+          p: 2,
+          boxShadow: "4px 0 15px rgba(0,0,0,0.25)",
+        }}
+      >
+        {/* --- TOP SECTION --- */}
+        <Stack spacing={2} alignItems={collapsed ? "center" : "flex-start"}>
+          {/* Collapse / Close Button */}
+          <IconButton
+            onClick={() => (isMobile ? setMobileOpen(false) : setCollapsed(!collapsed))}
+            sx={{
+              color: "#fff",
+              alignSelf: collapsed ? "center" : "flex-end",
+              "&:hover": { bgcolor: "rgba(255,255,255,0.15)" },
+            }}
+          >
+            {isMobile ? <CloseIcon /> : <MenuIcon />}
+          </IconButton>
 
-        {!collapsed && (
-          <Box textAlign="center">
-            <Avatar
-              src={student?.avatar || "/profile.png"}
-              sx={{
-                width: 70,
-                height: 70,
-                mx: "auto",
-                border: "2px solid rgba(255,255,255,0.3)",
-              }}
-            />
-            <Typography variant="h6" mt={1} fontWeight="600">
-              {student?.fullName}
-            </Typography>
-            <Typography variant="body2" sx={{ opacity: 0.8 }}>
-              {student?.email}
-            </Typography>
-          </Box>
-        )}
+          {/* Profile Info */}
+          {!collapsed && (
+            <Box textAlign="center">
+              <Avatar
+                src={student?.avatar || "/profile.png"}
+                sx={{
+                  width: 70,
+                  height: 70,
+                  mx: "auto",
+                  border: "2px solid rgba(255,255,255,0.4)",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+                }}
+              />
+              <Typography variant="h6" mt={1} fontWeight="600">
+                {student?.fullName || "Student Name"}
+              </Typography>
+              <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                {student?.email || "student@email.com"}
+              </Typography>
+            </Box>
+          )}
 
-        <Divider sx={{ bgcolor: "rgba(255,255,255,0.3)", width: "100%", my: 2 }} />
+          <Divider sx={{ bgcolor: "rgba(255,255,255,0.3)", width: "100%", my: 1 }} />
 
-        {/* Menu Items */}
-        <Stack spacing={1} width="100%">
-          {menuItems.map((item, idx) => {
-            const isActive = location.pathname === item.path;
-            return (
-              <Tooltip key={idx} title={collapsed ? item.label : ""} placement="right">
-                <Button
-                  fullWidth
-                  onClick={() => {
-                    navigate(item.path);
-                    if (isMobile) setMobileOpen(false);
-                  }}
-                  startIcon={!collapsed ? item.icon : null}
-                  sx={{
-                    color: "#fff",
-                    justifyContent: collapsed ? "center" : "flex-start",
-                    py: 1.3,
-                    borderRadius: 2,
-                    fontWeight: isActive ? 600 : 400,
-                    fontSize: "0.95rem",
-                    backgroundColor: isActive ? "rgba(255,255,255,0.2)" : "transparent",
-                    "&:hover": {
-                      backgroundColor: "rgba(255,255,255,0.3)",
-                      transform: "scale(1.03)",
-                    },
-                    textTransform: "none",
-                    transition: "all 0.2s ease",
-                  }}
-                >
-                  {!collapsed && item.label}
-                </Button>
-              </Tooltip>
-            );
-          })}
+          {/* Menu Buttons */}
+          <Stack spacing={1} width="100%">
+            {menuItems.map((item, idx) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <Tooltip key={idx} title={collapsed ? item.label : ""} placement="right">
+                  <Button
+                    fullWidth
+                    onClick={() => {
+                      navigate(item.path);
+                      if (isMobile) setMobileOpen(false);
+                    }}
+                    startIcon={!collapsed ? item.icon : null}
+                    sx={{
+                      color: "#fff",
+                      justifyContent: collapsed ? "center" : "flex-start",
+                      py: 1.2,
+                      borderRadius: 2,
+                      fontWeight: isActive ? 600 : 400,
+                      fontSize: "0.95rem",
+                      backgroundColor: isActive
+                        ? "rgba(255,255,255,0.25)"
+                        : "transparent",
+                      boxShadow: isActive ? "0 0 10px rgba(255,255,255,0.3)" : "none",
+                      "&:hover": {
+                        backgroundColor: "rgba(255,255,255,0.35)",
+                        transform: "scale(1.05)",
+                      },
+                      textTransform: "none",
+                      transition: "all 0.25s ease",
+                    }}
+                  >
+                    {collapsed ? item.icon : item.label}
+                  </Button>
+                </Tooltip>
+              );
+            })}
+          </Stack>
         </Stack>
-      </Stack>
 
-      {/* Bottom Section */}
-      <Tooltip title={collapsed ? "Logout" : ""} placement="right">
-        <Button
-          fullWidth
-          variant="contained"
-          startIcon={!collapsed ? <LogoutIcon /> : null}
-          onClick={handleLogout}
-          sx={{
-            mt: 2,
-            py: 1.3,
-            borderRadius: 2,
-            background: "rgba(255, 255, 255, 0.2)",
-            backdropFilter: "blur(8px)",
-            color: "#fff",
-            fontWeight: 500,
-            textTransform: "none",
-            "&:hover": {
-              background: "rgba(255, 255, 255, 0.35)",
-              transform: "scale(1.05)",
-            },
-          }}
-        >
-          {!collapsed ? "Logout" : <LogoutIcon />}
-        </Button>
-      </Tooltip>
-    </Box>
+        {/* --- LOGOUT SECTION --- */}
+        <Tooltip title={collapsed ? "Logout" : ""} placement="right">
+          <Button
+            fullWidth
+            variant="contained"
+            startIcon={!collapsed ? <LogoutIcon /> : null}
+            onClick={handleLogout}
+            sx={{
+              mt: 2,
+              py: 1.2,
+              borderRadius: 2,
+              background: "rgba(255,255,255,0.25)",
+              backdropFilter: "blur(8px)",
+              color: "#fff",
+              fontWeight: 600,
+              textTransform: "none",
+              "&:hover": {
+                background: "rgba(255,255,255,0.4)",
+                transform: "scale(1.05)",
+                boxShadow: "0 0 12px rgba(255,255,255,0.4)",
+              },
+            }}
+          >
+            {!collapsed ? "Logout" : <LogoutIcon />}
+          </Button>
+        </Tooltip>
+      </Stack>
+    </Slide>
   );
 
   return (
     <>
-     {isMobile ? (
-  <>
-    {/* Mobile Menu Icon */}
-    <IconButton
-      onClick={() => setMobileOpen(true)}
-      sx={{
-        position: "fixed",
-        top: 16,
-        left: 16,
-        zIndex: 2000,
-        color: "#f6ae22",
-      }}
-    >
-      <MenuIcon fontSize="large" />
-    </IconButton>
+      {/* --- Mobile Drawer --- */}
+      {isMobile ? (
+        <>
+          {/* Floating Menu Button */}
+          <IconButton
+            onClick={() => setMobileOpen(true)}
+            sx={{
+              position: "fixed",
+              top: 15,
+              left: 15,
+              zIndex: 2000,
+              background: "#ffb84c",
+              "&:hover": { background: "#f6ae22" },
+              color: "#fff",
+              boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+              transition: "all 0.3s ease",
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
 
-    {/* Drawer Sidebar for Mobile */}
-    <Drawer
-      anchor="left"
-      open={mobileOpen}
-      onClose={() => setMobileOpen(false)}
-      sx={{
-        "& .MuiDrawer-paper": {
-          width: 220,
-          background: "linear-gradient(180deg, #f6ae22 0%, #0505056c 100%)",
-          color: "#fff",
-          boxShadow: "4px 0 15px rgba(0,0,0,0.3)",
-        },
-      }}
-    >
-      {/* ✅ Scrollable and properly visible sidebar content */}
-      <Box
-        sx={{
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          p: 2,
-          overflowY: "auto",
-        }}
-      >
-        {sidebarContent}
-      </Box>
-    </Drawer>
-  </>
-) : (
-  sidebarContent
-)}
+          {/* Drawer with slide animation and click-outside close */}
+          <Drawer
+            anchor="left"
+            open={mobileOpen}
+            onClose={() => setMobileOpen(false)}
+            ModalProps={{
+              keepMounted: true,
+              onBackdropClick: () => setMobileOpen(false),
+            }}
+            sx={{
+              "& .MuiDrawer-paper": {
+                width: 250,
+                boxShadow: "4px 0 15px rgba(0,0,0,0.25)",
+                background:
+                  "linear-gradient(135deg, rgba(255,184,76,0.95), rgba(246,174,34,0.9))",
+                color: "#fff",
+                backdropFilter: "blur(12px)",
+                transition: "transform 0.4s ease-in-out",
+              },
+            }}
+          >
+            {sidebarContent}
+          </Drawer>
+        </>
+      ) : (
+        <Box
+          sx={{
+            position: "sticky",
+            top: 0,
+            left: 0,
+            height: "100vh",
+            zIndex: 100,
+          }}
+        >
+          {sidebarContent}
+        </Box>
+      )}
     </>
   );
 }
