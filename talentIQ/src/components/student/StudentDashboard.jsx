@@ -56,6 +56,7 @@ export default function StudentDashboard() {
   const [openModal, setOpenModal] = useState(false);
   const [selectedTest, setSelectedTest] = useState(null);
   const isMobile = useMediaQuery("(max-width:900px)");
+   const [mobileOpen, setMobileOpen] = useState(false);
 
   const badges = [
     { name: "Math Whiz", icon: "/badge1.png" },
@@ -135,7 +136,7 @@ export default function StudentDashboard() {
 
   return (
     <Box sx={{ display: "flex", bgcolor: "#f7f9fc", minHeight: "100vh" }}>
-      <SSidebar />
+      <SSidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
       <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
         {/* Header */}
       <AppBar
@@ -150,14 +151,14 @@ export default function StudentDashboard() {
 >
   <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
     <Stack direction="row" alignItems="center" spacing={2}>
-      {isMobile && (
-        <IconButton
-          onClick={() => setMobileOpen(true)}
-          sx={{ color: "#fff" }}
-        >
-          <MenuIcon />
-        </IconButton>
-      )}
+     {isMobile && (
+  <IconButton
+    onClick={() => setMobileOpen(true)}
+    sx={{ color: "#fff" }}
+  >
+    <MenuIcon />
+  </IconButton>
+)}
       <Typography variant="h5" fontWeight="bold" color="white">
         Student Dashboard
       </Typography>
