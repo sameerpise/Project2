@@ -177,31 +177,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
   return (
     <>
       {/* --- Mobile Floating Button --- */}
-      /* {isMobile && (
-        <motion.div
-          animate={{ rotate: mobileOpen ? 180 : 0 }}
-          transition={{ duration: 0.4, ease: "easeInOut" }}
-          style={{
-            position: "fixed",
-            top: 15,
-            left: 15,
-            zIndex: 2000,
-          }}
-        >
-          <IconButton
-            onClick={() => setMobileOpen(!mobileOpen)}
-            sx={{
-              background: "#ffb84c",
-              "&:hover": { background: "#f6ae22" },
-              color: "#fff",
-              boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
-              transition: "all 0.3s ease",
-            }}
-          >
-            {mobileOpen ? <CloseIcon /> : <MenuIcon />}
-          </IconButton>
-        </motion.div>
-      )} */
+  
 
       {/* --- Drawer --- */}
       {isMobile ? (
