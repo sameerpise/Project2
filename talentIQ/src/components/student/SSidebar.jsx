@@ -12,6 +12,7 @@ import {
   Drawer,
   Slide,
 } from "@mui/material";
+import { motion } from "framer-motion";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import SchoolIcon from "@mui/icons-material/School";
@@ -28,6 +29,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
   const isMobile = useMediaQuery("(max-width:900px)");
   const [collapsed, setCollapsed] = useState(false);
 
+  // ✅ Only collapse on desktop
   useEffect(() => {
     if (!isMobile) setCollapsed(false);
   }, [isMobile]);
@@ -40,8 +42,8 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
 
   const menuItems = [
     { label: "Aptitude", path: "/student/AptitudePortal", icon: <SchoolIcon /> },
-    { label: "Results", path: "/student/Results", icon: <BarChartIcon /> },
-    { label: "Assignments", path: "/student/Assignments", icon: <AssignmentIcon /> },
+    { label: "Results", path: "/student/AptitudePortal", icon: <BarChartIcon /> },
+    { label: "Assignments", path: "/student/AptitudePortal", icon: <AssignmentIcon /> },
   ];
 
   const sidebarContent = (
@@ -49,7 +51,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
       <Stack
         spacing={2}
         sx={{
-          height: "100vh",
+          height: "100%",
           justifyContent: "space-between",
           background:
             "linear-gradient(135deg, rgba(255,184,76,0.95), rgba(246,174,34,0.9))",
@@ -59,16 +61,10 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
           transition: "all 0.3s ease",
           p: 2,
           boxShadow: "4px 0 15px rgba(0,0,0,0.25)",
-          overflowY: "auto",
-          "&::-webkit-scrollbar": { width: "6px" },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "rgba(255,255,255,0.3)",
-            borderRadius: 3,
-          },
         }}
       >
         {/* --- TOP SECTION --- */}
-        <Stack spacing={2} alignItems={collapsed && !isMobile ? "center" : "flex-start"}>
+         <Stack spacing={2} alignItems={collapsed && !isMobile ? "center" : "flex-start"}>
           {/* Collapse / Close Button */}
           <IconButton
             onClick={() =>
@@ -81,7 +77,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
             }}
           >
             {isMobile ? <CloseIcon /> : <MenuIcon />}
-          </IconButton>
+          </IconButton> 
 
           {/* Profile Info */}
           {(!collapsed || isMobile) && (
@@ -180,7 +176,10 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
 
   return (
     <>
-      {/* --- Drawer for mobile --- */}
+      {/* --- Mobile Floating Button --- */}
+  
+
+      {/* --- Drawer --- */}
       {isMobile ? (
         <Drawer
           anchor="left"
@@ -191,19 +190,14 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
             onBackdropClick: () => setMobileOpen(false),
           }}
           sx={{
-            zIndex: 1300, // ✅ ensure above AppBar
             "& .MuiDrawer-paper": {
               width: 250,
-              height: "100vh",
               boxShadow: "4px 0 15px rgba(0,0,0,0.25)",
               background:
                 "linear-gradient(135deg, rgba(255,184,76,0.95), rgba(246,174,34,0.9))",
               color: "#fff",
               backdropFilter: "blur(12px)",
               transition: "transform 0.4s ease-in-out",
-              position: "fixed", // ✅ ensures full overlay
-              top: 0,
-              left: 0,
             },
           }}
         >
@@ -212,11 +206,11 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
       ) : (
         <Box
           sx={{
-            position: "fixed", // ✅ fixed position to stay in view
+            position: "sticky",
             top: 0,
             left: 0,
             height: "100vh",
-            zIndex: 1201, // ✅ above AppBar (usually 1100)
+            zIndex: 100,
           }}
         >
           {sidebarContent}
