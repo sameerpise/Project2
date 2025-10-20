@@ -12,6 +12,7 @@ import {
   Drawer,
   Slide,
 } from "@mui/material";
+import { motion } from "framer-motion";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import SchoolIcon from "@mui/icons-material/School";
@@ -28,7 +29,6 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
   const isMobile = useMediaQuery("(max-width:900px)");
   const [collapsed, setCollapsed] = useState(false);
 
-  // Collapse automatically for mobile view
   useEffect(() => {
     setCollapsed(isMobile);
   }, [isMobile]);
@@ -172,17 +172,21 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
 
   return (
     <>
-      {/* --- Mobile Drawer --- */}
-      {isMobile ? (
-        <>
-          {/* Floating Menu Button */}
+      {/* --- Mobile Floating Button with Animation --- */}
+      {isMobile && (
+        <motion.div
+          animate={{ rotate: mobileOpen ? 180 : 0 }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+          style={{
+            position: "fixed",
+            top: 15,
+            left: 15,
+            zIndex: 2000,
+          }}
+        >
           <IconButton
-            onClick={() => setMobileOpen(true)}
+            onClick={() => setMobileOpen(!mobileOpen)}
             sx={{
-              position: "fixed",
-              top: 15,
-              left: 15,
-              zIndex: 2000,
               background: "#ffb84c",
               "&:hover": { background: "#f6ae22" },
               color: "#fff",
@@ -190,33 +194,35 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
               transition: "all 0.3s ease",
             }}
           >
-            <MenuIcon />
+            {mobileOpen ? <CloseIcon /> : <MenuIcon />}
           </IconButton>
+        </motion.div>
+      )}
 
-          {/* Drawer with slide animation and click-outside close */}
-          <Drawer
-            anchor="left"
-            open={mobileOpen}
-            onClose={() => setMobileOpen(false)}
-            ModalProps={{
-              keepMounted: true,
-              onBackdropClick: () => setMobileOpen(false),
-            }}
-            sx={{
-              "& .MuiDrawer-paper": {
-                width: 250,
-                boxShadow: "4px 0 15px rgba(0,0,0,0.25)",
-                background:
-                  "linear-gradient(135deg, rgba(255,184,76,0.95), rgba(246,174,34,0.9))",
-                color: "#fff",
-                backdropFilter: "blur(12px)",
-                transition: "transform 0.4s ease-in-out",
-              },
-            }}
-          >
-            {sidebarContent}
-          </Drawer>
-        </>
+      {/* --- Drawer with Slide Animation --- */}
+      {isMobile ? (
+        <Drawer
+          anchor="left"
+          open={mobileOpen}
+          onClose={() => setMobileOpen(false)}
+          ModalProps={{
+            keepMounted: true,
+            onBackdropClick: () => setMobileOpen(false),
+          }}
+          sx={{
+            "& .MuiDrawer-paper": {
+              width: 250,
+              boxShadow: "4px 0 15px rgba(0,0,0,0.25)",
+              background:
+                "linear-gradient(135deg, rgba(255,184,76,0.95), rgba(246,174,34,0.9))",
+              color: "#fff",
+              backdropFilter: "blur(12px)",
+              transition: "transform 0.4s ease-in-out",
+            },
+          }}
+        >
+          {sidebarContent}
+        </Drawer>
       ) : (
         <Box
           sx={{
