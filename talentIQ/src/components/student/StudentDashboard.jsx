@@ -139,50 +139,123 @@ export default function StudentDashboard() {
       <SSidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
       <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
         {/* Header */}
-      <AppBar
-  position="sticky"
-  elevation={0}
-  sx={{
-    background: "linear-gradient(180deg, #f6ae22 0%, #0505056c 100%)",
-    p: 1,
-    boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-    zIndex: (theme) => theme.zIndex.drawer + 1, // ensures AppBar is above Drawer
-  }}
->
-  <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-    <Stack direction="row" alignItems="center" spacing={2}>
-     {isMobile && (
-  <IconButton
-    onClick={() => setMobileOpen(true)}
-    sx={{ color: "#fff" }}
-  >
-    <MenuIcon />
-  </IconButton>
-)}
-      <Typography variant="h5" fontWeight="bold" color="white">
-        Student Dashboard
-      </Typography>
-    </Stack>
+   <AppBar
+      position="sticky"
+      elevation={3}
+      sx={{
+        background: "linear-gradient(135deg, #f6ae22 0%, #ff7f50 50%, #050505 100%)",
+        backgroundSize: "400% 400%",
+        animation: "gradientShift 8s ease infinite",
+        p: 1,
+        backdropFilter: "blur(12px)",
+        borderBottom: "1px solid rgba(255,255,255,0.1)",
+        boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
+        zIndex: (theme) => theme.zIndex.drawer + 2,
+        "@keyframes gradientShift": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
+      }}
+    >
+      <Toolbar
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        {/* Left Side - Title & Mobile Menu */}
+        <Stack direction="row" alignItems="center" spacing={2}>
+          {isMobile && (
+            <IconButton
+              onClick={() => setMobileOpen(true)}
+              sx={{
+                color: "#fff",
+                "&:hover": { transform: "scale(1.1)" },
+                transition: "0.3s ease",
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: "bold",
+              color: "white",
+              letterSpacing: 0.5,
+              textShadow: "1px 1px 5px rgba(0,0,0,0.3)",
+            }}
+          >
+            Student Dashboard
+          </Typography>
+        </Stack>
 
-    <Stack direction="row" spacing={2} alignItems="center">
-      <Tooltip title="Notifications">
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <StudentNotifications studentId={student._id} />
-        </Box>
-      </Tooltip>
+        {/* Right Side - Icons & Avatar */}
+        <Stack direction="row" spacing={2} alignItems="center">
+          <Tooltip title="Notifications">
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Badge
+                color="error"
+                variant="dot"
+                overlap="circular"
+                sx={{
+                  "& .MuiBadge-dot": {
+                    width: 10,
+                    height: 10,
+                    animation: "pulse 1.5s infinite",
+                    "@keyframes pulse": {
+                      "0%": { transform: "scale(1)", opacity: 1 },
+                      "50%": { transform: "scale(1.3)", opacity: 0.6 },
+                      "100%": { transform: "scale(1)", opacity: 1 },
+                    },
+                  },
+                }}
+              >
+                <NotificationsActiveIcon sx={{ color: "#fff" }} />
+              </Badge>
+              <StudentNotifications studentId={student._id} />
+            </Box>
+          </Tooltip>
 
-      <Tooltip title="Logout">
-        <IconButton onClick={handleLogout} color="inherit">
-          <LogoutIcon />
-        </IconButton>
-      </Tooltip>
+          <Tooltip title="Logout">
+            <IconButton
+              onClick={handleLogout}
+              sx={{
+                color: "#fff",
+                "&:hover": {
+                  backgroundColor: "rgba(255,255,255,0.1)",
+                  transform: "rotate(10deg)",
+                },
+                transition: "all 0.3s ease",
+              }}
+            >
+              <LogoutIcon />
+            </IconButton>
+          </Tooltip>
 
-      <Avatar sx={{ bgcolor: "white", color: "#1565c0", fontWeight: "bold" }}>
-        {student?.name?.[0]?.toUpperCase() || "S"}
-      </Avatar>
-    </Stack>
-  </Toolbar>
-</AppBar>
+          <Tooltip title={student?.fullName || "Student"}>
+            <Avatar
+              sx={{
+                bgcolor: "#fff",
+                color: "#f6ae22",
+                fontWeight: "bold",
+                border: "2px solid #fff",
+                cursor: "pointer",
+                "&:hover": {
+                  transform: "scale(1.1)",
+                  boxShadow: "0 0 15px rgba(255,255,255,0.4)",
+                },
+                transition: "all 0.3s ease",
+              }}
+            >
+              {student?.fullName?.[0]?.toUpperCase() || "S"}
+            </Avatar>
+          </Tooltip>
+        </Stack>
+      </Toolbar>
+    </AppBar>
 
 
         {/* Main Content */}
