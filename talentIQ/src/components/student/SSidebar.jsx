@@ -29,8 +29,9 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
   const isMobile = useMediaQuery("(max-width:900px)");
   const [collapsed, setCollapsed] = useState(false);
 
+  // ✅ Only collapse on desktop
   useEffect(() => {
-    setCollapsed(isMobile);
+    if (!isMobile) setCollapsed(false);
   }, [isMobile]);
 
   const handleLogout = () => {
@@ -56,20 +57,22 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
             "linear-gradient(135deg, rgba(255,184,76,0.95), rgba(246,174,34,0.9))",
           backdropFilter: "blur(15px)",
           color: "#fff",
-          width: collapsed ? 80 : 250,
+          width: collapsed && !isMobile ? 80 : 250,
           transition: "all 0.3s ease",
           p: 2,
           boxShadow: "4px 0 15px rgba(0,0,0,0.25)",
         }}
       >
         {/* --- TOP SECTION --- */}
-        <Stack spacing={2} alignItems={collapsed ? "center" : "flex-start"}>
+        <Stack spacing={2} alignItems={collapsed && !isMobile ? "center" : "flex-start"}>
           {/* Collapse / Close Button */}
           <IconButton
-            onClick={() => (isMobile ? setMobileOpen(false) : setCollapsed(!collapsed))}
+            onClick={() =>
+              isMobile ? setMobileOpen(false) : setCollapsed(!collapsed)
+            }
             sx={{
               color: "#fff",
-              alignSelf: collapsed ? "center" : "flex-end",
+              alignSelf: collapsed && !isMobile ? "center" : "flex-end",
               "&:hover": { bgcolor: "rgba(255,255,255,0.15)" },
             }}
           >
@@ -77,7 +80,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
           </IconButton>
 
           {/* Profile Info */}
-          {!collapsed && (
+          {(!collapsed || isMobile) && (
             <Box textAlign="center">
               <Avatar
                 src={student?.avatar || "/profile.png"}
@@ -104,18 +107,19 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
           <Stack spacing={1} width="100%">
             {menuItems.map((item, idx) => {
               const isActive = location.pathname === item.path;
+              const showLabel = !collapsed || isMobile;
               return (
-                <Tooltip key={idx} title={collapsed ? item.label : ""} placement="right">
+                <Tooltip key={idx} title={!showLabel ? item.label : ""} placement="right">
                   <Button
                     fullWidth
                     onClick={() => {
                       navigate(item.path);
                       if (isMobile) setMobileOpen(false);
                     }}
-                    startIcon={!collapsed ? item.icon : null}
+                    startIcon={showLabel ? item.icon : null}
                     sx={{
                       color: "#fff",
-                      justifyContent: collapsed ? "center" : "flex-start",
+                      justifyContent: !showLabel ? "center" : "flex-start",
                       py: 1.2,
                       borderRadius: 2,
                       fontWeight: isActive ? 600 : 400,
@@ -132,7 +136,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
                       transition: "all 0.25s ease",
                     }}
                   >
-                    {collapsed ? item.icon : item.label}
+                    {showLabel ? item.label : item.icon}
                   </Button>
                 </Tooltip>
               );
@@ -141,11 +145,11 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
         </Stack>
 
         {/* --- LOGOUT SECTION --- */}
-        <Tooltip title={collapsed ? "Logout" : ""} placement="right">
+        <Tooltip title={collapsed && !isMobile ? "Logout" : ""} placement="right">
           <Button
             fullWidth
             variant="contained"
-            startIcon={!collapsed ? <LogoutIcon /> : null}
+            startIcon={(!collapsed || isMobile) ? <LogoutIcon /> : null}
             onClick={handleLogout}
             sx={{
               mt: 2,
@@ -163,7 +167,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
               },
             }}
           >
-            {!collapsed ? "Logout" : <LogoutIcon />}
+            {(!collapsed || isMobile) ? "Logout" : <LogoutIcon />}
           </Button>
         </Tooltip>
       </Stack>
@@ -172,7 +176,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
 
   return (
     <>
-      {/* --- Mobile Floating Button with Animation --- */}
+      {/* --- Mobile Floating Button --- */}
       {isMobile && (
         <motion.div
           animate={{ rotate: mobileOpen ? 180 : 0 }}
@@ -199,7 +203,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
         </motion.div>
       )}
 
-      {/* --- Drawer with Slide Animation --- */}
+      {/* --- Drawer --- */}
       {isMobile ? (
         <Drawer
           anchor="left"
