@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   Box,
