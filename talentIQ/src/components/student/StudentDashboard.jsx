@@ -198,25 +198,7 @@ export default function StudentDashboard() {
         <Stack direction="row" spacing={2} alignItems="center">
           <Tooltip title="Notifications">
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Badge
-                color="error"
-                variant="dot"
-                overlap="circular"
-                sx={{
-                  "& .MuiBadge-dot": {
-                    width: 10,
-                    height: 10,
-                    animation: "pulse 1.5s infinite",
-                    "@keyframes pulse": {
-                      "0%": { transform: "scale(1)", opacity: 1 },
-                      "50%": { transform: "scale(1.3)", opacity: 0.6 },
-                      "100%": { transform: "scale(1)", opacity: 1 },
-                    },
-                  },
-                }}
-              >
-               
-              </Badge>
+              
               <StudentNotifications studentId={student._id} />
             </Box>
           </Tooltip>
