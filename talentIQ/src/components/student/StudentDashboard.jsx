@@ -141,105 +141,120 @@ export default function StudentDashboard() {
       <SSidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
       <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
         {/* Header */}
-   <AppBar
-      position="sticky"
-      elevation={3}
-      sx={{
-        background: "linear-gradient(135deg, #f6ae22 0%, #ff7f50 50%, #050505 100%)",
-        backgroundSize: "400% 400%",
-        animation: "gradientShift 8s ease infinite",
-        p: 1,
-        backdropFilter: "blur(12px)",
-        borderBottom: "1px solid rgba(255,255,255,0.1)",
-        boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
-       zIndex: (theme) => theme.zIndex.drawer,
-        "@keyframes gradientShift": {
-          "0%": { backgroundPosition: "0% 50%" },
-          "50%": { backgroundPosition: "100% 50%" },
-          "100%": { backgroundPosition: "0% 50%" },
-        },
-      }}
+ <AppBar
+  position="sticky"
+  elevation={3}
+  sx={{
+    background: "linear-gradient(135deg, #f6ae22 0%, #ff7f50 50%, #050505 100%)",
+    backgroundSize: "400% 400%",
+    animation: "gradientShift 8s ease infinite",
+    p: 1,
+    backdropFilter: "blur(12px)",
+    borderBottom: "1px solid rgba(255,255,255,0.1)",
+    boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
+    zIndex: (theme) => theme.zIndex.drawer,
+    "@keyframes gradientShift": {
+      "0%": { backgroundPosition: "0% 50%" },
+      "50%": { backgroundPosition: "100% 50%" },
+      "100%": { backgroundPosition: "0% 50%" },
+    },
+  }}
+>
+  <Toolbar
+    sx={{
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      flexWrap: "wrap", // ✅ allow wrapping on small screens
+      gap: 1,           // ✅ small gap between items
+    }}
+  >
+    {/* Left Side - Title & Mobile Menu */}
+    <Stack
+      direction="row"
+      alignItems="center"
+      spacing={2}
+      sx={{ flexGrow: 1, minWidth: 0 }} // allow title to shrink
     >
-      <Toolbar
+      {isMobile && (
+        <IconButton
+          onClick={() => setMobileOpen(true)}
+          sx={{
+            color: "#fff",
+            "&:hover": { transform: "scale(1.1)" },
+            transition: "0.3s ease",
+          }}
+        >
+          <MenuIcon />
+        </IconButton>
+      )}
+      <Typography
+        variant="h5"
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          fontWeight: "bold",
+          color: "white",
+          letterSpacing: 0.5,
+          textShadow: "1px 1px 5px rgba(0,0,0,0.3)",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis", // ✅ truncate on small screens
         }}
       >
-        {/* Left Side - Title & Mobile Menu */}
-        <Stack direction="row" alignItems="center" spacing={2}>
-          {isMobile && (
-            <IconButton
-              onClick={() => setMobileOpen(true)}
-              sx={{
-                color: "#fff",
-                "&:hover": { transform: "scale(1.1)" },
-                transition: "0.3s ease",
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
-          <Typography
-            variant="h5"
-            sx={{
-              fontWeight: "bold",
-              color: "white",
-              letterSpacing: 0.5,
-              textShadow: "1px 1px 5px rgba(0,0,0,0.3)",
-            }}
-          >
-            Student Dashboard
-          </Typography>
-        </Stack>
+        Student Dashboard
+      </Typography>
+    </Stack>
 
-        {/* Right Side - Icons & Avatar */}
-        <Stack direction="row" spacing={2} alignItems="center">
-          <Tooltip title="Notifications">
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              
-              <StudentNotifications studentId={student._id} />
-            </Box>
-          </Tooltip>
+    {/* Right Side - Icons & Avatar */}
+    <Stack
+      direction="row"
+      spacing={1}
+      alignItems="center"
+      sx={{ flexWrap: "wrap" }} // ✅ wrap icons if needed
+    >
+      <Tooltip title="Notifications">
+        <Box>
+          <StudentNotifications studentId={student._id} />
+        </Box>
+      </Tooltip>
 
-          <Tooltip title="Logout">
-            <IconButton
-              onClick={handleLogout}
-              sx={{
-                color: "#fff",
-                "&:hover": {
-                  backgroundColor: "rgba(255,255,255,0.1)",
-                  transform: "rotate(10deg)",
-                },
-                transition: "all 0.3s ease",
-              }}
-            >
-              <LogoutIcon />
-            </IconButton>
-          </Tooltip>
+      <Tooltip title="Logout">
+        <IconButton
+          onClick={handleLogout}
+          sx={{
+            color: "#fff",
+            "&:hover": {
+              backgroundColor: "rgba(255,255,255,0.1)",
+              transform: "rotate(10deg)",
+            },
+            transition: "all 0.3s ease",
+          }}
+        >
+          <LogoutIcon />
+        </IconButton>
+      </Tooltip>
 
-          <Tooltip title={student?.fullName || "Student"}>
-            <Avatar
-              sx={{
-                bgcolor: "#fff",
-                color: "#f6ae22",
-                fontWeight: "bold",
-                border: "2px solid #fff",
-                cursor: "pointer",
-                "&:hover": {
-                  transform: "scale(1.1)",
-                  boxShadow: "0 0 15px rgba(255,255,255,0.4)",
-                },
-                transition: "all 0.3s ease",
-              }}
-            >
-              {student?.fullName?.[0]?.toUpperCase() || "S"}
-            </Avatar>
-          </Tooltip>
-        </Stack>
-      </Toolbar>
-    </AppBar>
+      <Tooltip title={student?.fullName || "Student"}>
+        <Avatar
+          sx={{
+            bgcolor: "#fff",
+            color: "#f6ae22",
+            fontWeight: "bold",
+            border: "2px solid #fff",
+            cursor: "pointer",
+            "&:hover": {
+              transform: "scale(1.1)",
+              boxShadow: "0 0 15px rgba(255,255,255,0.4)",
+            },
+            transition: "all 0.3s ease",
+          }}
+        >
+          {student?.fullName?.[0]?.toUpperCase() || "S"}
+        </Avatar>
+      </Tooltip>
+    </Stack>
+  </Toolbar>
+</AppBar>
+
 
 
         {/* Main Content */}
