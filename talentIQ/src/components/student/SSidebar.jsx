@@ -198,6 +198,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
               color: "#fff",
               backdropFilter: "blur(12px)",
               transition: "transform 0.4s ease-in-out",
+               zIndex: (theme) => theme.zIndex.drawer + 2,
             },
           }}
         >
