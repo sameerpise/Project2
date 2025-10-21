@@ -219,21 +219,7 @@ export default function StudentDashboard() {
         </Box>
       </Tooltip>
 
-      <Tooltip title="Logout">
-        <IconButton
-          onClick={handleLogout}
-          sx={{
-            color: "#fff",
-            "&:hover": {
-              backgroundColor: "rgba(255,255,255,0.1)",
-              transform: "rotate(10deg)",
-            },
-            transition: "all 0.3s ease",
-          }}
-        >
-          <LogoutIcon fontSize={isMobile ? "small" : "medium"} />
-        </IconButton>
-      </Tooltip>
+     
 
       <Tooltip title={student?.fullName || "Student"}>
         <Avatar
