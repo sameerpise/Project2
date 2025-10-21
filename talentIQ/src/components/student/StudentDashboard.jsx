@@ -152,7 +152,7 @@ export default function StudentDashboard() {
         backdropFilter: "blur(12px)",
         borderBottom: "1px solid rgba(255,255,255,0.1)",
         boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
-        zIndex: (theme) => theme.zIndex.drawer + 2,
+       zIndex: (theme) => theme.zIndex.drawer,,
         "@keyframes gradientShift": {
           "0%": { backgroundPosition: "0% 50%" },
           "50%": { backgroundPosition: "100% 50%" },
