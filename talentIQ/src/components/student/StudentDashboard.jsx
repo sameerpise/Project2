@@ -141,7 +141,7 @@ export default function StudentDashboard() {
       <SSidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
       <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
         {/* Header */}
- <AppBar
+<AppBar
   position="sticky"
   elevation={3}
   sx={{
@@ -165,16 +165,17 @@ export default function StudentDashboard() {
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
-      flexWrap: "wrap", // ✅ allow wrapping on small screens
-      gap: 1,           // ✅ small gap between items
+      gap: 1,
+      flexWrap: "nowrap", // ✅ prevent wrapping
+      minHeight: 64,
     }}
   >
     {/* Left Side - Title & Mobile Menu */}
     <Stack
       direction="row"
       alignItems="center"
-      spacing={2}
-      sx={{ flexGrow: 1, minWidth: 0 }} // allow title to shrink
+      spacing={1}
+      sx={{ flexShrink: 1, minWidth: 0 }} // allow shrinking
     >
       {isMobile && (
         <IconButton
@@ -183,21 +184,22 @@ export default function StudentDashboard() {
             color: "#fff",
             "&:hover": { transform: "scale(1.1)" },
             transition: "0.3s ease",
+            p: 0.5,
           }}
         >
-          <MenuIcon />
+          <MenuIcon fontSize="medium" />
         </IconButton>
       )}
       <Typography
-        variant="h5"
+        variant={isMobile ? "h6" : "h5"} // responsive font
+        noWrap
         sx={{
           fontWeight: "bold",
           color: "white",
           letterSpacing: 0.5,
           textShadow: "1px 1px 5px rgba(0,0,0,0.3)",
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis", // ✅ truncate on small screens
+          flexShrink: 1,
+          minWidth: 0,
         }}
       >
         Student Dashboard
@@ -209,7 +211,7 @@ export default function StudentDashboard() {
       direction="row"
       spacing={1}
       alignItems="center"
-      sx={{ flexWrap: "wrap" }} // ✅ wrap icons if needed
+      sx={{ flexShrink: 0 }}
     >
       <Tooltip title="Notifications">
         <Box>
@@ -229,7 +231,7 @@ export default function StudentDashboard() {
             transition: "all 0.3s ease",
           }}
         >
-          <LogoutIcon />
+          <LogoutIcon fontSize={isMobile ? "small" : "medium"} />
         </IconButton>
       </Tooltip>
 
@@ -241,6 +243,8 @@ export default function StudentDashboard() {
             fontWeight: "bold",
             border: "2px solid #fff",
             cursor: "pointer",
+            width: isMobile ? 32 : 40,
+            height: isMobile ? 32 : 40,
             "&:hover": {
               transform: "scale(1.1)",
               boxShadow: "0 0 15px rgba(255,255,255,0.4)",
@@ -254,10 +258,7 @@ export default function StudentDashboard() {
     </Stack>
   </Toolbar>
 </AppBar>
-
-
-
-        {/* Main Content */}
+  {/* Main Content */}
         <Box sx={{ p: { xs: 2, sm: 3, md: 4 }, flexGrow: 1 }}>
           {!isDashboardRoute ? (
             <Outlet />
