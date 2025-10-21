@@ -48,7 +48,7 @@ export default function AptitudeInstructions() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        minHeight: "100vh",
+        minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" }, // fit below AppBar
         bgcolor: "#f0f2f5",
         overflow: "hidden",
         position: "relative",
@@ -78,9 +78,9 @@ export default function AptitudeInstructions() {
         );
       })}
 
-      {/* Single Main Paper */}
+      {/* Main Paper */}
       <Paper
-        elevation={10}
+        elevation={0}
         sx={{
           maxWidth: 700,
           width: "100%",
@@ -88,7 +88,6 @@ export default function AptitudeInstructions() {
           borderRadius: 4,
           backgroundColor: "rgba(255,255,255,0.95)",
           textAlign: "center",
-          boxShadow: "0 6px 20px rgba(0,0,0,0.2)",
           zIndex: 1,
         }}
       >
@@ -164,7 +163,6 @@ export default function AptitudeInstructions() {
             {countdown}
           </Typography>
         )}
-        
 
         {/* Start Button */}
         <Button
@@ -177,12 +175,10 @@ export default function AptitudeInstructions() {
             px: { xs: 3, sm: 5 },
             py: { xs: 1, sm: 1.5 },
             borderRadius: 3,
-            boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
             transition: "all 0.3s ease",
             fontSize: { xs: 12, sm: 14, md: 15 },
             "&:hover": {
               transform: "scale(1.05)",
-              boxShadow: "0 6px 18px rgba(0,0,0,0.35)",
             },
           }}
           onClick={handleStart}
@@ -191,7 +187,7 @@ export default function AptitudeInstructions() {
           {startClicked ? "Get Ready..." : "Start Test 🚀"}
         </Button>
 
-        {/* All the Best Footer */}
+        {/* Footer */}
         <Typography
           sx={{
             fontSize: { xs: 16, sm: 18, md: 20 },
