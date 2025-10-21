@@ -29,9 +29,9 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
   const isMobile = useMediaQuery("(max-width:900px)");
   const [collapsed, setCollapsed] = useState(false);
 
-  // ✅ Only collapse on desktop
+  // ✅ Reset collapse on mobile
   useEffect(() => {
-    if (!isMobile) setCollapsed(false);
+    if (isMobile) setCollapsed(false);
   }, [isMobile]);
 
   const handleLogout = () => {
@@ -42,8 +42,8 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
 
   const menuItems = [
     { label: "Aptitude", path: "/student/AptitudePortal", icon: <SchoolIcon /> },
-    { label: "Results", path: "/student/AptitudePortal", icon: <BarChartIcon /> },
-    { label: "Assignments", path: "/student/AptitudePortal", icon: <AssignmentIcon /> },
+    { label: "Results", path: "/student/Results", icon: <BarChartIcon /> },
+    { label: "Assignments", path: "/student/Assignments", icon: <AssignmentIcon /> },
   ];
 
   const sidebarContent = (
@@ -58,13 +58,16 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
           backdropFilter: "blur(15px)",
           color: "#fff",
           width: collapsed && !isMobile ? 80 : 250,
-          transition: "all 0.3s ease",
+          transition: "width 0.35s ease, all 0.3s ease",
           p: 2,
           boxShadow: "4px 0 15px rgba(0,0,0,0.25)",
+          boxSizing: "border-box",
+          overflowX: "hidden",
+          overflowY: "auto",
         }}
       >
         {/* --- TOP SECTION --- */}
-         <Stack spacing={2} alignItems={collapsed && !isMobile ? "center" : "flex-start"}>
+        <Stack spacing={2} alignItems={collapsed && !isMobile ? "center" : "flex-start"}>
           {/* Collapse / Close Button */}
           <IconButton
             onClick={() =>
@@ -77,11 +80,11 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
             }}
           >
             {isMobile ? <CloseIcon /> : <MenuIcon />}
-          </IconButton> 
+          </IconButton>
 
           {/* Profile Info */}
           {(!collapsed || isMobile) && (
-            <Box textAlign="center">
+            <Box textAlign="center" width="100%">
               <Avatar
                 src={student?.avatar || "/profile.png"}
                 sx={{
@@ -92,10 +95,24 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
                   boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
                 }}
               />
-              <Typography variant="h6" mt={1} fontWeight="600">
+              <Typography
+                variant="h6"
+                mt={1}
+                fontWeight="600"
+                noWrap
+                sx={{ textOverflow: "ellipsis", overflow: "hidden" }}
+              >
                 {student?.fullName || "Student Name"}
               </Typography>
-              <Typography variant="body2" sx={{ opacity: 0.9 }}>
+              <Typography
+                variant="body2"
+                sx={{
+                  opacity: 0.9,
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                  overflow: "hidden",
+                }}
+              >
                 {student?.email || "student@email.com"}
               </Typography>
             </Box>
@@ -109,7 +126,12 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
               const isActive = location.pathname === item.path;
               const showLabel = !collapsed || isMobile;
               return (
-                <Tooltip key={idx} title={!showLabel ? item.label : ""} placement="right">
+                <Tooltip
+                  key={idx}
+                  title={!showLabel ? item.label : ""}
+                  placement="right"
+                  arrow
+                >
                   <Button
                     fullWidth
                     onClick={() => {
@@ -134,6 +156,8 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
                       },
                       textTransform: "none",
                       transition: "all 0.25s ease",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
                     }}
                   >
                     {showLabel ? item.label : item.icon}
@@ -145,11 +169,11 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
         </Stack>
 
         {/* --- LOGOUT SECTION --- */}
-        <Tooltip title={collapsed && !isMobile ? "Logout" : ""} placement="right">
+        <Tooltip title={collapsed && !isMobile ? "Logout" : ""} placement="right" arrow>
           <Button
             fullWidth
             variant="contained"
-            startIcon={(!collapsed || isMobile) ? <LogoutIcon /> : null}
+            startIcon={!collapsed || isMobile ? <LogoutIcon /> : null}
             onClick={handleLogout}
             sx={{
               mt: 2,
@@ -165,9 +189,10 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
                 transform: "scale(1.05)",
                 boxShadow: "0 0 12px rgba(255,255,255,0.4)",
               },
+              transition: "all 0.3s ease",
             }}
           >
-            {(!collapsed || isMobile) ? "Logout" : <LogoutIcon />}
+            {!collapsed || isMobile ? "Logout" : <LogoutIcon />}
           </Button>
         </Tooltip>
       </Stack>
@@ -176,10 +201,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
 
   return (
     <>
-      {/* --- Mobile Floating Button --- */}
-  
-
-      {/* --- Drawer --- */}
+      {/* --- Drawer for Mobile --- */}
       {isMobile ? (
         <Drawer
           anchor="left"
@@ -192,13 +214,15 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
           sx={{
             "& .MuiDrawer-paper": {
               width: 250,
-              boxShadow: "4px 0 15px rgba(0,0,0,0.25)",
+              boxSizing: "border-box",
+              overflowX: "hidden",
+              overflowY: "auto",
               background:
                 "linear-gradient(135deg, rgba(255,184,76,0.95), rgba(246,174,34,0.9))",
               color: "#fff",
               backdropFilter: "blur(12px)",
               transition: "transform 0.4s ease-in-out",
-               zIndex: (theme) => theme.zIndex.drawer + 2,
+              zIndex: (theme) => theme.zIndex.drawer + 2,
             },
           }}
         >
@@ -212,6 +236,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
             left: 0,
             height: "100vh",
             zIndex: 100,
+            overflow: "hidden",
           }}
         >
           {sidebarContent}
