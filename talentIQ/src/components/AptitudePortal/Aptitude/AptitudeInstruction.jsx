@@ -52,7 +52,7 @@ export default function AptitudeInstructions() {
         bgcolor: "#f0f2f5",
         overflow: "hidden",
         position: "relative",
-        p: { xs: 2, sm: 3, md: 4 },
+        p: { xs: 0, sm: 0, md: 0 },
       }}
     >
       {/* Floating lights */}
@@ -84,7 +84,7 @@ export default function AptitudeInstructions() {
         sx={{
           maxWidth: 700,
           width: "100%",
-          p: { xs: 3, sm: 4, md: 5 },
+          p: { xs: 2, sm: 3, md: 5 },
           borderRadius: 4,
           backgroundColor: "rgba(255,255,255,0.95)",
           textAlign: "center",
