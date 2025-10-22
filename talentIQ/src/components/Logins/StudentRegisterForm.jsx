@@ -168,12 +168,12 @@ const isFormValid = () => {
 <Box
   sx={{
     width: { xs: "100%", md: "42%" },
-    height: { xs: "200px", sm: "390px", md: "100%" }, // ✅ smaller height on mobile/tablet
+    height: { xs: "220px", sm: "280px", md: "100vh" }, // full viewport height on desktop
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    overflow: "hidden", // ✅ ensures the image fills box properly
     backgroundColor: "#fff7e6",
-    p: { xs: 1.5, md: 0 },
   }}
 >
   <Box
@@ -181,13 +181,13 @@ const isFormValid = () => {
     src={img1}
     alt="Registration"
     sx={{
-      width: { xs: "85%", sm: "80%", md: "100%" },
-      height: { xs: "100%", md: "auto" },
-      objectFit: { xs: "contain", md: "cover" }, // ✅ show full image on mobile
-      borderRadius: { xs: 2, md: 0 },
+      width: "100%",
+      height: "100%",
+      objectFit: "cover", // ✅ fills entire box, no empty space
     }}
   />
 </Box>
+
 
 
 
