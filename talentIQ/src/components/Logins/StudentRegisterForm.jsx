@@ -164,17 +164,31 @@ const isFormValid = () => {
   }}
 >
           {/* LEFT IMAGE */}
-          <Box
-            component="img"
-            src={img1}
-            alt="Registration"
-            sx={{
-              width: { xs: "100%", md: "42%" },
-              height: { xs: "200px", sm: "300px", md: "100%" },
-              objectFit: "cover",
-              backgroundColor: "#fff7e6",
-            }}
-          />
+          {/* LEFT IMAGE */}
+<Box
+  sx={{
+    width: { xs: "100%", md: "42%" },
+    height: { xs: "auto", md: "100%" }, // ✅ allow full height on desktop
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff7e6",
+    p: { xs: 2, md: 0 },
+  }}
+>
+  <Box
+    component="img"
+    src={img1}
+    alt="Registration"
+    sx={{
+      width: { xs: "100%", sm: "90%", md: "100%" },
+      height: "auto", // ✅ maintain aspect ratio
+      objectFit: "contain", // ✅ show entire image, not cropped
+      borderRadius: { xs: 2, md: 0 },
+    }}
+  />
+</Box>
+
 
           {/* RIGHT FORM */}
         <Box
