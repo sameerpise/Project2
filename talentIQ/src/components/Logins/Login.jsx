@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 import { setStudent } from "../Redux/studentslice";
 import { useNavigate } from "react-router-dom";
 import LoginpageImage from "../../assets/LoginPage.png";
-import background from '/22577869_20150402_025.jpg'
+import background from '../../assets/22577869_20150402_025.jpg'
 
 export default function Login() {
   const navigate = useNavigate();
@@ -83,7 +83,7 @@ export default function Login() {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    background: "url('/background.jpg')",  // ✅ correct usage
+    backgroundImage: `url(${background})`,  // ✅ correct usage
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     backgroundPosition: "center",
