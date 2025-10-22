@@ -9,14 +9,14 @@ import {
   FormControlLabel,
   ToggleButton,
   ToggleButtonGroup,
-  CircularProgress,
 } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
 import { useDispatch } from "react-redux";
-import { setStudent } from "../Redux/studentslice";
+import { setStudent } from "../redux/studentSlice";
 import { useNavigate } from "react-router-dom";
 import LoginpageImage from "../../assets/LoginPage.png";
+import background from '../../assets/background.jpg'
 
 export default function Login() {
   const navigate = useNavigate();
@@ -24,7 +24,6 @@ export default function Login() {
 
   const [form, setForm] = useState({ email: "", password: "" });
   const [loginType, setLoginType] = useState("student");
-  const [loading, setLoading] = useState(false); // <-- Loading state
 
   const adminCredentials = {
     email: "admin@example.com",
@@ -36,24 +35,22 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Start loading
+
+    // Clear previous session data
     localStorage.clear();
 
     if (loginType === "admin") {
-      setTimeout(() => {
-        if (
-          form.email === adminCredentials.email &&
-          form.password === adminCredentials.password
-        ) {
-          const admin = { name: "Admin", email: form.email, role: "admin" };
-          localStorage.setItem("adminToken", "admin-token");
-          localStorage.setItem("adminUser", JSON.stringify(admin));
-          navigate("/admin");
-        } else {
-          alert("Invalid Admin Credentials");
-        }
-        setLoading(false); // Stop loading
-      }, 1000);
+      if (
+        form.email === adminCredentials.email &&
+        form.password === adminCredentials.password
+      ) {
+        const admin = { name: "Admin", email: form.email, role: "admin" };
+        localStorage.setItem("adminToken", "admin-token");
+        localStorage.setItem("adminUser", JSON.stringify(admin));
+        navigate("/admin");
+      } else {
+        alert("Invalid Admin Credentials");
+      }
     } else {
       try {
         const res = await fetch("https://project2-f2lk.onrender.com/api/students/login", {
@@ -72,25 +69,26 @@ export default function Login() {
           JSON.stringify({ ...data.student, role: "student" })
         );
 
-        navigate("/student/AptitudePortal");
+        navigate("/dashboard");
       } catch (err) {
         alert(err.message);
-      } finally {
-        setLoading(false); // Stop loading in all cases
       }
     }
   };
-
+  console.log("Background image path:", background);
   return (
     <Box
       sx={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "linear-gradient(to top, #f7c86a, #ffffff)",
-        p: 2,
-      }}
+    minHeight: "100vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    background: "url('/background.jpg')",  // ✅ correct usage
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    p: 2,
+  }}
     >
       <Paper
         elevation={6}
@@ -105,10 +103,10 @@ export default function Login() {
       >
         {/* Left - Form */}
         <Box sx={{ flex: 1, p: { xs: 3, md: 5 } }}>
-          <Typography variant="h5" fontWeight="bold" gutterBottom>
+          <Typography variant="h5" fontWeight="bold" gutterBottom style={{textAlign:"center"}}>
             WELCOME BACK
           </Typography>
-          <Typography color="text.secondary" sx={{ mb: 3 }}>
+          <Typography color="text.secondary" sx={{ mb: 3 }} style={{textAlign:"center"}}>
             Please enter your details to continue.
           </Typography>
 
@@ -134,8 +132,7 @@ export default function Login() {
               InputProps={{
                 startAdornment: <EmailIcon sx={{ mr: 1, color: "gray" }} />,
               }}
-              sx={{ mb: 2 }}
-              required
+              sx={{ mb: 2, }}
             />
 
             <TextField
@@ -149,7 +146,6 @@ export default function Login() {
                 startAdornment: <LockIcon sx={{ mr: 1, color: "gray" }} />,
               }}
               sx={{ mb: 2 }}
-              required
             />
 
             <Box
@@ -175,27 +171,19 @@ export default function Login() {
               type="submit"
               fullWidth
               variant="contained"
-              disabled={loading} // Disable during loading
               sx={{
                 py: 1.2,
                 mb: 2,
                 borderRadius: 3,
-                fontWeight: 600,
                 backgroundColor:
-                  loginType === "admin" ? "#1976d2" : "#d32f2f",
+                  loginType === "admin" ? "#f6ae22" : "#f6ae22",
                 "&:hover": {
                   backgroundColor:
-                    loginType === "admin" ? "#1565c0" : "#b71c1c",
+                    loginType === "admin" ? "#f6ae22" : "#f6ae22",
                 },
               }}
             >
-              {loading ? (
-                <CircularProgress size={24} sx={{ color: "white" }} />
-              ) : loginType === "admin" ? (
-                "Login as Admin"
-              ) : (
-                "Login as Student"
-              )}
+              {loginType === "admin" ? "Login as Admin" : "Login as Student"}
             </Button>
           </form>
 
@@ -216,7 +204,7 @@ export default function Login() {
         <Box
           sx={{
             flex: 1,
-            backgroundColor: "#f5f7fa",
+            backgroundColor: "#ffffff",
             display: { xs: "none", md: "flex" },
             alignItems: "center",
             justifyContent: "center",
@@ -231,4 +219,4 @@ export default function Login() {
       </Paper>
     </Box>
   );
-}
+} 
