@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 import { setStudent } from "../Redux/studentslice";
 import { useNavigate } from "react-router-dom";
 import LoginpageImage from "../../assets/LoginPage.png";
-import background from '../../assets/website-registration-concept-create-account-login-illustration-vector.jpg'
+import background from '../../assets/22577869_20150402_025.jpg'
 
 export default function Login() {
   const navigate = useNavigate();
