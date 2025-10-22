@@ -168,7 +168,7 @@ const isFormValid = () => {
 <Box
   sx={{
     width: { xs: "100%", md: "42%" },
-    height: { xs: "200px", sm: "300px", md: "100%" }, // ✅ smaller height on mobile/tablet
+    height: { xs: "200px", sm: "390px", md: "100%" }, // ✅ smaller height on mobile/tablet
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
