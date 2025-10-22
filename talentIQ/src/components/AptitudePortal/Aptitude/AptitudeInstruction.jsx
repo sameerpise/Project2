@@ -108,7 +108,7 @@ export default function AptitudeInstructions() {
         {/* Illustration */}
         <Box
           component="img"
-          src="https://cdn.dribbble.com/users/458522/screenshots/16285384/media/07dbbe09cb19b7e646d4b7a91fc7c161.png?resize=400x300&vertical=center"
+          src=""
           alt="All the Best"
           sx={{
             width: { xs: "80%", sm: "60%", md: "50%" },
