@@ -9,6 +9,7 @@ import {
   FormControlLabel,
   ToggleButton,
   ToggleButtonGroup,
+  CircularProgress,
 } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
@@ -16,7 +17,7 @@ import { useDispatch } from "react-redux";
 import { setStudent } from "../Redux/studentslice";
 import { useNavigate } from "react-router-dom";
 import LoginpageImage from "../../assets/LoginPage.png";
-import background from '../../assets/22577869_20150402_025.jpg'
+import background from "../../assets/22577869_20150402_025.jpg";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ export default function Login() {
 
   const [form, setForm] = useState({ email: "", password: "" });
   const [loginType, setLoginType] = useState("student");
+  const [loading, setLoading] = useState(false); // ✅ new state for loading
 
   const adminCredentials = {
     email: "admin@example.com",
@@ -35,22 +37,24 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Clear previous session data
+    setLoading(true); // ✅ start loading
     localStorage.clear();
 
     if (loginType === "admin") {
-      if (
-        form.email === adminCredentials.email &&
-        form.password === adminCredentials.password
-      ) {
-        const admin = { name: "Admin", email: form.email, role: "admin" };
-        localStorage.setItem("adminToken", "admin-token");
-        localStorage.setItem("adminUser", JSON.stringify(admin));
-        navigate("/admin");
-      } else {
-        alert("Invalid Admin Credentials");
-      }
+      setTimeout(() => {
+        if (
+          form.email === adminCredentials.email &&
+          form.password === adminCredentials.password
+        ) {
+          const admin = { name: "Admin", email: form.email, role: "admin" };
+          localStorage.setItem("adminToken", "admin-token");
+          localStorage.setItem("adminUser", JSON.stringify(admin));
+          navigate("/admin");
+        } else {
+          alert("Invalid Admin Credentials");
+        }
+        setLoading(false);
+      }, 1000);
     } else {
       try {
         const res = await fetch("https://project2-f2lk.onrender.com/api/students/login", {
@@ -72,23 +76,25 @@ export default function Login() {
         navigate("/dashboard");
       } catch (err) {
         alert(err.message);
+      } finally {
+        setLoading(false); // ✅ stop loading after response
       }
     }
   };
-  console.log("Background image path:", background);
+
   return (
     <Box
       sx={{
-    minHeight: "100vh",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundImage: `url(${background})`,  // ✅ correct usage
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    p: 2,
-  }}
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundImage: `url(${background})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        p: 2,
+      }}
     >
       <Paper
         elevation={6}
@@ -103,10 +109,19 @@ export default function Login() {
       >
         {/* Left - Form */}
         <Box sx={{ flex: 1, p: { xs: 3, md: 5 } }}>
-          <Typography variant="h5" fontWeight="bold" gutterBottom style={{textAlign:"center"}}>
+          <Typography
+            variant="h5"
+            fontWeight="bold"
+            gutterBottom
+            align="center"
+          >
             WELCOME BACK
           </Typography>
-          <Typography color="text.secondary" sx={{ mb: 3 }} style={{textAlign:"center"}}>
+          <Typography
+            color="text.secondary"
+            sx={{ mb: 3 }}
+            align="center"
+          >
             Please enter your details to continue.
           </Typography>
 
@@ -132,7 +147,7 @@ export default function Login() {
               InputProps={{
                 startAdornment: <EmailIcon sx={{ mr: 1, color: "gray" }} />,
               }}
-              sx={{ mb: 2, }}
+              sx={{ mb: 2 }}
             />
 
             <TextField
@@ -167,23 +182,35 @@ export default function Login() {
               </Typography>
             </Box>
 
+            {/* ✅ Login Button with Loading State */}
             <Button
               type="submit"
               fullWidth
               variant="contained"
+              disabled={loading} // ✅ disable while loading
               sx={{
                 py: 1.2,
                 mb: 2,
                 borderRadius: 3,
-                backgroundColor:
-                  loginType === "admin" ? "#f6ae22" : "#f6ae22",
+                backgroundColor: "#f6ae22",
                 "&:hover": {
-                  backgroundColor:
-                    loginType === "admin" ? "#f6ae22" : "#f6ae22",
+                  backgroundColor: "#e39e1f",
                 },
               }}
             >
-              {loginType === "admin" ? "Login as Admin" : "Login as Student"}
+              {loading ? (
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <CircularProgress
+                    size={22}
+                    sx={{ color: "white" }}
+                  />
+                  Logging in...
+                </Box>
+              ) : loginType === "admin" ? (
+                "Login as Admin"
+              ) : (
+                "Login as Student"
+              )}
             </Button>
           </form>
 
@@ -219,4 +246,4 @@ export default function Login() {
       </Paper>
     </Box>
   );
-} 
+}
