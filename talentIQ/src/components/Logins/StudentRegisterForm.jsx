@@ -29,7 +29,7 @@ import NumbersIcon from "@mui/icons-material/Numbers";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
 import LockIcon from "@mui/icons-material/Lock";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import img1 from "../../assets/Lovepik_com-450092311-Creative design online registration flat illustration.png";
+import img1 from "../../assets/website-registration-concept-create-account-login-illustration-vector.jpg";
 
 import { useNavigate } from "react-router-dom";
 
