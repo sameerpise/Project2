@@ -167,12 +167,12 @@ const isFormValid = () => {
 {/* LEFT IMAGE */}
 <Box
   sx={{
-    width: { xs: "100%", md: "42%" },
-    height: { xs: "220px", sm: "280px", md: "100vh" }, // full viewport height on desktop
-    display: "flex",
+    display: { xs: "none", md: "flex" }, // ✅ hide image on small screens
+    width: { md: "42%" },
+    height: "100vh", // full height on desktop
     justifyContent: "center",
     alignItems: "center",
-    overflow: "hidden", // ✅ ensures the image fills box properly
+    overflow: "hidden",
     backgroundColor: "#fff7e6",
   }}
 >
@@ -183,10 +183,11 @@ const isFormValid = () => {
     sx={{
       width: "100%",
       height: "100%",
-      objectFit: "cover", // ✅ fills entire box, no empty space
+      objectFit: "cover",
     }}
   />
 </Box>
+
 
 
 
