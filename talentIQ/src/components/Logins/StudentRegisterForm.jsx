@@ -1,3 +1,5 @@
+
+
 import React, { useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import {
@@ -160,16 +162,16 @@ const isFormValid = () => {
     maxWidth: 1300,
     borderRadius: 3,
     overflow: "hidden",
-    maxHeight: "calc(100vh - env(safe-area-inset-top))",
+    height: { xs: "auto", md: "100vh" }, // ✅ auto height on small screens
   }}
 >
           {/* LEFT IMAGE */}
 {/* LEFT IMAGE */}
 <Box
   sx={{
-    display: { xs: "none", md: "flex" }, // ✅ hide image on small screens
-    width: { md: "42%" },
-    height: "100vh", // full height on desktop
+    display: { xs: "none", sm: "none", md: "flex" }, // ✅ hide on mobile & tablet
+    flex: "0 0 42%", // fixed width on large screens
+    height: "auto", // auto height to fit parent Paper
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
@@ -184,9 +186,11 @@ const isFormValid = () => {
       width: "100%",
       height: "100%",
       objectFit: "cover",
+      display: "block",
     }}
   />
 </Box>
+
 
 
 
