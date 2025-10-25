@@ -117,7 +117,7 @@ export default function StudentRegistrationForm() {
     "& .MuiOutlinedInput-root": {
       "& fieldset": { borderColor: "#808080" },
       "&:hover fieldset": { borderColor: "#808080" },
-      "&.Mui-focused fieldset": { borderColor: "##808080" },
+      "&.Mui-focused fieldset": { borderColor: "#808080" },
     },
   };
 // Helper function to check form validity
