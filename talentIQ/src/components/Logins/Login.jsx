@@ -147,7 +147,7 @@ export default function Login() {
               InputProps={{
                 startAdornment: <EmailIcon sx={{ mr: 1, color: "gray" }} />,
               }}
-              sx={{ mb: 2 }}
+              sx={{ mb: 2}}
             />
 
             <TextField
