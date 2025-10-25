@@ -81,6 +81,13 @@ export default function Login() {
       }
     }
   };
+  const textFieldStyle = {
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": { borderColor: "#808080" },
+      "&:hover fieldset": { borderColor: "#808080" },
+      "&.Mui-focused fieldset": { borderColor: "#808080" },
+    },
+  };
 
   return (
     <Box
