@@ -81,13 +81,7 @@ export default function Login() {
       }
     }
   };
-  const textFieldStyle = {
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": { borderColor: "#808080" },
-      "&:hover fieldset": { borderColor: "#808080" },
-      "&.Mui-focused fieldset": { borderColor: "#808080" },
-    },
-  };
+  
 
   return (
     <Box
@@ -154,8 +148,8 @@ export default function Login() {
               InputProps={{
                 startAdornment: <EmailIcon sx={{ mr: 1, color: "gray" }} />,
               }}
-              //sx={{ mb: 2}}
-              sx={textFieldStyle}
+              sx={{ mb: 2}}
+              
             />
 
             <TextField
@@ -168,8 +162,8 @@ export default function Login() {
               InputProps={{
                 startAdornment: <LockIcon sx={{ mr: 1, color: "gray" }} />,
               }}
-              //sx={{ mb: 2 }}
-              sx={textFieldStyle}
+              sx={{ mb: 2 }}
+            
             />
 
             <Box
