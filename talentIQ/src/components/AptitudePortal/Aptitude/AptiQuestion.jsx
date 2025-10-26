@@ -476,7 +476,7 @@ export default function AptitudePortal() {
           justifyContent: "center",
         }}
       >
-        <CameraAccess />
+        <DraggableCamera />
       </Box>
       
       <ModalManager openModal={openModal} setOpenModal={setOpenModal} />
