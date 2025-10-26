@@ -221,26 +221,34 @@ export default function StudentDashboard() {
 
      
 
-      <Tooltip title={student?.fullName || "Student"}>
-        <Avatar
-          sx={{
-            bgcolor: "#fff",
-            color: "#f6ae22",
-            fontWeight: "bold",
-            border: "2px solid #fff",
-            cursor: "pointer",
-            width: isMobile ? 32 : 40,
-            height: isMobile ? 32 : 40,
-            "&:hover": {
-              transform: "scale(1.1)",
-              boxShadow: "0 0 15px rgba(255,255,255,0.4)",
-            },
-            transition: "all 0.3s ease",
-          }}
-        >
-          {student?.fullName?.[0]?.toUpperCase() || "S"}
-        </Avatar>
-      </Tooltip>
+     import { useNavigate } from "react-router-dom";
+
+const navigate = useNavigate();
+
+...
+
+<Tooltip title={student?.fullName || "Student"}>
+  <Avatar
+    onClick={() => navigate(`/student-profile/${student._id}`)} // 👈 navigate to profile
+    sx={{
+      bgcolor: "#fff",
+      color: "#f6ae22",
+      fontWeight: "bold",
+      border: "2px solid #fff",
+      cursor: "pointer",
+      width: isMobile ? 32 : 40,
+      height: isMobile ? 32 : 40,
+      "&:hover": {
+        transform: "scale(1.1)",
+        boxShadow: "0 0 15px rgba(255,255,255,0.4)",
+      },
+      transition: "all 0.3s ease",
+    }}
+  >
+    {student?.fullName?.[0]?.toUpperCase() || "S"}
+  </Avatar>
+</Tooltip>
+
     </Stack>
   </Toolbar>
 </AppBar>
