@@ -36,6 +36,7 @@ function App() {
         <Route path="s" element={<StudentDashboard />} />
         {/* <Route path="/list" element={<StudentList />} /> */}
    <Route path="D" element={<DummuDash />} />
+        <Route path="/student-profile/:id" element={<StudentProfile />} />
  {/* Student dashboard */}
         <Route
           path="student"
@@ -50,7 +51,7 @@ function App() {
           <Route path="AptitudePortal" element={<AptitudePortal/>} />
           <Route path="KpiCards" element={<Kpicards/>} />
           <Route path="AptitudePortal/aptii" element={<AptitudeInstructions />} />
-           <Route path="/student-profile/:id" element={<StudentProfile />} />
+           {/* <Route path="/student-profile/:id" element={<StudentProfile />} /> */}
           {/* Actual aptitude rounds */}
           <Route path="apti" element={<AptiQuestion />} />
           <Route path="gd" element={<GD />} />
