@@ -29,6 +29,7 @@ import {
 } from "../../Redux/questionSlice";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import CameraAccess from "./CameraAcess";
 
 // Loader Component
 const FunnyLoader = () => (
@@ -462,7 +463,9 @@ export default function AptitudePortal() {
           />
         </motion.div>
       </Box>
-
+      
+   <CameraAccess />
+      
       <ModalManager openModal={openModal} setOpenModal={setOpenModal} />
 
       <Snackbar
