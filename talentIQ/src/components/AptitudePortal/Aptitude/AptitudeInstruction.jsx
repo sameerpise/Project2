@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { CheckCircleOutline } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import DraggableCamera from "./CameraAcess";
 
 export default function AptitudeInstructions() {
   const navigate = useNavigate();
