@@ -218,15 +218,6 @@ export default function StudentDashboard() {
           <StudentNotifications studentId={student._id} />
         </Box>
       </Tooltip>
-
-     
-
-     import { useNavigate } from "react-router-dom";
-
-const navigate = useNavigate();
-
-...
-
 <Tooltip title={student?.fullName || "Student"}>
   <Avatar
     onClick={() => navigate(`/student-profile/${student._id}`)} // 👈 navigate to profile
