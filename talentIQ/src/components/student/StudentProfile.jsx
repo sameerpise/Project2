@@ -89,61 +89,23 @@ export default function StudentProfile() {
 
         <CardContent>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <Typography variant="subtitle2" color="textSecondary">
-                Mobile
-              </Typography>
-              <Typography>{student.mobile}</Typography>
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <Typography variant="subtitle2" color="textSecondary">
-                Gender
-              </Typography>
-              <Typography>{student.gender}</Typography>
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <Typography variant="subtitle2" color="textSecondary">
-                DOB
-              </Typography>
-              <Typography>{student.dob}</Typography>
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <Typography variant="subtitle2" color="textSecondary">
-                College
-              </Typography>
-              <Typography>{student.college}</Typography>
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <Typography variant="subtitle2" color="textSecondary">
-                Department
-              </Typography>
-              <Typography>{student.department}</Typography>
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <Typography variant="subtitle2" color="textSecondary">
-                Year
-              </Typography>
-              <Typography>{student.whichYear}</Typography>
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <Typography variant="subtitle2" color="textSecondary">
-                City
-              </Typography>
-              <Typography>{student.city}</Typography>
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <Typography variant="subtitle2" color="textSecondary">
-                Pincode
-              </Typography>
-              <Typography>{student.pincode}</Typography>
-            </Grid>
+            {[
+              ["Mobile", student.mobile],
+              ["Gender", student.gender],
+              ["DOB", student.dob],
+              ["College", student.college],
+              ["Department", student.department],
+              ["Year", student.whichYear],
+              ["City", student.city],
+              ["Pincode", student.pincode],
+            ].map(([label, value]) => (
+              <Grid item xs={12} sm={6} key={label}>
+                <Typography variant="subtitle2" color="textSecondary">
+                  {label}
+                </Typography>
+                <Typography>{value || "—"}</Typography>
+              </Grid>
+            ))}
           </Grid>
 
           <Divider sx={{ my: 2 }} />
@@ -151,9 +113,15 @@ export default function StudentProfile() {
           <Box sx={{ textAlign: "center" }}>
             <Button
               variant="contained"
-              color="primary"
               onClick={() => navigate(-1)}
-              sx={{ textTransform: "none", fontWeight: 600 }}
+              sx={{
+                textTransform: "none",
+                fontWeight: 600,
+                background: "linear-gradient(135deg, #f6ae22, #ff7f50)",
+                "&:hover": {
+                  background: "linear-gradient(135deg, #ff7f50, #f6ae22)",
+                },
+              }}
             >
               Back to Dashboard
             </Button>
