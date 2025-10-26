@@ -8,6 +8,12 @@ export default function DraggableCamera() {
   const [dragging, setDragging] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
+  // Detect screen width for responsive sizing
+  const isMobile = window.innerWidth <= 768;
+  const cameraWidth = isMobile ? 80 : 120;
+  const cameraHeight = isMobile ? 70 : 100;
+  const bottomMargin = isMobile ? 100 : 0; // prevent hiding buttons on mobile
+
   useEffect(() => {
     const enableCamera = async () => {
       try {
@@ -36,7 +42,14 @@ export default function DraggableCamera() {
 
   const handleMouseMove = (e) => {
     if (!dragging) return;
-    setPos({ x: e.clientX - offset.x, y: e.clientY - offset.y });
+    const newX = e.clientX - offset.x;
+    const newY = e.clientY - offset.y;
+
+    // Keep camera inside viewport
+    setPos({
+      x: Math.min(Math.max(0, newX), window.innerWidth - cameraWidth),
+      y: Math.min(Math.max(0, newY), window.innerHeight - cameraHeight - bottomMargin),
+    });
   };
 
   const handleMouseUp = () => setDragging(false);
@@ -48,8 +61,8 @@ export default function DraggableCamera() {
         position: "fixed",
         top: pos.y,
         left: pos.x,
-        width: "120px",
-        height: "100px",
+        width: `${cameraWidth}px`,
+        height: `${cameraHeight}px`,
         borderRadius: "8px",
         overflow: "hidden",
         zIndex: 9999,
@@ -69,7 +82,12 @@ export default function DraggableCamera() {
       onTouchMove={(e) => {
         if (!dragging) return;
         const touch = e.touches[0];
-        setPos({ x: touch.clientX - offset.x, y: touch.clientY - offset.y });
+        const newX = touch.clientX - offset.x;
+        const newY = touch.clientY - offset.y;
+        setPos({
+          x: Math.min(Math.max(0, newX), window.innerWidth - cameraWidth),
+          y: Math.min(Math.max(0, newY), window.innerHeight - cameraHeight - bottomMargin),
+        });
       }}
       onTouchEnd={() => setDragging(false)}
     >
