@@ -221,7 +221,7 @@ export default function StudentDashboard() {
       </Tooltip>
 <Tooltip title={student?.fullName || "Student"}>
   <Avatar
-    onClick={() => navigate(`/student-profile/${student._id}`)} // 👈 navigate to profile
+    onClick={() => navigate(`/student-profile/${student._id}`)} // ✅ works now
     sx={{
       bgcolor: "#fff",
       color: "#f6ae22",
