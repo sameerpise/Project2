@@ -464,7 +464,20 @@ export default function AptitudePortal() {
         </motion.div>
       </Box>
       
-   <CameraAccess />
+        {/* Right Sidebar - Camera */}
+      <Box
+        sx={{
+          border: "1px solid #e0e0e0",
+          borderRadius: 3,
+          p: 2,
+          bgcolor: "#fff",
+          height: "fit-content",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <CameraAccess />
+      </Box>
       
       <ModalManager openModal={openModal} setOpenModal={setOpenModal} />
 
