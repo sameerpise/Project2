@@ -1,96 +1,88 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Box, Typography } from "@mui/material";
 
-export default function CameraAccess() {
+export default function DraggableCamera() {
   const videoRef = useRef(null);
+  const containerRef = useRef(null);
   const [error, setError] = useState("");
+  const [pos, setPos] = useState({ x: 10, y: 10 });
+  const [dragging, setDragging] = useState(false);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const enableCamera = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
+          video: { facingMode: "user" },
           audio: false,
         });
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
+        if (videoRef.current) videoRef.current.srcObject = stream;
       } catch (err) {
-        setError("Camera access denied or not available: " + err.message);
+        setError("Camera access denied or unavailable: " + err.message);
       }
     };
-
     enableCamera();
 
     return () => {
       if (videoRef.current && videoRef.current.srcObject) {
-        const tracks = videoRef.current.srcObject.getTracks();
-        tracks.forEach((track) => track.stop());
+        videoRef.current.srcObject.getTracks().forEach((t) => t.stop());
       }
     };
   }, []);
 
-  if (error) {
-    return (
-      <Box
-        sx={{
-          position: "fixed",
-          bottom: 16,
-          right: 16,
-          p: 2,
-          background: "#ffeaea",
-          borderRadius: 2,
-          border: "1px solid #ff6b6b",
-          zIndex: 2000,
-        }}
-      >
-        <Typography color="error" fontSize={13}>
-          {error}
-        </Typography>
-      </Box>
-    );
-  }
+  const handleMouseDown = (e) => {
+    setDragging(true);
+    setOffset({ x: e.clientX - pos.x, y: e.clientY - pos.y });
+  };
+
+  const handleMouseMove = (e) => {
+    if (!dragging) return;
+    setPos({ x: e.clientX - offset.x, y: e.clientY - offset.y });
+  };
+
+  const handleMouseUp = () => setDragging(false);
 
   return (
-    <Box
-      sx={{
+    <div
+      ref={containerRef}
+      style={{
         position: "fixed",
-        bottom: 20,
-        right: 20,
-        width: 220,
-        height: 160,
-        borderRadius: 3,
+        top: pos.y,
+        left: pos.x,
+        width: "120px",
+        height: "100px",
+        borderRadius: "8px",
         overflow: "hidden",
-        border: "2px solid #1565c0",
-        background: "#000",
-        zIndex: 2000,
-        boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+        zIndex: 9999,
+        cursor: "grab",
+        backgroundColor: "#000",
       }}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+      // Touch support for mobile
+      onTouchStart={(e) => {
+        const touch = e.touches[0];
+        setDragging(true);
+        setOffset({ x: touch.clientX - pos.x, y: touch.clientY - pos.y });
+      }}
+      onTouchMove={(e) => {
+        if (!dragging) return;
+        const touch = e.touches[0];
+        setPos({ x: touch.clientX - offset.x, y: touch.clientY - offset.y });
+      }}
+      onTouchEnd={() => setDragging(false)}
     >
-      <Typography
-        sx={{
-          position: "absolute",
-          top: 4,
-          left: 6,
-          fontSize: 12,
-          color: "white",
-          opacity: 0.7,
-          fontWeight: 500,
-        }}
-      >
-        📹 Camera Active
-      </Typography>
-      <video
-        ref={videoRef}
-        autoPlay
-        playsInline
-        muted
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-        }}
-      />
-    </Box>
+      {error ? (
+        <p style={{ color: "red", fontSize: "12px" }}>{error}</p>
+      ) : (
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
+      )}
+    </div>
   );
 }
