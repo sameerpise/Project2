@@ -20,6 +20,7 @@ import DummuDash from "./components/AptitudePortal/DummuDash";
 import AptitudePortal from "./components/AptitudePortal/AptitudePortal";
 import Dashboard from "./components/AptitudePortal/Dashboard";
 import Kpicards from "./components/student/Kpicards";
+import StudentProfile from "./components/student/StudentProfile";
 
 function App() {
   return (
@@ -49,7 +50,7 @@ function App() {
           <Route path="AptitudePortal" element={<AptitudePortal/>} />
           <Route path="KpiCards" element={<Kpicards/>} />
           <Route path="AptitudePortal/aptii" element={<AptitudeInstructions />} />
-
+           <Route path="/student-profile/:id" element={<StudentProfile />} />
           {/* Actual aptitude rounds */}
           <Route path="apti" element={<AptiQuestion />} />
           <Route path="gd" element={<GD />} />
