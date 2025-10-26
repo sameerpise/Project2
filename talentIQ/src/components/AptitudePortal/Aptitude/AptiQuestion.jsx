@@ -29,7 +29,7 @@ import {
 } from "../../Redux/questionSlice";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import CameraAccess from "./CameraAcess";
+import DraggableCamera from "./CameraAcess";
 
 // Loader Component
 const FunnyLoader = () => (
