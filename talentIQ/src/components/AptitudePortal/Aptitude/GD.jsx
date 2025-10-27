@@ -19,7 +19,7 @@ export default function GD() {
         }
 
         // Fetch student’s result
-        const res = await fetch(`http://localhost:5000/api/results/student/${student._id}`);
+        const res = await fetch(`https://project2-f2lk.onrender.com/api/results/student/${student._id}`);
         const data = await res.json();
 
         if (data && data.score >= passingScore) {
