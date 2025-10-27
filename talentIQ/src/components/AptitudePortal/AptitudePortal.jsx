@@ -146,7 +146,7 @@ export default function AptitudePortal() {
     },
     {
       title: "Group Discussion",
-      link: "gd",
+      link: "/student/gd",
       gradient: "linear-gradient(90deg,#43cea2,#185a9d)",
       unlocked: modulesStatus.apti,
       completed: false,
@@ -154,7 +154,7 @@ export default function AptitudePortal() {
     },
     {
       title: "Machine Coding",
-      link: "machine",
+      link: "/student/machine",
       gradient: "linear-gradient(90deg,#00b09b,#96c93d)",
       unlocked: modulesStatus.apti,
       completed: false,
