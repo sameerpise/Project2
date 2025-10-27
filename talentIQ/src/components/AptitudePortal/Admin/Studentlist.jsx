@@ -1,235 +1,259 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
+  Card,
+  CardContent,
   Typography,
+  TextField,
+  Paper,
   Table,
   TableHead,
-  TableBody,
   TableRow,
   TableCell,
-  Paper,
-  CircularProgress,
+  TableBody,
   TableContainer,
-  TextField,
-  InputAdornment,
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
+  TablePagination,
+  Avatar,
+  Grid,
   Button,
+  IconButton,
+  CircularProgress,
+  Tooltip,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import * as XLSX from "xlsx";
+import SchoolIcon from "@mui/icons-material/School";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import PersonIcon from "@mui/icons-material/Person";
 
-export default function StudentList() {
-  const [students, setStudents] = useState([]);
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function StudentList({ results = [] }) {
+  const [filtered, setFiltered] = useState([]);
   const [search, setSearch] = useState("");
-  const [filterYear, setFilterYear] = useState("");
-  const [filterDepartment, setFilterDepartment] = useState("");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [loading, setLoading] = useState(false);
 
+  // --- Keep logic same ---
   const fetchStudents = async () => {
     try {
-      const res = await fetch("https://project2-f2lk.onrender.com/api/students");
-      const data = await res.json();
-      setStudents(data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const fetchResults = async () => {
-    try {
+      setLoading(true);
       const res = await fetch("https://project2-f2lk.onrender.com/api/results");
+      if (!res.ok) throw new Error("Failed to fetch students");
       const data = await res.json();
-      setResults(data);
+      const uniqueResults = Object.values(
+        data.reduce((acc, item) => {
+          const id = item.studentId?._id ?? item.student?._id;
+          if (!id) return acc;
+          if (!acc[id] || new Date(item.createdAt) > new Date(acc[id].createdAt))
+            acc[id] = item;
+          return acc;
+        }, {})
+      );
+      setFiltered(uniqueResults);
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    Promise.all([fetchStudents(), fetchResults()]).finally(() =>
-      setLoading(false)
-    );
+    fetchStudents();
   }, []);
 
-  const hasAppeared = (studentId) =>
-    results.some((r) => r.studentId?._id === studentId);
-
-  const filteredStudents = students.filter((s) => {
-    const matchesSearch =
-      s.fullName.toLowerCase().includes(search.toLowerCase()) ||
-      s.email.toLowerCase().includes(search.toLowerCase()) ||
-      (s.mobile && s.mobile.includes(search));
-
-    const matchesYear = filterYear ? s.pursuingYear === filterYear : true;
-    const matchesDept = filterDepartment ? s.department === filterDepartment : true;
-
-    return matchesSearch && matchesYear && matchesDept;
-  });
-
-  if (loading)
-    return (
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
-        <CircularProgress />
-      </Box>
+  useEffect(() => {
+    const lowerSearch = search.toLowerCase();
+    const newFiltered = results.filter(
+      (r) =>
+        r.studentId?.fullName?.toLowerCase().includes(lowerSearch) ||
+        r.student?.fullName?.toLowerCase().includes(lowerSearch)
     );
+    setFiltered(newFiltered);
+  }, [search, results]);
 
-  // Get unique departments & years for filter dropdowns
-  const departments = [...new Set(students.map((s) => s.department).filter(Boolean))];
-  const years = [...new Set(students.map((s) => s.pursuingYear).filter(Boolean))];
-
-  // --- Export to Excel ---
-  const handleExportExcel = () => {
-    const exportData = filteredStudents.map((s) => ({
-      Name: s.fullName,
-      Email: s.email,
-      Mobile: s.mobile || "—",
-      Department: s.department || "—",
-      College: s.college || "—",
-      Year: s.pursuingYear || "—",
-      "Test Status": hasAppeared(s._id) ? "Appeared" : "Not Appeared",
-    }));
-
-    const worksheet = XLSX.utils.json_to_sheet(exportData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Students");
-    XLSX.writeFile(workbook, "StudentsList.xlsx");
+  const handleChangePage = (e, newPage) => setPage(newPage);
+  const handleChangeRowsPerPage = (e) => {
+    setRowsPerPage(parseInt(e.target.value, 10));
+    setPage(0);
   };
 
   return (
-    <Box sx={{ p: 3,   background: "linear-gradient(to top, #f7c86a, #ffffff)", minHeight: "100vh" }}>
-      <Typography
-        variant="h4"
-        sx={{ mb: 3, fontWeight: "bold", color: "primary.main" }}
+    <Box
+      sx={{
+        p: { xs: 2, md: 4 },
+        bgcolor: "linear-gradient(to bottom, #f5f7fa, #c3d9f8)",
+        minHeight: "100vh",
+      }}
+    >
+      {/* Header */}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+          mb: 3,
+        }}
       >
-        Students List
-      </Typography>
-
-      {/* Filters */}
-      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mb: 3 }}>
-        {/* Search */}
-        <TextField
-          placeholder="Search by name, email, or mobile"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          sx={{ flex: 1, minWidth: 200, bgcolor: "#fff", borderRadius: 2 }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon color="action" />
-              </InputAdornment>
-            ),
-          }}
-        />
-
-        {/* Year Filter */}
-        <FormControl sx={{ minWidth: 150, bgcolor: "#fff", borderRadius: 2 }}>
-          <InputLabel>Year</InputLabel>
-          <Select
-            value={filterYear}
-            label="Year"
-            onChange={(e) => setFilterYear(e.target.value)}
-          >
-            <MenuItem value="">All</MenuItem>
-            {years.map((year) => (
-              <MenuItem key={year} value={year}>
-                {year}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        {/* Department Filter */}
-        <FormControl sx={{ minWidth: 150, bgcolor: "#fff", borderRadius: 2 }}>
-          <InputLabel>Department</InputLabel>
-          <Select
-            value={filterDepartment}
-            label="Department"
-            onChange={(e) => setFilterDepartment(e.target.value)}
-          >
-            <MenuItem value="">All</MenuItem>
-            {departments.map((dept) => (
-              <MenuItem key={dept} value={dept}>
-                {dept}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        {/* Export Button */}
-        <Button
-          variant="contained"
-          color="success"
-          sx={{ height: "fit-content" }}
-          onClick={handleExportExcel}
-        >
-          Export to Excel
-        </Button>
+        <SchoolIcon sx={{ fontSize: 40, color: "#1976d2" }} />
+        <Typography variant="h5" fontWeight="bold">
+          Student Management
+        </Typography>
       </Box>
 
+      {/* Search Bar */}
+      <Paper
+        sx={{
+          p: 2,
+          mb: 3,
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+          gap: 2,
+          boxShadow: 3,
+          borderRadius: 3,
+        }}
+      >
+        <TextField
+          label="Search by name"
+          variant="outlined"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          InputProps={{
+            endAdornment: <SearchIcon color="primary" />,
+          }}
+          sx={{ flex: 1, minWidth: 250 }}
+        />
+        <Tooltip title="Refresh">
+          <IconButton color="primary" onClick={fetchStudents}>
+            <RefreshIcon />
+          </IconButton>
+        </Tooltip>
+      </Paper>
+
+      {/* Student Cards (for mobile) */}
+      <Grid container spacing={2} sx={{ display: { xs: "flex", md: "none" } }}>
+        {filtered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((r) => {
+          const s = r.studentId ?? r.student;
+          return (
+            <Grid item xs={12} key={s?._id}>
+              <Card
+                sx={{
+                  borderRadius: 3,
+                  boxShadow: 3,
+                  background:
+                    "linear-gradient(135deg, rgba(255,255,255,0.85), rgba(240,240,255,0.9))",
+                  backdropFilter: "blur(6px)",
+                }}
+              >
+                <CardContent>
+                  <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                    <Avatar sx={{ bgcolor: "#1976d2", mr: 2 }}>
+                      <PersonIcon />
+                    </Avatar>
+                    <Box>
+                      <Typography fontWeight="bold">{s?.fullName}</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {s?.email}
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Divider sx={{ my: 1 }} />
+                  <Typography variant="body2">
+                    <strong>Score:</strong> {r.score}
+                  </Typography>
+                  <Typography variant="body2">
+                    <strong>Percentage:</strong>{" "}
+                    {((r.score / (r.answers?.length || 1)) * 100).toFixed(2)}%
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          );
+        })}
+      </Grid>
+
+      {/* Student Table (for desktop) */}
       <TableContainer
         component={Paper}
         sx={{
           borderRadius: 3,
-          overflowX: "auto",
-          boxShadow: 3,
-          bgcolor: "#fff",
+          boxShadow: 4,
+          display: { xs: "none", md: "block" },
+          background: "rgba(255, 255, 255, 0.95)",
         }}
       >
-        <Table>
-          <TableHead sx={{ bgcolor: "#1976d2" }}>
-            <TableRow>
-              {[
-                "Name",
-                "Email",
-                "Mobile",
-                "Department",
-                "College",
-                "Year",
-                "Test Status",
-              ].map((head) => (
-                <TableCell
-                  key={head}
-                  sx={{ color: "#fff", fontWeight: "bold" }}
-                >
-                  {head}
-                </TableCell>
-              ))}
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow sx={{ background: "linear-gradient(90deg, #1976d2, #42a5f5)" }}>
+              {["Name", "Email", "Score", "Total", "Correct", "Wrong", "Unanswered", "Percentage"].map(
+                (h) => (
+                  <TableCell key={h} sx={{ color: "#fff", fontWeight: "bold" }}>
+                    {h}
+                  </TableCell>
+                )
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredStudents.length === 0 ? (
+            {loading ? (
               <TableRow>
-                <TableCell colSpan={7} align="center">
+                <TableCell colSpan={8} align="center">
+                  <CircularProgress size={28} />
+                </TableCell>
+              </TableRow>
+            ) : filtered.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={8} align="center">
                   No students found
                 </TableCell>
               </TableRow>
             ) : (
-              filteredStudents.map((student) => (
-                <TableRow key={student._id} hover>
-                  <TableCell>{student.fullName}</TableCell>
-                  <TableCell>{student.email}</TableCell>
-                  <TableCell>{student.mobile || "—"}</TableCell>
-                  <TableCell>{student.department || "—"}</TableCell>
-                  <TableCell>{student.college || "—"}</TableCell>
-                  <TableCell>{student.pursuingYear || "—"}</TableCell>
-                  <TableCell
-                    sx={{
-                      fontWeight: "bold",
-                      color: hasAppeared(student._id) ? "green" : "red",
-                    }}
-                  >
-                    {hasAppeared(student._id) ? "Appeared" : "Not Appeared"}
-                  </TableCell>
-                </TableRow>
-              ))
+              filtered
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((r) => {
+                  const s = r.studentId ?? r.student;
+                  const total = r.answers?.length ?? 0;
+                  const correct = r.score ?? 0;
+                  const wrong = total - correct;
+                  const unanswered = r.answers?.filter((a) => !a)?.length ?? 0;
+                  const percentage = total > 0 ? ((correct / total) * 100).toFixed(2) : 0;
+
+                  return (
+                    <TableRow
+                      key={r._id}
+                      hover
+                      sx={{
+                        transition: "0.2s",
+                        "&:hover": {
+                          backgroundColor: "#f1f8ff",
+                        },
+                      }}
+                    >
+                      <TableCell>{s?.fullName}</TableCell>
+                      <TableCell>{s?.email}</TableCell>
+                      <TableCell>{r.score}</TableCell>
+                      <TableCell>{total}</TableCell>
+                      <TableCell>{correct}</TableCell>
+                      <TableCell>{wrong}</TableCell>
+                      <TableCell>{unanswered}</TableCell>
+                      <TableCell>{percentage}%</TableCell>
+                    </TableRow>
+                  );
+                })
             )}
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Pagination */}
+      <TablePagination
+        component="div"
+        count={filtered.length}
+        page={page}
+        onPageChange={handleChangePage}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        rowsPerPageOptions={[5, 10, 25, 50]}
+      />
     </Box>
   );
 }
