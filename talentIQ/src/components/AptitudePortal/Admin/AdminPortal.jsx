@@ -38,7 +38,7 @@ import { saveAs } from "file-saver";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import Studentist from "./Studentist";
-import QuestionManager from "./QuestionManager";
+import  QuestionManager from "./SetTest";
 
 export default function AdminPortal() {
   const [view, setView] = useState("dashboard");
