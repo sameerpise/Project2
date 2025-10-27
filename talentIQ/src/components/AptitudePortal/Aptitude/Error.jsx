@@ -22,7 +22,7 @@ export default function Error() {
       <Typography sx={{ mb: 3, color: "#555" }}>
         Please contact your coordinator or try again in the next test.
       </Typography>
-      <Button variant="contained" onClick={() => navigate("/dashboard")}>
+      <Button variant="contained" onClick={() => navigate("/student/AptitudePortal")}>
         Go Back
       </Button>
     </Box>
