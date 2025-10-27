@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {
   Box,
   Typography,
+   CloseIcon ,
   Paper,
   Table,
   IconButton,
