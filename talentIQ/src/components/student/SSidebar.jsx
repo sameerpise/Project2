@@ -42,7 +42,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
 
   const menuItems = [
     { label: "Aptitude", path: "/student/AptitudePortal", icon: <SchoolIcon /> },
-    { label: "Results", path: "/student/Results", icon: <BarChartIcon /> },
+    { label: "Results", path: "/student", icon: <BarChartIcon /> },
     { label: "Assignments", path: "/student/Assignments", icon: <AssignmentIcon /> },
   ];
 
