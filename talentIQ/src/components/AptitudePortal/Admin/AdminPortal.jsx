@@ -37,7 +37,7 @@ import { useNavigate } from "react-router-dom";
 import { saveAs } from "file-saver";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import Studentist from "./Studentist";
+import Studentlist from "./Studentlist";
 import  QuestionManager from "./SetTest";
 
 export default function AdminPortal() {
