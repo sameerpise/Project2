@@ -3,7 +3,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Typography,
-   CloseIcon ,
   Paper,
   Table,
   LoadingButton,
