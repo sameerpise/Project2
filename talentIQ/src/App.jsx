@@ -76,8 +76,9 @@ function App() {
            <Route index element={<AdminPortal />} /> 
           <Route path="studentlist" element={<StudentList />} />
            <Route path="test" element={<QuestionManager />} />
+          
         </Route>
-          </Route>
+         
       </Routes>
     </BrowserRouter>
   );
