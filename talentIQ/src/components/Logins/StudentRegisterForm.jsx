@@ -205,7 +205,7 @@ const isFormValid = () => {
               <Typography
                 variant="h3"
                 align="center"
-                sx={{ fontWeight: 600, color: "primary.main", mb: 1, fontSize: { xs: 20, md: 24 } }}
+                sx={{ fontWeight: 600, color: "primary.main", mb: 1, fontSize: { xs: 20, md: 29 } }}
               >
                  🎓 Student Registration
               </Typography>
