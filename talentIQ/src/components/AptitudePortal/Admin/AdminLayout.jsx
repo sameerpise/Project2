@@ -1,28 +1,12 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Toolbar,
-  AppBar,
-  Typography,
-  IconButton,
-  useMediaQuery,
-  Slide,
-  Tooltip,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import AdminSidebar from "./AdminSidebar";
+import { Box, useMediaQuery } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { motion } from "framer-motion";
+import AdminSidebar from "./AdminSidebar";
 
 export default function AdminLayout() {
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const isMobile = useMediaQuery("(max-width:900px)");
-
-  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
-  const handleCollapseToggle = () => setCollapsed((prev) => !prev);
 
   const sidebarWidth = collapsed ? 80 : 270;
 
@@ -35,34 +19,22 @@ export default function AdminLayout() {
         overflow: "hidden",
       }}
     >
-      {/* 🟦 AppBar (Top Bar for both Mobile & Desktop) */}
+      {/* 🟦 Sidebar */}
+      <Box
+        sx={{
+          position: "fixed",
+          zIndex: 1200,
+          height: "100vh",
+          width: sidebarWidth,
+          flexShrink: 0,
+          transition: "width 0.3s ease",
+          overflow: "hidden",
+        }}
+      >
+        <AdminSidebar onCollapseChange={setCollapsed} />
+      </Box>
 
-
-      {/* 🟪 Sidebar */}
-      <Slide direction="right" in={!isMobile || mobileOpen} mountOnEnter unmountOnExit>
-        <Box
-          sx={{
-            position: isMobile ? "fixed" : "fixed",
-            zIndex: isMobile ? 1200 : 1100,
-            height: "100vh",
-            width: sidebarWidth,
-            flexShrink: 0,
-            boxShadow: isMobile ? 6 : 0,
-            bgcolor: "background.paper",
-            borderRight: "1px solid #e0e0e0",
-            transition: "width 0.3s ease",
-            overflow: "hidden",
-          }}
-        >
-          <AdminSidebar
-            onClose={handleDrawerToggle}
-            onCollapseChange={setCollapsed}
-            collapsed={collapsed}
-          />
-        </Box>
-      </Slide>
-
-      {/* 🟨 Main Content Area */}
+      {/* 🟨 Main Content */}
       <Box
         component={motion.main}
         initial={{ opacity: 0, x: 30 }}
@@ -71,8 +43,6 @@ export default function AdminLayout() {
         sx={{
           flexGrow: 1,
           ml: { xs: 0, md: `${sidebarWidth}px` },
-      
-        
           background: "linear-gradient(to bottom right, #f8fafc, #ffffff)",
           borderTopLeftRadius: { md: 24 },
           borderBottomLeftRadius: { md: 24 },
@@ -91,7 +61,7 @@ export default function AdminLayout() {
             overflowX: "hidden",
             pr: 1,
             pb: 2,
-            maxHeight: "calc(100vh - 64px)", // Prevent overflow beyond viewport
+            maxHeight: "100vh",
             scrollbarWidth: "thin",
             "&::-webkit-scrollbar": {
               width: "8px",
