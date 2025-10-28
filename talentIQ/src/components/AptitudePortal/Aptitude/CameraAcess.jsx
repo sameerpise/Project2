@@ -12,39 +12,54 @@ export default function DraggableCamera() {
   const cameraHeight = isMobile ? 70 : 120;
   const bottomMargin = isMobile ? 100 : 0;
 
-  useEffect(() => {
-    const enableCamera = async () => {
-      try {
-        // Request permission
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: "user",
-            width: { ideal: 640 },
-            height: { ideal: 480 },
-          },
-          audio: false,
+ useEffect(() => {
+  const enableCamera = async () => {
+    try {
+      // Get list of devices first
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoDevices = devices.filter((d) => d.kind === "videoinput");
+
+      if (videoDevices.length === 0) {
+        setError("No camera device found on this system.");
+        return;
+      }
+
+      // Try to use user-facing camera if available (mobile)
+      const constraints = {
+        video: {
+          deviceId: videoDevices[0]?.deviceId || undefined,
+          facingMode: videoDevices.length > 1 ? "user" : undefined,
+          width: { ideal: 640 },
+          height: { ideal: 480 },
+        },
+        audio: false,
+      };
+
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        videoRef.current.muted = true;
+        await videoRef.current.play().catch((err) => {
+          console.warn("Autoplay blocked:", err);
         });
-
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          videoRef.current.muted = true; // 🔇 required for autoplay
-          await videoRef.current.play().catch((err) => console.log("Autoplay blocked:", err));
-        }
-      } catch (err) {
-        console.error("Camera error:", err);
-        setError("Camera access denied or unavailable: " + err.message);
       }
-    };
+    } catch (err) {
+      console.error("Camera error:", err);
+      setError("Camera access denied or unavailable: " + err.message);
+    }
+  };
 
-    enableCamera();
+  enableCamera();
 
-    // Stop camera when component unmounts
-    return () => {
-      if (videoRef.current?.srcObject) {
-        videoRef.current.srcObject.getTracks().forEach((t) => t.stop());
-      }
-    };
-  }, []);
+  // Cleanup on unmount
+  return () => {
+    if (videoRef.current?.srcObject) {
+      videoRef.current.srcObject.getTracks().forEach((t) => t.stop());
+    }
+  };
+}, []);
+
 
   const handleMouseDown = (e) => {
     setDragging(true);
