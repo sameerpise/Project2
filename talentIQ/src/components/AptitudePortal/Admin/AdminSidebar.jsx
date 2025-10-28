@@ -13,7 +13,6 @@ import {
   Paper,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SchoolIcon from "@mui/icons-material/School";
 import AssignmentIcon from "@mui/icons-material/Assignment";
@@ -34,11 +33,11 @@ export default function AdminSidebar({ onClose, onCollapseChange }) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-   const handleLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    navigate('/login')
-  }
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
 
   useEffect(() => {
     if (typeof onCollapseChange === "function") {
@@ -58,7 +57,7 @@ export default function AdminSidebar({ onClose, onCollapseChange }) {
       elevation={4}
       sx={{
         height: "100%",
-        width: collapsed ? 80 : 270,
+        width: collapsed ? 80 : 260,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -67,45 +66,50 @@ export default function AdminSidebar({ onClose, onCollapseChange }) {
           "linear-gradient(135deg, rgba(33,150,243,0.95), rgba(30,136,229,0.9))",
         color: "#fff",
         borderRadius: 0,
-        transition: "all 0.3s ease",
-        overflowX: "hidden",
+        transition: "width 0.3s ease",
+        overflow: "hidden",
         boxShadow: "4px 0 15px rgba(0,0,0,0.2)",
       }}
     >
-      <Stack spacing={2} sx={{ p: 2 }}>
+      <Stack spacing={2} sx={{ p: collapsed ? 1.5 : 2, alignItems: "center" }}>
         {/* HEADER */}
         {!collapsed && (
-          <Typography variant="h6" fontWeight="bold" textAlign="center">
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            textAlign="center"
+            sx={{ width: "100%" }}
+          >
             Admin Panel
           </Typography>
         )}
 
         {/* ADMIN INFO */}
         {!collapsed && (
-          <Box textAlign="center" sx={{ mt: 2 }}>
+          <Box textAlign="center" sx={{ mt: 1 }}>
             <Avatar
               src={admin?.avatar || "/admin.png"}
               sx={{
-                width: 80,
-                height: 80,
+                width: 70,
+                height: 70,
                 mx: "auto",
                 border: "2px solid rgba(255,255,255,0.5)",
                 boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
               }}
             />
-            <Typography variant="h6" mt={1} fontWeight={600}>
+            <Typography variant="subtitle1" mt={1} fontWeight={600}>
               {admin?.fullName || "Admin User"}
             </Typography>
-            <Typography variant="body2" sx={{ opacity: 0.8 }}>
+            <Typography variant="caption" sx={{ opacity: 0.8 }}>
               {admin?.email || "admin@example.com"}
             </Typography>
           </Box>
         )}
 
-        <Divider sx={{ bgcolor: "rgba(255,255,255,0.3)", my: 2 }} />
+        <Divider sx={{ bgcolor: "rgba(255,255,255,0.3)", my: 2, width: "100%" }} />
 
         {/* MENU ITEMS */}
-        <Stack spacing={1.2}>
+        <Stack spacing={1.2} sx={{ width: "100%", alignItems: "center" }}>
           {menuItems.map((item, index) => {
             const isActive = location.pathname === item.path;
             return (
@@ -117,7 +121,7 @@ export default function AdminSidebar({ onClose, onCollapseChange }) {
                 <Button
                   fullWidth
                   onClick={() => navigate(item.path)}
-                  startIcon={!collapsed ? item.icon : null}
+                  startIcon={!collapsed && item.icon}
                   sx={{
                     justifyContent: collapsed ? "center" : "flex-start",
                     color: "#fff",
@@ -137,6 +141,10 @@ export default function AdminSidebar({ onClose, onCollapseChange }) {
                       transform: "scale(1.05)",
                     },
                     transition: "all 0.2s ease",
+                    width: collapsed ? "60px" : "90%",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: collapsed ? 0 : 1.5,
                   }}
                 >
                   {collapsed ? item.icon : item.label}
@@ -148,7 +156,7 @@ export default function AdminSidebar({ onClose, onCollapseChange }) {
       </Stack>
 
       {/* LOGOUT */}
-      <Box sx={{ p: 2 }}>
+      <Box sx={{ p: collapsed ? 1 : 2, width: "100%" }}>
         <Tooltip title={collapsed ? "Logout" : ""} placement="right">
           <Button
             fullWidth
@@ -178,9 +186,11 @@ export default function AdminSidebar({ onClose, onCollapseChange }) {
 
   return (
     <>
-      {/* SINGLE HAMBURGER ICON (TOP LEFT) */}
+      {/* SINGLE HAMBURGER ICON */}
       <IconButton
-        onClick={() => (isMobile ? setMobileOpen(true) : setCollapsed(!collapsed))}
+        onClick={() =>
+          isMobile ? setMobileOpen(true) : setCollapsed(!collapsed)
+        }
         sx={{
           position: "fixed",
           top: 15,
@@ -190,7 +200,6 @@ export default function AdminSidebar({ onClose, onCollapseChange }) {
           color: "#fff",
           boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
           "&:hover": { background: "#1e88e5" },
-          display: "flex",
         }}
       >
         <MenuIcon />
@@ -211,6 +220,10 @@ export default function AdminSidebar({ onClose, onCollapseChange }) {
               color: "#fff",
               backdropFilter: "blur(15px)",
               boxShadow: "4px 0 15px rgba(0,0,0,0.3)",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              overflow: "hidden",
             },
           }}
         >
