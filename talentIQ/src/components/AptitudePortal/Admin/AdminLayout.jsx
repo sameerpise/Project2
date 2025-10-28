@@ -1,153 +1,121 @@
 import React, { useState } from "react";
 import {
   Box,
-  useMediaQuery,
-  Drawer,
   IconButton,
-  Tooltip,
+  Drawer,
+  useMediaQuery,
+  useTheme,
+  AppBar,
+  Toolbar,
+  Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { motion } from "framer-motion";
-import { Outlet } from "react-router-dom";
+import CloseIcon from "@mui/icons-material/Close";
 import AdminSidebar from "./AdminSidebar";
+import { Outlet } from "react-router-dom";
 
 export default function AdminLayout() {
-  const [collapsed, setCollapsed] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [mobileOpen, setMobileOpen] = useState(false);
-  const isMobile = useMediaQuery("(max-width:900px)");
+  const [collapsed, setCollapsed] = useState(false);
 
-  const handleCollapseToggle = () => setCollapsed((prev) => !prev);
-  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
-
-  const sidebarWidth = collapsed ? 80 : 270;
+  const toggleMobileDrawer = () => setMobileOpen(!mobileOpen);
+  const toggleCollapse = () => setCollapsed((prev) => !prev);
 
   return (
     <Box
       sx={{
         display: "flex",
-        height: "100vh",
-        bgcolor: "linear-gradient(to top, #f3f4f6, #ffffff)",
+        background: "linear-gradient(to top, #f9f9f9, #ffffff)",
+        minHeight: "100vh",
         overflow: "hidden",
       }}
     >
-      {/* 🟦 Sidebar for Desktop */}
-      {!isMobile && (
-        <motion.div
-          initial={{ width: sidebarWidth }}
-          animate={{ width: sidebarWidth }}
-          transition={{ duration: 0.3 }}
-          style={{
-            position: "fixed",
-            height: "100vh",
-            zIndex: 1200,
-            overflow: "hidden",
+      {/* AppBar for mobile */}
+      {isMobile && (
+        <AppBar
+          position="fixed"
+          elevation={2}
+          sx={{
+            bgcolor: "white",
+            color: "#1976d2",
+            borderBottom: "1px solid #eee",
+            zIndex: theme.zIndex.drawer + 1,
           }}
         >
-          <AdminSidebar
-            onCollapseChange={setCollapsed}
-            collapsed={collapsed}
-          />
-        </motion.div>
+          <Toolbar sx={{ justifyContent: "space-between" }}>
+            <Typography variant="h6" sx={{ fontWeight: 700 }}>
+              Admin Dashboard
+            </Typography>
+            <IconButton onClick={toggleMobileDrawer}>
+              {mobileOpen ? <CloseIcon /> : <MenuIcon />}
+            </IconButton>
+          </Toolbar>
+        </AppBar>
       )}
 
-      {/* 🟪 Drawer Sidebar for Mobile */}
+      {/* Sidebar for desktop */}
+      {!isMobile && (
+        <AdminSidebar
+          collapsed={collapsed}
+          onCollapseChange={setCollapsed}
+        />
+      )}
+
+      {/* Drawer for mobile */}
       {isMobile && (
         <Drawer
-          anchor="left"
+          variant="temporary"
           open={mobileOpen}
-          onClose={handleDrawerToggle}
+          onClose={toggleMobileDrawer}
           ModalProps={{ keepMounted: true }}
           sx={{
             "& .MuiDrawer-paper": {
               width: 270,
-              background:
-                "linear-gradient(135deg, rgba(33,150,243,0.95), rgba(30,136,229,0.9))",
-              color: "#fff",
-              backdropFilter: "blur(15px)",
-              boxShadow: "4px 0 15px rgba(0,0,0,0.3)",
+              boxSizing: "border-box",
+              background: "linear-gradient(135deg, #1976d2, #1565c0)",
             },
           }}
         >
-          <AdminSidebar
-            onClose={handleDrawerToggle}
-            collapsed={false}
-          />
+          <AdminSidebar onClose={toggleMobileDrawer} />
         </Drawer>
       )}
 
-      {/* 🟨 Main Content */}
+      {/* Main Content */}
       <Box
-        component={motion.main}
-        initial={{ opacity: 0, x: 30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.4 }}
+        component="main"
         sx={{
           flexGrow: 1,
-          ml: { xs: 0, md: `${sidebarWidth}px` },
-          background: "linear-gradient(to bottom right, #f8fafc, #ffffff)",
-          borderTopLeftRadius: { md: 24 },
-          borderBottomLeftRadius: { md: 24 },
-          boxShadow: { md: "inset 4px 0px 20px rgba(0,0,0,0.05)" },
-          transition: "margin 0.3s ease",
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
+          transition: "margin-left 0.3s ease",
+          ml: !isMobile ? (collapsed ? "80px" : "270px") : 0,
+          mt: isMobile ? "64px" : 0,
+          p: { xs: 2, md: 4 },
+          overflowX: "hidden",
+          overflowY: "auto",
         }}
       >
-        {/* 🧭 Single Hamburger Icon (Only on Mobile) */}
-        {isMobile && (
-          <Tooltip title="Menu">
-            <IconButton
-              onClick={handleDrawerToggle}
-              sx={{
-                position: "fixed",
-                top: 15,
-                left: 15,
-                zIndex: 2500,
-                background: "#2196f3",
-                color: "#fff",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-                "&:hover": { background: "#1e88e5" },
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-          </Tooltip>
-        )}
-
-        {/* 🧭 Scrollable Content */}
-        <Box
-          sx={{
-            flexGrow: 1,
-            overflowY: "auto",
-            overflowX: "hidden",
-            pr: 1,
-            pb: 2,
-            maxHeight: "100vh",
-            scrollbarWidth: "thin",
-            "&::-webkit-scrollbar": {
-              width: "8px",
-            },
-            "&::-webkit-scrollbar-thumb": {
-              backgroundColor: "#bdbdbd",
-              borderRadius: "4px",
-            },
-            "&::-webkit-scrollbar-thumb:hover": {
-              backgroundColor: "#9e9e9e",
-            },
-          }}
-        >
-          <Box
+        {/* Collapse Button (desktop only) */}
+        {!isMobile && (
+          <IconButton
+            onClick={toggleCollapse}
             sx={{
-              maxWidth: "1400px",
-              mx: "auto",
-              borderRadius: 3,
-              p: { xs: 1, sm: 2 },
+              position: "absolute",
+              top: 20,
+              left: collapsed ? 85 : 275,
+              transition: "left 0.3s ease",
+              bgcolor: "white",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+              "&:hover": { bgcolor: "#f0f0f0" },
+              zIndex: 1201,
             }}
           >
-            <Outlet />
-          </Box>
-        </Box>
+            {collapsed ? <MenuIcon /> : <CloseIcon />}
+          </IconButton>
+        )}
+
+        {/* Page content */}
+        <Outlet />
       </Box>
     </Box>
   );
