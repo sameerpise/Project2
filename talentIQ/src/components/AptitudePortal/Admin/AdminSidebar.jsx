@@ -5,14 +5,11 @@ import {
   Avatar,
   Typography,
   Button,
-  IconButton,
   Tooltip,
   Divider,
-  Drawer,
-  useMediaQuery,
   Paper,
+  useMediaQuery,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SchoolIcon from "@mui/icons-material/School";
 import AssignmentIcon from "@mui/icons-material/Assignment";
@@ -21,26 +18,22 @@ import { useTheme } from "@mui/material/styles";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-export default function AdminSidebar({ onCollapseChange }) {
+export default function AdminSidebar({ collapsed = false, onCollapseChange, onClose }) {
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
   const admin = useSelector((state) => state.student?.student || {});
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const [collapsed, setCollapsed] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/login");
+    if (onClose) onClose();
   };
 
   useEffect(() => {
-    if (typeof onCollapseChange === "function") {
-      onCollapseChange(collapsed);
-    }
+    if (onCollapseChange) onCollapseChange(collapsed);
   }, [collapsed, onCollapseChange]);
 
   const menuItems = [
@@ -49,8 +42,7 @@ export default function AdminSidebar({ onCollapseChange }) {
     { label: "Tests", path: "/admin/test", icon: <AssignmentIcon /> },
   ];
 
-  // --- SIDEBAR CONTENT ---
-  const sidebarContent = (
+  return (
     <Paper
       elevation={4}
       sx={{
@@ -70,14 +62,12 @@ export default function AdminSidebar({ onCollapseChange }) {
       }}
     >
       <Stack spacing={2} sx={{ p: 2, flexGrow: 1 }}>
-        {/* HEADER */}
         {!collapsed && (
           <Typography variant="h6" fontWeight="bold" textAlign="center">
             Admin Panel
           </Typography>
         )}
 
-        {/* ADMIN INFO */}
         {!collapsed && (
           <Box textAlign="center" sx={{ mt: 2 }}>
             <Avatar
@@ -101,7 +91,6 @@ export default function AdminSidebar({ onCollapseChange }) {
 
         <Divider sx={{ bgcolor: "rgba(255,255,255,0.3)", my: 2 }} />
 
-        {/* MENU ITEMS */}
         <Stack spacing={1.2}>
           {menuItems.map((item, index) => {
             const isActive = location.pathname === item.path;
@@ -115,7 +104,7 @@ export default function AdminSidebar({ onCollapseChange }) {
                   fullWidth
                   onClick={() => {
                     navigate(item.path);
-                    if (isMobile) setMobileOpen(false); // ✅ close drawer after click
+                    if (isMobile && onClose) onClose(); // ✅ close Drawer on mobile
                   }}
                   startIcon={!collapsed ? item.icon : null}
                   sx={{
@@ -147,7 +136,7 @@ export default function AdminSidebar({ onCollapseChange }) {
         </Stack>
       </Stack>
 
-      {/* LOGOUT */}
+      {/* LOGOUT BUTTON */}
       <Box sx={{ p: 2 }}>
         <Tooltip title={collapsed ? "Logout" : ""} placement="right">
           <Button
@@ -174,63 +163,5 @@ export default function AdminSidebar({ onCollapseChange }) {
         </Tooltip>
       </Box>
     </Paper>
-  );
-
-  return (
-    <>
-      {/* SINGLE HAMBURGER ICON (TOP LEFT) */}
-      <IconButton
-        onClick={() => (isMobile ? setMobileOpen(true) : setCollapsed(!collapsed))}
-        sx={{
-          position: "fixed",
-          top: 15,
-          left: 15,
-          zIndex: 2500,
-          background: "#2196f3",
-          color: "#fff",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-          "&:hover": { background: "#1e88e5" },
-        }}
-      >
-        <MenuIcon />
-      </IconButton>
-
-      {/* MOBILE DRAWER */}
-      <Drawer
-        anchor="left"
-        open={mobileOpen}
-        onClose={() => setMobileOpen(false)}
-        ModalProps={{ keepMounted: true }}
-        sx={{
-          "& .MuiDrawer-paper": {
-            width: 270,
-            background:
-              "linear-gradient(135deg, rgba(33,150,243,0.95), rgba(30,136,229,0.9))",
-            color: "#fff",
-            backdropFilter: "blur(15px)",
-            boxShadow: "4px 0 15px rgba(0,0,0,0.3)",
-            display: "flex",
-            flexDirection: "column",
-          },
-        }}
-      >
-        {sidebarContent}
-      </Drawer>
-
-      {/* DESKTOP SIDEBAR */}
-      {!isMobile && (
-        <Box
-          sx={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            height: "100vh",
-            zIndex: 1200,
-          }}
-        >
-          {sidebarContent}
-        </Box>
-      )}
-    </>
   );
 }
