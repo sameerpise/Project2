@@ -601,52 +601,7 @@ const handleExportPDF = () => {
       }}
     >
       {/* Sidebar */}
-      <Paper
-        sx={{ width: 220, m: 2, p: 2, borderRadius: 3, bgcolor: '#fff' }}
-        elevation={3}
-      >
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-          <Avatar sx={{ mr: 1 }}>{user.fullName?.[0]}</Avatar>
-          <Box>
-            <Typography variant='subtitle1'>{user.fullName}</Typography>
-            <Typography variant='caption'>{user.email}</Typography>
-          </Box>
-        </Box>
-
-        <Button
-          fullWidth
-          variant={view === 'dashboard' ? 'contained' : 'outlined'}
-          sx={{ mb: 1 }}
-          onClick={() => setView('dashboard')}
-        >
-          Dashboard
-        </Button>
-        <Button
-          fullWidth
-          variant={view === 'students' ? 'contained' : 'outlined'}
-          sx={{ mb: 1 }}
-          onClick={() => setView('students')}
-        >
-          Students
-        </Button>
-        <Button
-          fullWidth
-          variant={view === 'tests' ? 'contained' : 'outlined'}
-          sx={{ mb: 1 }}
-          onClick={() => setView('tests')}
-        >
-          Tests
-        </Button>
-        <Button
-          fullWidth
-          variant='contained'
-          color='error'
-          onClick={handleLogout}
-        >
-          Logout
-        </Button>
-      </Paper>
-
+   
       {/* Main Content */}
       <Box sx={{ flex: 1, p: 3 }}>
         {view === 'dashboard' && (
