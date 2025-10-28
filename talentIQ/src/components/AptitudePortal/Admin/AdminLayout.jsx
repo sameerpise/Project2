@@ -1,12 +1,23 @@
 import React, { useState } from "react";
-import { Box, useMediaQuery } from "@mui/material";
-import { Outlet } from "react-router-dom";
+import {
+  Box,
+  useMediaQuery,
+  Drawer,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 import { motion } from "framer-motion";
+import { Outlet } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
 
 export default function AdminLayout() {
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width:900px)");
+
+  const handleCollapseToggle = () => setCollapsed((prev) => !prev);
+  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
   const sidebarWidth = collapsed ? 80 : 270;
 
@@ -19,20 +30,50 @@ export default function AdminLayout() {
         overflow: "hidden",
       }}
     >
-      {/* 🟦 Sidebar */}
-      <Box
-        sx={{
-          position: "fixed",
-          zIndex: 1200,
-          height: "100vh",
-          width: sidebarWidth,
-          flexShrink: 0,
-          transition: "width 0.3s ease",
-          overflow: "hidden",
-        }}
-      >
-        <AdminSidebar onCollapseChange={setCollapsed} />
-      </Box>
+      {/* 🟦 Sidebar for Desktop */}
+      {!isMobile && (
+        <motion.div
+          initial={{ width: sidebarWidth }}
+          animate={{ width: sidebarWidth }}
+          transition={{ duration: 0.3 }}
+          style={{
+            position: "fixed",
+            height: "100vh",
+            zIndex: 1200,
+            overflow: "hidden",
+          }}
+        >
+          <AdminSidebar
+            onCollapseChange={setCollapsed}
+            collapsed={collapsed}
+          />
+        </motion.div>
+      )}
+
+      {/* 🟪 Drawer Sidebar for Mobile */}
+      {isMobile && (
+        <Drawer
+          anchor="left"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{ keepMounted: true }}
+          sx={{
+            "& .MuiDrawer-paper": {
+              width: 270,
+              background:
+                "linear-gradient(135deg, rgba(33,150,243,0.95), rgba(30,136,229,0.9))",
+              color: "#fff",
+              backdropFilter: "blur(15px)",
+              boxShadow: "4px 0 15px rgba(0,0,0,0.3)",
+            },
+          }}
+        >
+          <AdminSidebar
+            onClose={handleDrawerToggle}
+            collapsed={false}
+          />
+        </Drawer>
+      )}
 
       {/* 🟨 Main Content */}
       <Box
@@ -53,6 +94,27 @@ export default function AdminLayout() {
           overflow: "hidden",
         }}
       >
+        {/* 🧭 Single Hamburger Icon (Only on Mobile) */}
+        {isMobile && (
+          <Tooltip title="Menu">
+            <IconButton
+              onClick={handleDrawerToggle}
+              sx={{
+                position: "fixed",
+                top: 15,
+                left: 15,
+                zIndex: 2500,
+                background: "#2196f3",
+                color: "#fff",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+                "&:hover": { background: "#1e88e5" },
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+
         {/* 🧭 Scrollable Content */}
         <Box
           sx={{
