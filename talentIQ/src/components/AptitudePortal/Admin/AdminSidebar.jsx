@@ -19,12 +19,10 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../../Redux/studentslice";
+import { useSelector } from "react-redux";
 
-export default function AdminSidebar({ onClose, onCollapseChange }) {
+export default function AdminSidebar({ onCollapseChange }) {
   const theme = useTheme();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const admin = useSelector((state) => state.student?.student || {});
@@ -57,7 +55,7 @@ export default function AdminSidebar({ onClose, onCollapseChange }) {
       elevation={4}
       sx={{
         height: "100%",
-        width: collapsed ? 80 : 260,
+        width: collapsed ? 80 : 270,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -66,50 +64,45 @@ export default function AdminSidebar({ onClose, onCollapseChange }) {
           "linear-gradient(135deg, rgba(33,150,243,0.95), rgba(30,136,229,0.9))",
         color: "#fff",
         borderRadius: 0,
-        transition: "width 0.3s ease",
-        overflow: "hidden",
+        transition: "all 0.3s ease",
+        overflowX: "hidden",
         boxShadow: "4px 0 15px rgba(0,0,0,0.2)",
       }}
     >
-      <Stack spacing={2} sx={{ p: collapsed ? 1.5 : 2, alignItems: "center" }}>
+      <Stack spacing={2} sx={{ p: 2, flexGrow: 1 }}>
         {/* HEADER */}
         {!collapsed && (
-          <Typography
-            variant="h6"
-            fontWeight="bold"
-            textAlign="center"
-            sx={{ width: "100%" }}
-          >
+          <Typography variant="h6" fontWeight="bold" textAlign="center">
             Admin Panel
           </Typography>
         )}
 
         {/* ADMIN INFO */}
         {!collapsed && (
-          <Box textAlign="center" sx={{ mt: 1 }}>
+          <Box textAlign="center" sx={{ mt: 2 }}>
             <Avatar
               src={admin?.avatar || "/admin.png"}
               sx={{
-                width: 70,
-                height: 70,
+                width: 80,
+                height: 80,
                 mx: "auto",
                 border: "2px solid rgba(255,255,255,0.5)",
                 boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
               }}
             />
-            <Typography variant="subtitle1" mt={1} fontWeight={600}>
+            <Typography variant="h6" mt={1} fontWeight={600}>
               {admin?.fullName || "Admin User"}
             </Typography>
-            <Typography variant="caption" sx={{ opacity: 0.8 }}>
+            <Typography variant="body2" sx={{ opacity: 0.8 }}>
               {admin?.email || "admin@example.com"}
             </Typography>
           </Box>
         )}
 
-        <Divider sx={{ bgcolor: "rgba(255,255,255,0.3)", my: 2, width: "100%" }} />
+        <Divider sx={{ bgcolor: "rgba(255,255,255,0.3)", my: 2 }} />
 
         {/* MENU ITEMS */}
-        <Stack spacing={1.2} sx={{ width: "100%", alignItems: "center" }}>
+        <Stack spacing={1.2}>
           {menuItems.map((item, index) => {
             const isActive = location.pathname === item.path;
             return (
@@ -120,8 +113,11 @@ export default function AdminSidebar({ onClose, onCollapseChange }) {
               >
                 <Button
                   fullWidth
-                  onClick={() => navigate(item.path)}
-                  startIcon={!collapsed && item.icon}
+                  onClick={() => {
+                    navigate(item.path);
+                    if (isMobile) setMobileOpen(false); // ✅ close drawer after click
+                  }}
+                  startIcon={!collapsed ? item.icon : null}
                   sx={{
                     justifyContent: collapsed ? "center" : "flex-start",
                     color: "#fff",
@@ -141,10 +137,6 @@ export default function AdminSidebar({ onClose, onCollapseChange }) {
                       transform: "scale(1.05)",
                     },
                     transition: "all 0.2s ease",
-                    width: collapsed ? "60px" : "90%",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: collapsed ? 0 : 1.5,
                   }}
                 >
                   {collapsed ? item.icon : item.label}
@@ -156,7 +148,7 @@ export default function AdminSidebar({ onClose, onCollapseChange }) {
       </Stack>
 
       {/* LOGOUT */}
-      <Box sx={{ p: collapsed ? 1 : 2, width: "100%" }}>
+      <Box sx={{ p: 2 }}>
         <Tooltip title={collapsed ? "Logout" : ""} placement="right">
           <Button
             fullWidth
@@ -186,11 +178,9 @@ export default function AdminSidebar({ onClose, onCollapseChange }) {
 
   return (
     <>
-      {/* SINGLE HAMBURGER ICON */}
+      {/* SINGLE HAMBURGER ICON (TOP LEFT) */}
       <IconButton
-        onClick={() =>
-          isMobile ? setMobileOpen(true) : setCollapsed(!collapsed)
-        }
+        onClick={() => (isMobile ? setMobileOpen(true) : setCollapsed(!collapsed))}
         sx={{
           position: "fixed",
           top: 15,
@@ -206,37 +196,35 @@ export default function AdminSidebar({ onClose, onCollapseChange }) {
       </IconButton>
 
       {/* MOBILE DRAWER */}
-      {isMobile ? (
-        <Drawer
-          anchor="left"
-          open={mobileOpen}
-          onClose={() => setMobileOpen(false)}
-          ModalProps={{ keepMounted: true }}
-          sx={{
-            "& .MuiDrawer-paper": {
-              width: 260,
-              background:
-                "linear-gradient(135deg, rgba(33,150,243,0.95), rgba(30,136,229,0.9))",
-              color: "#fff",
-              backdropFilter: "blur(15px)",
-              boxShadow: "4px 0 15px rgba(0,0,0,0.3)",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              overflow: "hidden",
-            },
-          }}
-        >
-          {sidebarContent}
-        </Drawer>
-      ) : (
+      <Drawer
+        anchor="left"
+        open={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          "& .MuiDrawer-paper": {
+            width: 270,
+            background:
+              "linear-gradient(135deg, rgba(33,150,243,0.95), rgba(30,136,229,0.9))",
+            color: "#fff",
+            backdropFilter: "blur(15px)",
+            boxShadow: "4px 0 15px rgba(0,0,0,0.3)",
+            display: "flex",
+            flexDirection: "column",
+          },
+        }}
+      >
+        {sidebarContent}
+      </Drawer>
+
+      {/* DESKTOP SIDEBAR */}
+      {!isMobile && (
         <Box
           sx={{
-            position: "sticky",
+            position: "fixed",
             top: 0,
             left: 0,
             height: "100vh",
-            overflow: "hidden",
             zIndex: 1200,
           }}
         >
