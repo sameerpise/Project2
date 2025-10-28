@@ -34,10 +34,11 @@ export default function AdminSidebar({ onClose, onCollapseChange }) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const handleLogout = () => {
-    dispatch(logout());
-    window.location.href = "/login";
-  };
+   const handleLogout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    navigate('/login')
+  }
 
   useEffect(() => {
     if (typeof onCollapseChange === "function") {
