@@ -46,7 +46,7 @@ import QuestionManager from './SetTest'
 // --- StudentList Component ---
 
 import * as XLSX from 'xlsx'
-export function StudentList() {
+export default function StudentList() {
   const [students, setStudents] = useState([]);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
