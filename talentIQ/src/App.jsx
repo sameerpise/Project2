@@ -21,6 +21,7 @@ import AptitudePortal from "./components/AptitudePortal/AptitudePortal";
 import Dashboard from "./components/AptitudePortal/Dashboard";
 import Kpicards from "./components/student/Kpicards";
 import StudentProfile from "./components/student/StudentProfile";
+import AdminLayout from "./components/AptitudePortal/Admin/AdminLayout";
 
 function App() {
   return (
@@ -67,11 +68,16 @@ function App() {
           path="/admin"
           element={
             <ProtectedRoute role="admin">
-              <AdminPortal />
+              <AdminLayout />
               {/* <QuestionManager /> */}
             </ProtectedRoute>
           }
-        />
+        >
+           <Route index element={<AdminPortal />} /> 
+          <Route path="studentlist" element={<StudentList />} />
+           <Route path="test" element={<QuestionManager />} />
+        </Route>
+          </Route>
       </Routes>
     </BrowserRouter>
   );
