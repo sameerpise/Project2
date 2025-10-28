@@ -190,13 +190,7 @@ const isFormValid = () => {
     }}
   />
 </Box>
-
-
-
-
-
-
-          {/* RIGHT FORM */}
+   {/* RIGHT FORM */}
         <Box
   sx={{
     flex: 1,
@@ -209,7 +203,7 @@ const isFormValid = () => {
 >
             <Box>
               <Typography
-                variant="h5"
+                variant="h3"
                 align="center"
                 sx={{ fontWeight: 600, color: "primary.main", mb: 1, fontSize: { xs: 20, md: 24 } }}
               >
