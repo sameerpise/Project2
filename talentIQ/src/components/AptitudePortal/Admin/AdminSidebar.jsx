@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Box,
   Stack,
@@ -18,7 +18,7 @@ import { useTheme } from "@mui/material/styles";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-export default function AdminSidebar({ collapsed = false, onCollapseChange, onClose }) {
+export default function AdminSidebar({ collapsed = false, onClose }) {
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,10 +32,6 @@ export default function AdminSidebar({ collapsed = false, onCollapseChange, onCl
     if (onClose) onClose();
   };
 
-  useEffect(() => {
-    if (onCollapseChange) onCollapseChange(collapsed);
-  }, [collapsed, onCollapseChange]);
-
   const menuItems = [
     { label: "Dashboard", path: "/admin", icon: <DashboardIcon /> },
     { label: "Student List", path: "/admin/studentlist", icon: <SchoolIcon /> },
@@ -46,19 +42,16 @@ export default function AdminSidebar({ collapsed = false, onCollapseChange, onCl
     <Paper
       elevation={4}
       sx={{
-        height: "100%",
+        height: "100vh",
         width: collapsed ? 80 : 270,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        backdropFilter: "blur(20px)",
-        background:
-          "linear-gradient(135deg, rgba(33,150,243,0.95), rgba(30,136,229,0.9))",
+        background: "linear-gradient(135deg, #1976d2, #1565c0)",
         color: "#fff",
         borderRadius: 0,
-        transition: "all 0.3s ease",
-        overflowX: "hidden",
-        boxShadow: "4px 0 15px rgba(0,0,0,0.2)",
+        transition: "width 0.3s ease",
+        overflow: "hidden",
       }}
     >
       <Stack spacing={2} sx={{ p: 2, flexGrow: 1 }}>
@@ -77,10 +70,9 @@ export default function AdminSidebar({ collapsed = false, onCollapseChange, onCl
                 height: 80,
                 mx: "auto",
                 border: "2px solid rgba(255,255,255,0.5)",
-                boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
               }}
             />
-            <Typography variant="h6" mt={1} fontWeight={600}>
+            <Typography variant="h6" mt={1}>
               {admin?.fullName || "Admin User"}
             </Typography>
             <Typography variant="body2" sx={{ opacity: 0.8 }}>
@@ -92,11 +84,11 @@ export default function AdminSidebar({ collapsed = false, onCollapseChange, onCl
         <Divider sx={{ bgcolor: "rgba(255,255,255,0.3)", my: 2 }} />
 
         <Stack spacing={1.2}>
-          {menuItems.map((item, index) => {
+          {menuItems.map((item) => {
             const isActive = location.pathname === item.path;
             return (
               <Tooltip
-                key={index}
+                key={item.path}
                 title={collapsed ? item.label : ""}
                 placement="right"
               >
@@ -104,23 +96,18 @@ export default function AdminSidebar({ collapsed = false, onCollapseChange, onCl
                   fullWidth
                   onClick={() => {
                     navigate(item.path);
-                    if (isMobile && onClose) onClose(); // ✅ close Drawer on mobile
+                    if (isMobile && onClose) onClose();
                   }}
                   startIcon={!collapsed ? item.icon : null}
                   sx={{
                     justifyContent: collapsed ? "center" : "flex-start",
                     color: "#fff",
-                    textTransform: "none",
                     fontWeight: isActive ? 600 : 400,
-                    fontSize: "0.95rem",
                     borderRadius: 2,
                     py: 1.2,
                     background: isActive
                       ? "rgba(255,255,255,0.25)"
                       : "transparent",
-                    boxShadow: isActive
-                      ? "0 0 12px rgba(255,255,255,0.4)"
-                      : "none",
                     "&:hover": {
                       background: "rgba(255,255,255,0.35)",
                       transform: "scale(1.05)",
@@ -136,12 +123,10 @@ export default function AdminSidebar({ collapsed = false, onCollapseChange, onCl
         </Stack>
       </Stack>
 
-      {/* LOGOUT BUTTON */}
       <Box sx={{ p: 2 }}>
         <Tooltip title={collapsed ? "Logout" : ""} placement="right">
           <Button
             fullWidth
-            variant="contained"
             startIcon={!collapsed ? <LogoutIcon /> : null}
             onClick={handleLogout}
             sx={{
@@ -153,9 +138,7 @@ export default function AdminSidebar({ collapsed = false, onCollapseChange, onCl
               textTransform: "none",
               "&:hover": {
                 background: "rgba(255,255,255,0.4)",
-                transform: "scale(1.05)",
               },
-              transition: "all 0.2s ease",
             }}
           >
             {!collapsed ? "Logout" : <LogoutIcon />}
