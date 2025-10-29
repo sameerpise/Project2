@@ -188,7 +188,7 @@ export default function AdminSidebar({ onCollapseChange }) {
         sx={{
           position: "fixed",
           top: 15,
-          left: -15,
+          left: 15,
           zIndex: 2500,
           background: "#2196f3",
           color: "#fff",
