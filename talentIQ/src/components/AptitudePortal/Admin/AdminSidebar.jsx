@@ -31,8 +31,6 @@ export default function AdminSidebar({ onCollapseChange }) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -117,7 +115,7 @@ export default function AdminSidebar({ onCollapseChange }) {
                   fullWidth
                   onClick={() => {
                     navigate(item.path);
-                    if (isMobile) setMobileOpen(false); // ✅ close drawer after click
+                    if (isMobile) setMobileOpen(false);
                   }}
                   startIcon={!collapsed ? item.icon : null}
                   sx={{
@@ -178,14 +176,17 @@ export default function AdminSidebar({ onCollapseChange }) {
     </Paper>
   );
 
+  // --- RETURN ---
   return (
     <>
       {/* SINGLE HAMBURGER ICON (TOP LEFT) */}
       <IconButton
-        onClick={() => (isMobile ? setMobileOpen(true) : setCollapsed(!collapsed))}
+        onClick={() =>
+          isMobile ? setMobileOpen(true) : setCollapsed((prev) => !prev)
+        }
         sx={{
           position: "fixed",
-          top: 0,
+          top: 15,
           left: 15,
           zIndex: 2500,
           background: "#2196f3",
@@ -220,7 +221,20 @@ export default function AdminSidebar({ onCollapseChange }) {
       </Drawer>
 
       {/* DESKTOP SIDEBAR */}
-    {!isMobile &&
-    ( <Box sx={{ position: "fixed", top: 20, left: 0, height: "100vh", zIndex: 1200, }} >
-      {sidebarContent} </Box>
-    )}
+      {!isMobile && (
+        <Box
+          sx={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            height: "100vh",
+            zIndex: 1200,
+            transition: "all 0.3s ease",
+          }}
+        >
+          {sidebarContent}
+        </Box>
+      )}
+    </>
+  );
+}
