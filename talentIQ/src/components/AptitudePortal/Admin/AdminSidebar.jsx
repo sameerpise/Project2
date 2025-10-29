@@ -30,7 +30,7 @@ export default function AdminSidebar({ onCollapseChange }) {
 
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openSidebar, setOpenSidebar] = useState(false);
+
 
 
   const handleLogout = () => {
@@ -220,11 +220,11 @@ export default function AdminSidebar({ onCollapseChange }) {
       </Drawer>
 
       {/* DESKTOP SIDEBAR */}
-      {!isMobile && openSidebar && (
+    {!isMobile && (
   <Box
     sx={{
       position: "fixed",
-      top: 20,
+      top: 0,
       left: 0,
       height: "100vh",
       zIndex: 1200,
@@ -234,6 +234,3 @@ export default function AdminSidebar({ onCollapseChange }) {
     {sidebarContent}
   </Box>
 )}
-    </>
-  );
-} 
