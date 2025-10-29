@@ -107,7 +107,7 @@ export default function AptitudeInstructions() {
         </Typography>
 
         {/* Illustration */}
-        <Box
+        {/* <Box
           component="img"
           src=""
           alt="All the Best"
@@ -118,7 +118,7 @@ export default function AptitudeInstructions() {
             borderRadius: 2,
             objectFit: "contain",
           }}
-        />
+        /> */}
 
         {/* Motivational Text */}
         <Typography
