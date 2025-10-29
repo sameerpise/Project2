@@ -22,6 +22,7 @@ import Dashboard from "./components/AptitudePortal/Dashboard";
 import Kpicards from "./components/student/Kpicards";
 import StudentProfile from "./components/student/StudentProfile";
 import AdminLayout from "./components/AptitudePortal/Admin/AdminLayout";
+import ForgetPassword from "./components/student/ForgetPassword";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path="/R" element={<RegistrationPage />} />
         <Route path="/L" element={<LandingPage />} />
         <Route path="error" element={<Error />} />
+         <Route path="/forgot-password" element={<ForgetPassword />} />
         <Route path="s" element={<StudentDashboard />} />
         {/* <Route path="/list" element={<StudentList />} /> */}
    <Route path="D" element={<DummuDash />} />
