@@ -9,8 +9,8 @@ import {
   Tooltip,
   Divider,
   Drawer,
-  Slide,
   useMediaQuery,
+  Slide,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -19,17 +19,18 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import SchoolIcon from "@mui/icons-material/School";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useTheme } from "@mui/material/styles";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export default function AdminSidebar({ mobileOpen, setMobileOpen }) {
+  const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
   const admin = useSelector((state) => state.student?.student || {});
-  const isMobile = useMediaQuery("(max-width:900px)");
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [collapsed, setCollapsed] = useState(false);
 
-  // Reset collapse state when switching between mobile/desktop
   useEffect(() => {
     if (isMobile) setCollapsed(false);
   }, [isMobile]);
@@ -46,7 +47,6 @@ export default function AdminSidebar({ mobileOpen, setMobileOpen }) {
     { label: "Tests", path: "/admin/test", icon: <AssignmentIcon /> },
   ];
 
-  // --- SIDEBAR CONTENT ---
   const sidebarContent = (
     <Slide direction="right" in={true} mountOnEnter unmountOnExit>
       <Stack
@@ -56,7 +56,7 @@ export default function AdminSidebar({ mobileOpen, setMobileOpen }) {
           justifyContent: "space-between",
           background:
             "linear-gradient(135deg, rgba(33,150,243,0.95), rgba(30,136,229,0.9))",
-          backdropFilter: "blur(20px)",
+          backdropFilter: "blur(15px)",
           color: "#fff",
           width: collapsed && !isMobile ? 80 : 270,
           transition: "width 0.35s ease, all 0.3s ease",
@@ -89,11 +89,11 @@ export default function AdminSidebar({ mobileOpen, setMobileOpen }) {
               <Avatar
                 src={admin?.avatar || "/admin.png"}
                 sx={{
-                  width: 75,
-                  height: 75,
+                  width: 80,
+                  height: 80,
                   mx: "auto",
-                  border: "2px solid rgba(255,255,255,0.5)",
-                  boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
+                  border: "2px solid rgba(255,255,255,0.4)",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
                 }}
               />
               <Typography
@@ -108,7 +108,7 @@ export default function AdminSidebar({ mobileOpen, setMobileOpen }) {
               <Typography
                 variant="body2"
                 sx={{
-                  opacity: 0.8,
+                  opacity: 0.9,
                   whiteSpace: "nowrap",
                   textOverflow: "ellipsis",
                   overflow: "hidden",
@@ -150,9 +150,7 @@ export default function AdminSidebar({ mobileOpen, setMobileOpen }) {
                       backgroundColor: isActive
                         ? "rgba(255,255,255,0.25)"
                         : "transparent",
-                      boxShadow: isActive
-                        ? "0 0 10px rgba(255,255,255,0.3)"
-                        : "none",
+                      boxShadow: isActive ? "0 0 10px rgba(255,255,255,0.3)" : "none",
                       "&:hover": {
                         backgroundColor: "rgba(255,255,255,0.35)",
                         transform: "scale(1.05)",
@@ -202,7 +200,6 @@ export default function AdminSidebar({ mobileOpen, setMobileOpen }) {
     </Slide>
   );
 
-  // --- RETURN ---
   return (
     <>
       {/* --- Drawer for Mobile --- */}
@@ -224,7 +221,7 @@ export default function AdminSidebar({ mobileOpen, setMobileOpen }) {
               background:
                 "linear-gradient(135deg, rgba(33,150,243,0.95), rgba(30,136,229,0.9))",
               color: "#fff",
-              backdropFilter: "blur(20px)",
+              backdropFilter: "blur(12px)",
               transition: "transform 0.4s ease-in-out",
               zIndex: (theme) => theme.zIndex.drawer + 2,
             },
