@@ -179,7 +179,7 @@ export default function Login() {
                 variant="body2"
                 color="primary"
                 sx={{ cursor: "pointer" }}
-                onClick={() => navigate("/forget")}
+                onClick={() => navigate("/forgot-password")}
               >
                 Forgot password?
               </Typography>
