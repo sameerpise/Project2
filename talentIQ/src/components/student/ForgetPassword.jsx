@@ -198,7 +198,7 @@ export default function ForgetPassword() {
         <Box
           sx={{
             flex: 1,
-            backgroundColor: "#f5f7fa",
+            backgroundColor: "#fffff",
             display: { xs: "none", md: "flex" },
             alignItems: "center",
             justifyContent: "center",
