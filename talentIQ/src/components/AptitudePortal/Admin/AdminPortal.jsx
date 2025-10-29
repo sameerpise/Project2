@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close';
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import TableSortLabel from "@mui/material/TableSortLabel";
+
+
 import {
   Box,
   Typography,
@@ -469,27 +474,42 @@ const handleExportPDF = () => {
   }
 
   const sortedResults = [...filteredResults].sort((a, b) => {
-    const getValue = (r, key) => {
-      const stats = getStats(r)
-      switch (key) {
-        case 'score':
-          return stats.score
-        case 'correct':
-          return stats.correct
-        case 'wrong':
-          return stats.wrong
-        case 'unanswered':
-          return stats.unanswered
-        case 'percentage':
-          return Number(stats.percentage)
-        default:
-          return (
-            r.studentId?.fullName ??
-            r.student?.fullName ??
-            ''
-          ).toLowerCase()
-      }
-    }
+   const getValue = (r, key) => {
+  const s = getStats(r);
+  const sRetest =
+    r.retestScore !== undefined ? getStats(r, true) : null;
+
+  const combined = {
+    score: Math.max(s.score, sRetest?.score ?? 0),
+    total: Math.max(s.total, sRetest?.total ?? 0),
+    correct: Math.max(s.correct, sRetest?.correct ?? 0),
+    wrong: Math.max(s.wrong, sRetest?.wrong ?? 0),
+    unanswered: Math.min(s.unanswered, sRetest?.unanswered ?? s.unanswered),
+    percentage: Math.max(Number(s.percentage), Number(sRetest?.percentage ?? 0))
+  };
+
+  switch (key) {
+    case 'score':
+      return combined.score;
+    case 'total':
+      return combined.total;
+    case 'correct':
+      return combined.correct;
+    case 'wrong':
+      return combined.wrong;
+    case 'unanswered':
+      return combined.unanswered;
+    case 'percentage':
+      return combined.percentage;
+    default:
+      return (
+        r.studentId?.fullName ??
+        r.student?.fullName ??
+        ''
+      ).toLowerCase();
+  }
+};
+
     const valA = getValue(a, sortConfig.key)
     const valB = getValue(b, sortConfig.key)
     if (valA < valB) return sortConfig.direction === 'asc' ? -1 : 1
@@ -514,7 +534,6 @@ const handleExportPDF = () => {
     const headers = [
       'Student Name',
       'Email',
-
       'Department',
       'College',
       'Original Score',
@@ -707,32 +726,45 @@ const handleExportPDF = () => {
               sx={{ borderRadius: 2, overflowX: 'auto' }}
             >
               <Table size='small'>
-                <TableHead sx={{ bgcolor: '#1976d2' }}>
-                  <TableRow>
-                    <TableCell sx={{ color: '#fff' }}>Student</TableCell>
-                    <TableCell sx={{ color: '#fff' }}>Email</TableCell>
-                    <TableCell sx={{ color: '#fff', textAlign: 'center' }}>
-                      Score
-                    </TableCell>
-                    <TableCell sx={{ color: '#fff', textAlign: 'center' }}>
-                      Total
-                    </TableCell>
-                    <TableCell sx={{ color: '#fff', textAlign: 'center' }}>
-                      Correct
-                    </TableCell>
-                    <TableCell sx={{ color: '#fff', textAlign: 'center' }}>
-                      Wrong
-                    </TableCell>
-                    <TableCell sx={{ color: '#fff', textAlign: 'center' }}>
-                      Not Answered
-                    </TableCell>
-                    <TableCell sx={{ color: '#fff', textAlign: 'center' }}>
-                      Percentage
-                    </TableCell>
-                    <TableCell sx={{ color: '#fff' }}>Retest Count</TableCell>
-                    <TableCell sx={{ color: '#fff' }}>Actions</TableCell>
-                  </TableRow>
-                </TableHead>
+              <TableHead sx={{ bgcolor: '#1976d2' }}>
+  <TableRow>
+    <TableCell sx={{ color: '#fff' }}>Student</TableCell>
+    <TableCell sx={{ color: '#fff' }}>Email</TableCell>
+
+    {/* Sortable columns */}
+    {[
+      { key: "score", label: "Score" },
+      { key: "total", label: "Total" },
+      { key: "correct", label: "Correct" },
+      { key: "wrong", label: "Wrong" },
+      { key: "unanswered", label: "Not Answered" },
+      { key: "percentage", label: "Percentage" },
+    ].map(col => (
+      <TableCell
+        key={col.key}
+        sx={{ color: '#fff', textAlign: 'center', cursor: 'pointer' }}
+        sortDirection={sortConfig.key === col.key ? sortConfig.direction : false}
+      >
+        <TableSortLabel
+          active={sortConfig.key === col.key}
+          direction={sortConfig.key === col.key ? sortConfig.direction : 'asc'}
+          onClick={() => handleSort(col.key)}
+          sx={{
+            color: 'white',
+            '&.Mui-active': { color: 'white' },
+            '& .MuiTableSortLabel-icon': { color: 'white !important' },
+          }}
+        >
+          {col.label}
+        </TableSortLabel>
+      </TableCell>
+    ))}
+
+    <TableCell sx={{ color: '#fff' }}>Retest Count</TableCell>
+    <TableCell sx={{ color: '#fff' }}>Actions</TableCell>
+  </TableRow>
+</TableHead>
+
 
                 <TableBody>
                   {paginatedResults.length === 0 ? (
