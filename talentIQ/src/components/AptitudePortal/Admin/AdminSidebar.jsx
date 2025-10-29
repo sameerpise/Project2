@@ -125,7 +125,7 @@ export default function AdminSidebar({ onCollapseChange }) {
                     fontWeight: isActive ? 600 : 400,
                     fontSize: "0.95rem",
                     borderRadius: 2,
-                    py: 1.2,
+                    py: 4.2,
                     background: isActive
                       ? "rgba(255,255,255,0.25)"
                       : "transparent",
