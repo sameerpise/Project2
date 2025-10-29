@@ -222,7 +222,7 @@ export default function AdminSidebar({ onCollapseChange }) {
         <Box
           sx={{
             position: "fixed",
-            top: 10,
+            top: 20,
             left: 0,
             height: "100vh",
             zIndex: 1200,
