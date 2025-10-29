@@ -1,160 +1,57 @@
 import React, { useState } from "react";
 import {
   Box,
-  AppBar,
   Toolbar,
+  AppBar,
   Typography,
   IconButton,
-  Avatar,
-  Tooltip,
   useMediaQuery,
   Slide,
-  Menu,
-  MenuItem,
-  Divider,
+  Tooltip,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import LogoutIcon from "@mui/icons-material/Logout";
 import AdminSidebar from "./AdminSidebar";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useSelector, useDispatch } from "react-redux";
-// import { logout } from "../../Redux/studentslice";
 
 export default function AdminLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
   const isMobile = useMediaQuery("(max-width:900px)");
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const admin = useSelector((state) => state.student?.student || {});
 
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
   const handleCollapseToggle = () => setCollapsed((prev) => !prev);
 
   const sidebarWidth = collapsed ? 80 : 270;
 
-  const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
-  const handleMenuClose = () => setAnchorEl(null);
-
-  const handleLogout = () => {
-    handleMenuClose();
-    // dispatch(logout());
-    window.location.href = "/login";
-  };
-
   return (
     <Box
       sx={{
         display: "flex",
         height: "100vh",
-        background: "linear-gradient(to top, #f3f4f6, #ffffff)",
+        bgcolor: "linear-gradient(to top, #f3f4f6, #ffffff)",
         overflow: "hidden",
       }}
     >
-      {/* 🟦 Responsive AppBar */}
-      <AppBar
-        position="fixed"
-        elevation={4}
-        sx={{
-          background: "linear-gradient(135deg, #1976d2, #1565c0)",
-          color: "#fff",
-          zIndex: 2000,
-          transition: "all 0.3s ease",
-          backdropFilter: "blur(10px)",
-        }}
-      >
-        <Toolbar sx={{ justifyContent: "space-between", px: 2 }}>
-          {/* Left Section */}
-          <Box display="flex" alignItems="center" gap={1.5}>
-            <Tooltip title={collapsed ? "Expand Sidebar" : "Collapse Sidebar"}>
-              <IconButton
-                onClick={() => (isMobile ? handleDrawerToggle() : handleCollapseToggle())}
-                sx={{
-                  color: "#fff",
-                  background: "rgba(255,255,255,0.1)",
-                  "&:hover": { background: "rgba(255,255,255,0.25)" },
-                }}
-              >
-                {isMobile ? <MenuIcon /> : collapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-              </IconButton>
-            </Tooltip>
+      {/* 🟦 AppBar (Top Bar for both Mobile & Desktop) */}
 
-            <Typography
-              variant="h6"
-              sx={{
-                fontWeight: 600,
-                letterSpacing: 0.5,
-                display: { xs: "none", sm: "block" },
-              }}
-            >
-              Admin Dashboard
-            </Typography>
-          </Box>
-
-          {/* Right Section */}
-          <Box display="flex" alignItems="center" gap={1.5}>
-            <Tooltip title="Profile">
-              <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
-                <Avatar
-                  src={admin?.avatar || "/admin.png"}
-                  alt={admin?.fullName || "Admin"}
-                  sx={{ width: 40, height: 40, border: "2px solid white" }}
-                />
-              </IconButton>
-            </Tooltip>
-
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
-              PaperProps={{
-                sx: {
-                  mt: 1.5,
-                  minWidth: 180,
-                  borderRadius: 2,
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
-                },
-              }}
-            >
-              <Typography variant="body2" sx={{ px: 2, pt: 1, fontWeight: 600 }}>
-                {admin?.fullName || "Admin User"}
-              </Typography>
-              <Typography
-                variant="caption"
-                sx={{ px: 2, pb: 1, color: "text.secondary" }}
-              >
-                {admin?.email || "admin@example.com"}
-              </Typography>
-              <Divider />
-              <MenuItem onClick={() => navigate("/admin/profile")}>Profile</MenuItem>
-              <MenuItem onClick={handleLogout}>
-                <LogoutIcon sx={{ fontSize: 18, mr: 1 }} /> Logout
-              </MenuItem>
-            </Menu>
-          </Box>
-        </Toolbar>
-      </AppBar>
 
       {/* 🟪 Sidebar */}
       <Slide direction="right" in={!isMobile || mobileOpen} mountOnEnter unmountOnExit>
         <Box
           sx={{
-            position: "fixed",
-            zIndex: 1200,
-            top: 0,
-            left: 0,
+            position: isMobile ? "fixed" : "fixed",
+            zIndex: isMobile ? 1200 : 1100,
             height: "100vh",
             width: sidebarWidth,
             flexShrink: 0,
             boxShadow: isMobile ? 6 : 0,
             bgcolor: "background.paper",
+            borderRight: "1px solid #e0e0e0",
             transition: "width 0.3s ease",
             overflow: "hidden",
-            pt: 8, // push below AppBar
           }}
         >
           <AdminSidebar
@@ -173,8 +70,9 @@ export default function AdminLayout() {
         transition={{ duration: 0.4 }}
         sx={{
           flexGrow: 1,
-          mt: "64px", // below AppBar
           ml: { xs: 0, md: `${sidebarWidth}px` },
+      
+        
           background: "linear-gradient(to bottom right, #f8fafc, #ffffff)",
           borderTopLeftRadius: { md: 24 },
           borderBottomLeftRadius: { md: 24 },
@@ -185,6 +83,7 @@ export default function AdminLayout() {
           overflow: "hidden",
         }}
       >
+        {/* 🧭 Scrollable Content */}
         <Box
           sx={{
             flexGrow: 1,
@@ -192,9 +91,11 @@ export default function AdminLayout() {
             overflowX: "hidden",
             pr: 1,
             pb: 2,
-            maxHeight: "calc(100vh - 64px)",
+            maxHeight: "calc(100vh - 64px)", // Prevent overflow beyond viewport
             scrollbarWidth: "thin",
-            "&::-webkit-scrollbar": { width: "8px" },
+            "&::-webkit-scrollbar": {
+              width: "8px",
+            },
             "&::-webkit-scrollbar-thumb": {
               backgroundColor: "#bdbdbd",
               borderRadius: "4px",
@@ -218,4 +119,4 @@ export default function AdminLayout() {
       </Box>
     </Box>
   );
-}
+} 
