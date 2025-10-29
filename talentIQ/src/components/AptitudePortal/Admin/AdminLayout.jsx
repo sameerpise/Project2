@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import {
   Box,
+  Toolbar,
+  AppBar,
+  Typography,
+  IconButton,
   useMediaQuery,
   Slide,
+  Tooltip,
 } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import AdminSidebar from "./AdminSidebar";
 import { Outlet } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -23,20 +31,18 @@ export default function AdminLayout() {
       sx={{
         display: "flex",
         height: "100vh",
-        overflow: "hidden",
         bgcolor: "linear-gradient(to top, #f3f4f6, #ffffff)",
+        overflow: "hidden",
       }}
     >
+      {/* 🟦 AppBar (Top Bar for both Mobile & Desktop) */}
+
+
       {/* 🟪 Sidebar */}
-      <Slide
-        direction="right"
-        in={!isMobile || mobileOpen}
-        mountOnEnter
-        unmountOnExit
-      >
+      <Slide direction="right" in={!isMobile || mobileOpen} mountOnEnter unmountOnExit>
         <Box
           sx={{
-            position: "fixed",
+            position: isMobile ? "fixed" : "fixed",
             zIndex: isMobile ? 1200 : 1100,
             height: "100vh",
             width: sidebarWidth,
@@ -65,12 +71,13 @@ export default function AdminLayout() {
         sx={{
           flexGrow: 1,
           ml: { xs: 0, md: `${sidebarWidth}px` },
-          width: { xs: "100%", md: `calc(100% - ${sidebarWidth}px)` },
+      
+        
           background: "linear-gradient(to bottom right, #f8fafc, #ffffff)",
           borderTopLeftRadius: { md: 24 },
           borderBottomLeftRadius: { md: 24 },
           boxShadow: { md: "inset 4px 0px 20px rgba(0,0,0,0.05)" },
-          transition: "margin-left 0.3s ease, width 0.3s ease",
+          transition: "margin 0.3s ease",
           display: "flex",
           flexDirection: "column",
           overflow: "hidden",
@@ -84,7 +91,7 @@ export default function AdminLayout() {
             overflowX: "hidden",
             pr: 1,
             pb: 2,
-            maxHeight: "100vh",
+            maxHeight: "calc(100vh - 64px)", // Prevent overflow beyond viewport
             scrollbarWidth: "thin",
             "&::-webkit-scrollbar": {
               width: "8px",
