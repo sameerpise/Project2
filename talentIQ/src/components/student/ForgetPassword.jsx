@@ -12,6 +12,8 @@ import SmartphoneIcon from "@mui/icons-material/Smartphone";
 import LockResetIcon from "@mui/icons-material/LockReset";
 import LoginpageImage from "../../assets/LoginPage.png"; // 🖼️ make sure this path is correct
 
+import background from "../../assets/22577869_20150402_025.jpg";
+
 export default function ForgetPassword() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
