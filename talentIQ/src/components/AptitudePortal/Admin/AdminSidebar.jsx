@@ -30,6 +30,8 @@ export default function AdminSidebar({ onCollapseChange }) {
 
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [openSidebar, setOpenSidebar] = useState(false);
+
 
   const handleLogout = () => {
     localStorage.removeItem("token");
