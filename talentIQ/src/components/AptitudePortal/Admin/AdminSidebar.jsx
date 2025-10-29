@@ -218,19 +218,20 @@ export default function AdminSidebar({ onCollapseChange }) {
       </Drawer>
 
       {/* DESKTOP SIDEBAR */}
-      {!isMobile && (
-        <Box
-          sx={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            height: "100vh",
-            zIndex: 1200,
-          }}
-        >
-          {sidebarContent}
-        </Box>
-      )}
+      {!isMobile && openSidebar && (
+  <Box
+    sx={{
+      position: "fixed",
+      top: 20,
+      left: 0,
+      height: "100vh",
+      zIndex: 1200,
+      transition: "all 0.3s ease",
+    }}
+  >
+    {sidebarContent}
+  </Box>
+)}
     </>
   );
 } 
