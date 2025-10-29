@@ -183,7 +183,7 @@ export default function AdminSidebar({ onCollapseChange }) {
         onClick={() => (isMobile ? setMobileOpen(true) : setCollapsed(!collapsed))}
         sx={{
           position: "fixed",
-          top: 15,
+          top: 25,
           left: 15,
           zIndex: 2500,
           background: "#2196f3",
