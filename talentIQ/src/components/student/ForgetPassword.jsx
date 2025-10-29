@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   TextField,
@@ -10,6 +11,7 @@ import {
 } from "@mui/material";
 
 export default function ForgetPassword() {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [mobile, setMobile] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -43,7 +45,7 @@ export default function ForgetPassword() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
       setSnack({ open: true, message: "Password updated successfully!", severity: "success" });
-      setTimeout(() => (window.location.href = "/login"), 1500);
+     setTimeout(() => navigate("/login"), 1500);
     } catch (err) {
       setSnack({ open: true, message: err.message, severity: "error" });
     }
