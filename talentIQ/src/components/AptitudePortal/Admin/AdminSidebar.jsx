@@ -1,241 +1,137 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  Box,
-  Stack,
-  Avatar,
+  AppBar,
+  Toolbar,
   Typography,
-  Button,
   IconButton,
-  Tooltip,
-  Divider,
-  Drawer,
+  Box,
   useMediaQuery,
-  Paper,
+  Slide,
+  Avatar,
+  Tooltip,
+  Stack,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import SchoolIcon from "@mui/icons-material/School";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { useTheme } from "@mui/material/styles";
-import { useNavigate, useLocation } from "react-router-dom";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import { motion } from "framer-motion";
+import { Outlet } from "react-router-dom";
+import AdminSidebar from "./AdminSidebar";
 import { useSelector } from "react-redux";
 
-export default function AdminSidebar({ onCollapseChange }) {
-  const theme = useTheme();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const admin = useSelector((state) => state.student?.student || {});
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
-  const [collapsed, setCollapsed] = useState(false);
+export default function AdminLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const isMobile = useMediaQuery("(max-width:900px)");
+  const admin = useSelector((state) => state.student?.student || {});
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    navigate("/login");
-  };
+  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
-  useEffect(() => {
-    if (typeof onCollapseChange === "function") {
-      onCollapseChange(collapsed);
-    }
-  }, [collapsed, onCollapseChange]);
+  const sidebarWidth = collapsed ? 80 : 270;
 
-  const menuItems = [
-    { label: "Dashboard", path: "/admin", icon: <DashboardIcon /> },
-    { label: "Student List", path: "/admin/studentlist", icon: <SchoolIcon /> },
-    { label: "Tests", path: "/admin/test", icon: <AssignmentIcon /> },
-  ];
-
-  // --- SIDEBAR CONTENT ---
-  const sidebarContent = (
-    <Paper
-      elevation={4}
-      sx={{
-        height: "100%",
-        width: collapsed ? 80 : 270,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        backdropFilter: "blur(20px)",
-        background:
-          "linear-gradient(135deg, rgba(33,150,243,0.95), rgba(30,136,229,0.9))",
-        color: "#fff",
-        borderRadius: 0,
-        transition: "all 0.3s ease",
-        overflowX: "hidden",
-        boxShadow: "4px 0 15px rgba(0,0,0,0.2)",
-      }}
-    >
-      <Stack spacing={2} sx={{ p: 2, flexGrow: 1 }}>
-        {/* HEADER */}
-        {!collapsed && (
-          <Typography variant="h6" fontWeight="bold" textAlign="center">
-            Admin Panel
-          </Typography>
-        )}
-
-        {/* ADMIN INFO */}
-        {!collapsed && (
-          <Box textAlign="center" sx={{ mt: 2 }}>
-            <Avatar
-              src={admin?.avatar || "/admin.png"}
-              sx={{
-                width: 80,
-                height: 80,
-                mx: "auto",
-                border: "2px solid rgba(255,255,255,0.5)",
-                boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
-              }}
-            />
-            <Typography variant="h6" mt={1} fontWeight={600}>
-              {admin?.fullName || "Admin User"}
-            </Typography>
-            <Typography variant="body2" sx={{ opacity: 0.8 }}>
-              {admin?.email || "admin@example.com"}
-            </Typography>
-          </Box>
-        )}
-
-        <Divider sx={{ bgcolor: "rgba(255,255,255,0.3)", my: 2 }} />
-
-        {/* MENU ITEMS */}
-        <Stack spacing={1.2}>
-          {menuItems.map((item, index) => {
-            const isActive = location.pathname === item.path;
-            return (
-              <Tooltip
-                key={index}
-                title={collapsed ? item.label : ""}
-                placement="right"
-              >
-                <Button
-                  fullWidth
-                  onClick={() => {
-                    navigate(item.path);
-                    if (isMobile) setMobileOpen(false);
-                  }}
-                  startIcon={!collapsed ? item.icon : null}
-                  sx={{
-                    justifyContent: collapsed ? "center" : "flex-start",
-                    color: "#fff",
-                    textTransform: "none",
-                    fontWeight: isActive ? 600 : 400,
-                    fontSize: "0.95rem",
-                    borderRadius: 2,
-                    py: 1.2,
-                    
-                    background: isActive
-                      ? "rgba(255,255,255,0.25)"
-                      : "transparent",
-                    boxShadow: isActive
-                      ? "0 0 12px rgba(255,255,255,0.4)"
-                      : "none",
-                    "&:hover": {
-                      background: "rgba(255,255,255,0.35)",
-                      transform: "scale(1.05)",
-                    },
-                    transition: "all 0.2s ease",
-                  }}
-                >
-                  {collapsed ? item.icon : item.label}
-                </Button>
-              </Tooltip>
-            );
-          })}
-        </Stack>
-      </Stack>
-
-      {/* LOGOUT */}
-      <Box sx={{ p: 2 }}>
-        <Tooltip title={collapsed ? "Logout" : ""} placement="right">
-          <Button
-            fullWidth
-            variant="contained"
-            startIcon={!collapsed ? <LogoutIcon /> : null}
-            onClick={handleLogout}
-            sx={{
-              py: 1.2,
-              borderRadius: 2,
-              background: "rgba(255,255,255,0.25)",
-              color: "#fff",
-              fontWeight: 600,
-              textTransform: "none",
-              "&:hover": {
-                background: "rgba(255,255,255,0.4)",
-                transform: "scale(1.05)",
-              },
-              transition: "all 0.2s ease",
-            }}
-          >
-            {!collapsed ? "Logout" : <LogoutIcon />}
-          </Button>
-        </Tooltip>
-      </Box>
-    </Paper>
-  );
-
-  // --- RETURN ---
   return (
-    <>
-      {/* SINGLE HAMBURGER ICON (TOP LEFT) */}
-      <IconButton
-        onClick={() =>
-          isMobile ? setMobileOpen(true) : setCollapsed((prev) => !prev)
-        }
-        sx={{
-          position: "fixed",
-          top: 15,
-          left: 15,
-          zIndex: 2500,
-          background: "#2196f3",
-          color: "#fff",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-          "&:hover": { background: "#1e88e5" },
-        }}
-      >
-        <MenuIcon />
-      </IconButton>
-
-      {/* MOBILE DRAWER */}
-      <Drawer
-        anchor="left"
-        open={mobileOpen}
-        onClose={() => setMobileOpen(false)}
-        ModalProps={{ keepMounted: true }}
-        sx={{
-          "& .MuiDrawer-paper": {
-            width: 270,
-            background:
-              "linear-gradient(135deg, rgba(33,150,243,0.95), rgba(30,136,229,0.9))",
-            color: "#fff",
-            backdropFilter: "blur(15px)",
-            boxShadow: "4px 0 15px rgba(0,0,0,0.3)",
-            display: "flex",
-            flexDirection: "column",
-          },
-        }}
-      >
-        {sidebarContent}
-      </Drawer>
-
-      {/* DESKTOP SIDEBAR */}
-      {!isMobile && (
+    <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
+      {/* 🟪 Sidebar */}
+      <Slide direction="right" in={!isMobile || mobileOpen} mountOnEnter unmountOnExit>
         <Box
           sx={{
             position: "fixed",
-            top: 0,
-            left: 0,
+            zIndex: isMobile ? 1300 : 1100,
             height: "100vh",
-            zIndex: 1200,
-            transition: "all 0.3s ease",
+            width: sidebarWidth,
+            flexShrink: 0,
+            transition: "width 0.3s ease",
+            overflow: "hidden",
           }}
         >
-          {sidebarContent}
+          <AdminSidebar
+            onCollapseChange={setCollapsed}
+          />
         </Box>
-      )}
-    </>
+      </Slide>
+
+      {/* 🟦 Top AppBar */}
+      <AppBar
+        position="fixed"
+        elevation={2}
+        sx={{
+          width: { md: `calc(100% - ${sidebarWidth}px)` },
+          ml: { md: `${sidebarWidth}px` },
+          background: "linear-gradient(90deg, #2196f3, #1976d2)",
+          color: "#fff",
+          transition: "all 0.3s ease",
+          borderBottomLeftRadius: { md: 24 },
+        }}
+      >
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            {isMobile && (
+              <IconButton color="inherit" edge="start" onClick={handleDrawerToggle}>
+                <MenuIcon />
+              </IconButton>
+            )}
+            <Typography variant="h6" fontWeight={600}>
+              Admin Dashboard
+            </Typography>
+          </Stack>
+
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Tooltip title="Notifications">
+              <IconButton color="inherit">
+                <NotificationsIcon />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title={admin?.fullName || "Admin"}>
+              <Avatar
+                src={admin?.avatar || "/admin.png"}
+                alt="Admin"
+                sx={{ width: 40, height: 40, border: "2px solid #fff" }}
+              />
+            </Tooltip>
+          </Stack>
+        </Toolbar>
+      </AppBar>
+
+      {/* 🟨 Main Content */}
+      <Box
+        component={motion.main}
+        initial={{ opacity: 0, x: 30 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.4 }}
+        sx={{
+          flexGrow: 1,
+          mt: "64px", // space for AppBar
+          ml: { xs: 0, md: `${sidebarWidth}px` },
+          background: "linear-gradient(to bottom right, #f8fafc, #ffffff)",
+          borderTopLeftRadius: { md: 24 },
+          borderBottomLeftRadius: { md: 24 },
+          boxShadow: { md: "inset 4px 0px 20px rgba(0,0,0,0.05)" },
+          transition: "margin 0.3s ease",
+          overflow: "hidden",
+          height: "calc(100vh - 64px)",
+        }}
+      >
+        <Box
+          sx={{
+            flexGrow: 1,
+            overflowY: "auto",
+            overflowX: "hidden",
+            px: { xs: 1, sm: 2, md: 3 },
+            pb: 2,
+            scrollbarWidth: "thin",
+            "&::-webkit-scrollbar": { width: "8px" },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "#bdbdbd",
+              borderRadius: "4px",
+            },
+          }}
+        >
+          <Box sx={{ maxWidth: "1400px", mx: "auto", p: { xs: 1, sm: 2 } }}>
+            <Outlet />
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
 }
