@@ -77,4 +77,27 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
+router.post("/forgot-password", async (req, res) => {
+  try {
+    const { mobile } = req.body;
+    const student = await Student.findOne({ mobile });
+    if (!student) return res.status(404).json({ message: "User not found" });
+    res.json({ message: "User verified", id: student._id });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Step 2: Reset password
+router.put("/reset-password/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { newPassword } = req.body;
+    const hashed = await bcrypt.hash(newPassword, 10);
+    await Student.findByIdAndUpdate(id, { password: hashed });
+    res.json({ message: "Password updated successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Error updating password" });
+  }
+});
 module.exports = router;
