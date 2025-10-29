@@ -70,12 +70,15 @@ export default function ForgetPassword() {
 
   return (
     <Box
-      sx={{
+     sx={{
         minHeight: "100vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "linear-gradient(to top, #f7c86a, #ffffff)",
+        backgroundImage: `url(${background})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         p: 2,
       }}
     >
