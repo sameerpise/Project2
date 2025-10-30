@@ -235,6 +235,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
             top: 0,
             left: 0,
             height: "100vh",
+            width: collapsed ? 80 : 250,
             zIndex: 100,
             overflow: "hidden",
           }}
