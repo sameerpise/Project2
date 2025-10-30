@@ -138,7 +138,7 @@ export default function StudentDashboard() {
   }
 
   return (
- 
+   <Box sx={{ display: "flex", bgcolor: "#f7f9fc", minHeight: "100vh", margin: 0, p: 0 }}>
       <SSidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
       <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
         {/* Header */}
@@ -527,6 +527,6 @@ export default function StudentDashboard() {
           )}
         </Box>
       </Box>
-  
+    </Box>
   );
 }
