@@ -401,95 +401,89 @@ export default function AptitudePortal() {
   const jumpToQuestion = (idx) => dispatch(setCurrentQuestionDirectly(idx));
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: { xs: "column", md: "row" },
-        gap: { xs: 2, md: 3 },
-        p: { xs: 2, md: 3 },
-        background: "#f9fbff",
-        minHeight: "90vh",
-        boxSizing: "border-box",
-        justifyContent: { md: "center" },
-      }}
+  <Box
+  sx={{
+    display: "flex",
+    flexDirection: { xs: "column", md: "row" },
+    gap: { xs: 2, md: 3 },
+    p: { xs: 2, md: 3 },
+    background: "#f9fbff",
+    minHeight: "90vh",
+    boxSizing: "border-box",
+    justifyContent: { md: "center" },
+  }}
+>
+  {/* Tracker */}
+  <Box
+    sx={{
+      width: { xs: "100%", md: 320 },
+      flexShrink: 0,
+      mb: { xs: 2, md: 0 },
+      boxSizing: "border-box",
+    }}
+  >
+    <QuestionTracker
+      questions={questions}
+      answers={answers}
+      currentQuestion={currentQuestion}
+      jumpToQuestion={jumpToQuestion}
+    />
+  </Box>
+
+  {/* Questions */}
+  <Box
+    sx={{
+      flexGrow: 1,
+      width: "100%",
+      maxWidth: 700,
+      mx: "auto",
+      boxSizing: "border-box",
+    }}
+  >
+    <motion.div
+      key={currentQuestion}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.32 }}
+      style={{ width: "100%" }}
     >
-      {/* Tracker */}
-      <Box
-        sx={{
-          width: { xs: "100%", md: 320 },
-          flexShrink: 0,
-          mb: { xs: 2, md: 0 },
-          boxSizing: "border-box",
-        }}
-      >
-        <QuestionTracker
-          questions={questions}
-          answers={answers}
-          currentQuestion={currentQuestion}
-          jumpToQuestion={jumpToQuestion}
-        />
-      </Box>
+      <TimerBar
+        timer={timer}
+        currentQuestion={currentQuestion}
+        totalQuestions={questions.length}
+      />
+      <QuestionCard
+        q={q}
+        userAnswer={userAnswer}
+        handleSelect={handleSelect}
+        showCorrect={showCorrect}
+        handleNext={handleNext}
+        handlePrev={handlePrev}
+        handleSkip={handleSkip}
+        currentQuestion={currentQuestion}
+        totalQuestions={questions.length}
+      />
+    </motion.div>
+  </Box>
 
-      {/* Questions */}
-      <Box
-        sx={{
-          flexGrow: 1,
-          width: { xs: "100%", md: "calc(100% - 320px - 24px)" },
-          boxSizing: "border-box",
-        }}
-      >
-        <motion.div
-          key={currentQuestion}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.32 }}
-          style={{ width: "100%" }}
-        >
-          <TimerBar
-            timer={timer}
-            currentQuestion={currentQuestion}
-            totalQuestions={questions.length}
-          />
-          <QuestionCard
-            q={q}
-            userAnswer={userAnswer}
-            handleSelect={handleSelect}
-            showCorrect={showCorrect}
-            handleNext={handleNext}
-            handlePrev={handlePrev}
-            handleSkip={handleSkip}
-            currentQuestion={currentQuestion}
-            totalQuestions={questions.length}
-          />
-        </motion.div>
-      </Box>
-      
-        {/* Right Sidebar - Camera */}
-      <Box
-        sx={{
-          border: "1px solid #e0e0e0",
-          borderRadius: 3,
-          p: 2,
-          bgcolor: "#fff",
-          height: "fit-content",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <DraggableCamera />
-      </Box>
-      
-      <ModalManager openModal={openModal} setOpenModal={setOpenModal} />
-
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={3000}
-        onClose={() => setOpenSnackbar(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Alert severity="warning">{snackbarMsg}</Alert>
-      </Snackbar>
+  {/* Right Sidebar - Camera */}
+  <Box
+    sx={{
+      width: { xs: "100%", md: 280 },
+      flexShrink: 0,
+      border: "1px solid #e0e0e0",
+      borderRadius: 3,
+      p: 2,
+      bgcolor: "#fff",
+      height: "fit-content",
+      display: "flex",
+      justifyContent: "center",
+    }}
+  >
+    <DraggableCamera />
+  </Box>
     </Box>
+
 
   );
 }
