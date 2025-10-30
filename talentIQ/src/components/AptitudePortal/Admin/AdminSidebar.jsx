@@ -11,7 +11,7 @@ import {
   useMediaQuery,
   Paper,
 } from "@mui/material";
-import { useState } from 'react'
+import React, { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SchoolIcon from "@mui/icons-material/School";
