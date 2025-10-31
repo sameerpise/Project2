@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { CheckCircleOutline } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import DraggableCamera from "./CameraAcess";
 
 export default function AptitudeInstructions() {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ export default function AptitudeInstructions() {
     }
   }, [countdown, startClicked, navigate]);
 
-  // Track mouse position for light animation
+  // Track mouse position
   const handleMouseMove = (e) => {
     setMousePos({ x: e.clientX, y: e.clientY });
   };
@@ -48,18 +49,18 @@ export default function AptitudeInstructions() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        minHeight: "100vh",
-        bgcolor: "#f4f6f8",
+        minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" }, // fit below AppBar
+        bgcolor: "#f0f2f5",
         overflow: "hidden",
         position: "relative",
-        p: 0,
+        p: { xs: 0, sm: 0, md: 0 },
       }}
     >
-      {/* Floating soft lights */}
-      {[...Array(10)].map((_, i) => {
-        const size = Math.random() * 4 + 3;
-        const offsetX = (Math.random() - 0.5) * 100;
-        const offsetY = (Math.random() - 0.5) * 100;
+      {/* Floating lights */}
+      {[...Array(12)].map((_, i) => {
+        const size = Math.random() * 6 + 4;
+        const offsetX = (Math.random() - 0.5) * 150;
+        const offsetY = (Math.random() - 0.5) * 150;
         return (
           <Box
             key={i}
@@ -68,35 +69,34 @@ export default function AptitudeInstructions() {
               width: size,
               height: size,
               borderRadius: "50%",
-              background: "rgba(255,255,255,0.2)",
+              background: "rgba(255,255,255,0.3)",
               top: mousePos.y + offsetY,
               left: mousePos.x + offsetX,
-              transition: "top 0.25s ease, left 0.25s ease",
+              transition: "top 0.2s ease, left 0.2s ease",
               pointerEvents: "none",
             }}
           />
         );
       })}
 
-      {/* Compact Instruction Card */}
+      {/* Main Paper */}
       <Paper
-        elevation={3}
+        elevation={0}
         sx={{
-          width: "90%",
-          maxWidth: 550,
-          p: { xs: 2, sm: 3 },
+          maxWidth: 700,
+          width: "100%",
+          p: { xs: 2, sm: 3, md: 5 },
           borderRadius: 4,
-          backgroundColor: "rgba(255,255,255,0.97)",
+          backgroundColor: "rgba(255,255,255,0.95)",
           textAlign: "center",
-          boxShadow: "0 4px 25px rgba(0,0,0,0.1)",
-          zIndex: 2,
+          zIndex: 1,
         }}
       >
-        {/* Title */}
+        {/* Header */}
         <Typography
-          variant={isMobile ? "h6" : "h5"}
+          variant={isMobile ? "h5" : "h4"}
           fontWeight="bold"
-          mb={1.5}
+          mb={2}
           sx={{
             background: "linear-gradient(90deg, #F6AE22, #FFB84C)",
             WebkitBackgroundClip: "text",
@@ -106,40 +106,47 @@ export default function AptitudeInstructions() {
           📝 Aptitude Test Instructions
         </Typography>
 
-        {/* Subheading */}
+        {/* Illustration */}
+        {/* <Box
+          component="img"
+          src=""
+          alt="All the Best"
+          sx={{
+            width: { xs: "80%", sm: "60%", md: "50%" },
+            maxWidth: 350,
+            mb: { xs: 2, sm: 3 },
+            borderRadius: 2,
+            objectFit: "contain",
+          }}
+        /> */}
+
+        {/* Motivational Text */}
         <Typography
           sx={{
-            fontSize: { xs: 13, sm: 15 },
+            fontSize: { xs: 14, sm: 16, md: 18 },
             fontWeight: 500,
-            color: "#555",
-            mb: 2,
+            color: "#444",
+            mb: { xs: 2, sm: 3 },
           }}
         >
-          Stay calm and focused — you’re just a few steps away from success 💪
+          Prepare to test your skills! Stay focused and give your best shot 💪
         </Typography>
 
-        {/* Instruction List */}
-        <List
-          sx={{
-            textAlign: "left",
-            mb: 2,
-            px: { xs: 1, sm: 2 },
-          }}
-        >
+        {/* Instructions */}
+        <List sx={{ textAlign: "left", mb: 3, px: { xs: 1, sm: 2 } }}>
           {[
-            "All questions are multiple-choice.",
-            "Do not refresh or switch tabs during the test.",
+            "Multiple-choice questions only.",
+            "Do not refresh or switch tabs; 3 warnings will auto-submit the test.",
             "Each question has a time limit.",
-            "Click ‘Start Test’ when ready.",
+            "Click 'Start Test' when ready.",
           ].map((text, index) => (
-            <ListItem key={index} sx={{ py: 0.2 }}>
-              <ListItemIcon sx={{ minWidth: 28 }}>
-                <CheckCircleOutline sx={{ color: "#F6AE22", fontSize: 18 }} />
+            <ListItem key={index} sx={{ py: 0.5 }}>
+              <ListItemIcon sx={{ minWidth: 32 }}>
+                <CheckCircleOutline sx={{ color: "#F6AE22" }} />
               </ListItemIcon>
               <ListItemText
                 primaryTypographyProps={{
-                  fontSize: { xs: 12, sm: 13.5 },
-                  color: "#333",
+                  fontSize: { xs: 12, sm: 13, md: 14 },
                 }}
                 primary={`${index + 1}. ${text}`}
               />
@@ -150,28 +157,30 @@ export default function AptitudeInstructions() {
         {/* Countdown */}
         {countdown > 0 && (
           <Typography
-            variant={isMobile ? "h3" : "h2"}
+            variant={isMobile ? "h2" : "h3"}
             fontWeight="bold"
-            sx={{ color: "#F6AE22", mb: 1 }}
+            sx={{ color: "#F6AE22", mb: 2 }}
           >
             {countdown}
           </Typography>
         )}
 
-        {/* Start Test Button */}
+        {/* Start Button */}
         <Button
           variant="contained"
-          size="medium"
+          size={isMobile ? "medium" : "large"}
           sx={{
             background: "linear-gradient(90deg, #F6AE22, #FFB84C)",
             color: "#fff",
             fontWeight: "bold",
-            px: 4,
-            py: 1,
+            px: { xs: 3, sm: 5 },
+            py: { xs: 1, sm: 1.5 },
             borderRadius: 3,
-            fontSize: { xs: 13, sm: 14 },
             transition: "all 0.3s ease",
-            "&:hover": { transform: "scale(1.05)" },
+            fontSize: { xs: 12, sm: 14, md: 15 },
+            "&:hover": {
+              transform: "scale(1.05)",
+            },
           }}
           onClick={handleStart}
           disabled={startClicked}
@@ -182,10 +191,10 @@ export default function AptitudeInstructions() {
         {/* Footer */}
         <Typography
           sx={{
-            fontSize: { xs: 15, sm: 17 },
+            fontSize: { xs: 16, sm: 18, md: 20 },
             fontWeight: "bold",
             color: "#F6AE22",
-            mt: 2,
+            mt: { xs: 2, sm: 3 },
           }}
         >
           🎯 All the Best!
