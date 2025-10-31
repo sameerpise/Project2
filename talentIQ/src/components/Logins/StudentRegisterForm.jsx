@@ -209,7 +209,7 @@ export default function StudentRegistrationForm() {
     flex: "0 0 42%",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff7e6",
+    backgroundColor: "#fffff",
     overflow: "hidden",
     minHeight: "100%", // ensures full column height
   }}
