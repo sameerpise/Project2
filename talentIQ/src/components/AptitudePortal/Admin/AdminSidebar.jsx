@@ -25,7 +25,7 @@ export default function AdminSidebar({ onCollapseChange }) {
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
-  const admin = useSelector((state) => state.student?.student || {});
+  const admin = JSON.parse(localStorage.getItem("admin")) || {};
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const [collapsed, setCollapsed] = useState(false);
