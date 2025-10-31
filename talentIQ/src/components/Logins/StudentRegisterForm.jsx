@@ -137,6 +137,8 @@ const isFormValid = () => {
   ];
   return requiredFields.every((field) => form[field].trim() !== "") && form.password === form.confirmPassword;
 };
+const completedYears = ["2018", "2019", "2020", "2021", "2022", "2023", "2024"];
+  const pursuingYears = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
 
   return (
     <ThemeProvider theme={theme}>
@@ -354,11 +356,11 @@ const isFormValid = () => {
                     <option value="Pursuing">Pursuing</option>
                   </TextField>
                 </Grid>
-                {(form.pursuingYear === "Completed" || form.pursuingYear === "Pursuing") && (
+                {form.pursuingYear==="Completed" || form.pursuingYear==="Pursuing" && (
                   <Grid item xs={12} sm={6}>
                     <TextField
                       select
-                      label="Year"
+                      label={form.pursuingYear === "Completed" ? "Completion Year *" : "Current Year *"}
                       value={form.whichYear}
                       onChange={handleChange("whichYear")}
                       SelectProps={{ native: true }}
@@ -367,10 +369,12 @@ const isFormValid = () => {
                       sx={textFieldStyle}
                     >
                       <option value=""></option>
-                      <option value="1st">1st Year</option>
-                      <option value="2nd">2nd Year</option>
-                      <option value="3rd">3rd Year</option>
-                      <option value="4th">4th Year</option>
+                       <option value=""></option>
+                      {(form.pursuingYear === "Completed" ? completedYears : pursuingYears).map((year) => (
+                        <option key={year} value={year}>
+                          {year}
+                        </option>
+                      ))}
                     </TextField>
                   </Grid>
                 )}
