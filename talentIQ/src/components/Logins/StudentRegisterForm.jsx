@@ -6,6 +6,7 @@ import {
   Paper,
   Typography,
   TextField,
+  Button,
   InputAdornment,
   FormControl,
   RadioGroup,
@@ -91,24 +92,24 @@ export default function StudentRegistrationForm() {
     }
   };
 
-  const handleSubmit = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("https://project2-f2lk.onrender.com/api/students/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
-      setSnack({ open: true, message: "Registered successfully!", severity: "success" });
-      setTimeout(() => navigate("/login"), 1500);
-    } catch (err) {
-      setSnack({ open: true, message: err.message, severity: "error" });
-    } finally {
-      setLoading(false);
-    }
-  };
+ const handleSubmit = async () => {
+  setLoading(true);
+  try {
+    const res = await fetch("https://project2-f2lk.onrender.com/api/students/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message);
+    setSnack({ open: true, message: "Registered successfully!", severity: "success" });
+    setTimeout(() => navigate("/login"), 1500);
+  } catch (err) {
+    setSnack({ open: true, message: err.message, severity: "error" });
+  } finally {
+    setLoading(false);
+  }
+};
 
   const textFieldStyle = {
     "& .MuiOutlinedInput-root": {
@@ -117,84 +118,94 @@ export default function StudentRegistrationForm() {
       "&.Mui-focused fieldset": { borderColor: "#808080" },
     },
   };
-
-  const isFormValid = () => {
-    const requiredFields = [
-      "fullName",
-      "email",
-      "mobile",
-      "gender",
-      "dob",
-      "college",
-      "department",
-      "pursuingYear",
-      "whichYear",
-      "pincode",
-      "city",
-      "password",
-      "confirmPassword",
-    ];
-    return requiredFields.every((field) => form[field].trim() !== "") && form.password === form.confirmPassword;
-  };
-
-  const completedYears = ["2018", "2019", "2020", "2021", "2022", "2023", "2024"];
-  const pursuingYears = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
+// Helper function to check form validity
+const isFormValid = () => {
+  const requiredFields = [
+    "fullName",
+    "email",
+    "mobile",
+    "gender",
+    "dob",
+    "college",
+    "department",
+    "pursuingYear",
+    "whichYear",
+    "pincode",
+    "city",
+    "password",
+    "confirmPassword",
+  ];
+  return requiredFields.every((field) => form[field].trim() !== "") && form.password === form.confirmPassword;
+};
 
   return (
     <ThemeProvider theme={theme}>
-      <Box
-        sx={{
-          minHeight: "100vh",
-          backgroundColor: "background.default",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          p: { xs: 1, sm: 2 },
-        }}
-      >
-        <Paper
-          elevation={4}
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            width: "100%",
-            maxWidth: 1300,
-            borderRadius: 3,
-            overflow: "hidden",
-            height: { xs: "auto", md: "100vh" },
-          }}
-        >
+    <Box
+  sx={{
+    minHeight: "100vh",
+    backgroundColor: "background.default",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    p: { xs: 1, sm: 2 },
+    pt: { xs: `calc(env(safe-area-inset-top, 20px) + 10px)`, md: 3 }, // <-- added top safe area
+  }}
+>
+<Paper
+  elevation={4}
+  sx={{
+    display: "flex",
+    flexDirection: { xs: "column", md: "row" },
+    width: "100%",
+    maxWidth: 1300,
+    borderRadius: 3,
+    overflow: "hidden",
+    height: { xs: "auto", md: "100vh" }, // ✅ auto height on small screens
+  }}
+>
           {/* LEFT IMAGE */}
-          <Box
-            sx={{
-              display: { xs: "none", sm: "none", md: "flex" },
-              flex: "0 0 42%",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "#fff7e6",
-            }}
-          >
-            <Box component="img" src={img1} alt="Registration" sx={{ width: "100%", height: "100%", objectFit: "cover" }} />
-          </Box>
-
-          {/* RIGHT FORM */}
-          <Box
-            sx={{
-              flex: 1,
-              p: { xs: 2, sm: 3, md: 4 },
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              overflowY: "auto",
-            }}
-          >
+{/* LEFT IMAGE */}
+<Box
+  sx={{
+    display: { xs: "none", sm: "none", md: "flex" }, // ✅ hide on mobile & tablet
+    flex: "0 0 42%", // fixed width on large screens
+    height: "auto", // auto height to fit parent Paper
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
+    backgroundColor: "#fff7e6",
+  }}
+>
+  <Box
+    component="img"
+    src={img1}
+    alt="Registration"
+    sx={{
+      width: "100%",
+      height: "100%",
+      objectFit: "cover",
+      display: "block",
+    }}
+  />
+</Box>
+   {/* RIGHT FORM */}
+        <Box
+  sx={{
+    flex: 1,
+    p: { xs: 2, sm: 3, md: 4 },
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    overflowY: "auto", // <-- allows scrolling
+  }}
+>
             <Box>
               <Typography
                 variant="h3"
                 align="center"
                 sx={{ fontWeight: 600, color: "primary.main", mb: 1, fontSize: { xs: 20, md: 29 } }}
               >
-                🎓 Student Registration
+                 🎓 Student Registration
               </Typography>
               <Divider sx={{ mb: 2, bgcolor: "primary.main" }} />
 
@@ -205,7 +216,7 @@ export default function StudentRegistrationForm() {
               <Grid container spacing={1.5}>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="Full Name *"
+                    label="Full Name"
                     value={form.fullName}
                     onChange={handleChange("fullName")}
                     fullWidth
@@ -223,7 +234,7 @@ export default function StudentRegistrationForm() {
 
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="Email *"
+                    label="Email"
                     value={form.email}
                     onChange={handleChange("email")}
                     fullWidth
@@ -241,7 +252,7 @@ export default function StudentRegistrationForm() {
 
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="Mobile *"
+                    label="Mobile"
                     value={form.mobile}
                     onChange={handleChange("mobile")}
                     fullWidth
@@ -259,7 +270,7 @@ export default function StudentRegistrationForm() {
 
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="Date of Birth *"
+                    label="Date of Birth"
                     type="date"
                     value={form.dob}
                     onChange={handleChange("dob")}
@@ -295,7 +306,7 @@ export default function StudentRegistrationForm() {
               <Grid container spacing={1.5}>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="College *"
+                    label="College"
                     value={form.college}
                     onChange={handleChange("college")}
                     fullWidth
@@ -312,7 +323,7 @@ export default function StudentRegistrationForm() {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="Department *"
+                    label="Department"
                     value={form.department}
                     onChange={handleChange("department")}
                     fullWidth
@@ -330,7 +341,7 @@ export default function StudentRegistrationForm() {
                 <Grid item xs={12} sm={6}>
                   <TextField
                     select
-                    label="Status *"
+                    label="Status"
                     value={form.pursuingYear}
                     onChange={handleChange("pursuingYear")}
                     SelectProps={{ native: true }}
@@ -343,12 +354,11 @@ export default function StudentRegistrationForm() {
                     <option value="Pursuing">Pursuing</option>
                   </TextField>
                 </Grid>
-
-                {form.pursuingYear && (
+                {(form.pursuingYear === "Completed" || form.pursuingYear === "Pursuing") && (
                   <Grid item xs={12} sm={6}>
                     <TextField
                       select
-                      label={form.pursuingYear === "Completed" ? "Completion Year *" : "Current Year *"}
+                      label="Year"
                       value={form.whichYear}
                       onChange={handleChange("whichYear")}
                       SelectProps={{ native: true }}
@@ -357,11 +367,10 @@ export default function StudentRegistrationForm() {
                       sx={textFieldStyle}
                     >
                       <option value=""></option>
-                      {(form.pursuingYear === "Completed" ? completedYears : pursuingYears).map((year) => (
-                        <option key={year} value={year}>
-                          {year}
-                        </option>
-                      ))}
+                      <option value="1st">1st Year</option>
+                      <option value="2nd">2nd Year</option>
+                      <option value="3rd">3rd Year</option>
+                      <option value="4th">4th Year</option>
                     </TextField>
                   </Grid>
                 )}
@@ -374,7 +383,7 @@ export default function StudentRegistrationForm() {
               <Grid container spacing={1.5}>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="PIN Code *"
+                    label="PIN Code"
                     value={form.pincode}
                     onChange={handlePinChange}
                     fullWidth
@@ -391,7 +400,7 @@ export default function StudentRegistrationForm() {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="City *"
+                    label="City"
                     value={form.city}
                     fullWidth
                     variant="outlined"
@@ -415,7 +424,7 @@ export default function StudentRegistrationForm() {
               <Grid container spacing={1.5}>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="Password *"
+                    label="Password"
                     type="password"
                     value={form.password}
                     onChange={handleChange("password")}
@@ -433,7 +442,7 @@ export default function StudentRegistrationForm() {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="Confirm Password *"
+                    label="Confirm Password"
                     type="password"
                     value={form.confirmPassword}
                     onChange={handleChange("confirmPassword")}
@@ -454,26 +463,30 @@ export default function StudentRegistrationForm() {
 
             {/* REGISTER BUTTON */}
             <Box sx={{ textAlign: "center", mt: 2 }}>
-              <LoadingButton
-                loading={loading}
-                loadingPosition="start"
-                variant="contained"
-                color="primary"
-                size="medium"
-                onClick={handleSubmit}
-                disabled={!isFormValid()}
-                sx={{
-                  px: { xs: 4, sm: 6 },
-                  py: 1.2,
-                  fontWeight: 600,
-                  textTransform: "none",
-                  borderRadius: 2,
-                }}
-              >
-                {loading ? "Registering..." : "Register"}
-              </LoadingButton>
+ <LoadingButton
+  loading={loading}
+  loadingPosition="start"
+  variant="contained"
+  color="primary"
+  size="medium"
+  onClick={handleSubmit}
+  disabled={!isFormValid()}
+  sx={{
+    px: { xs: 4, sm: 6 },
+    py: 1.2,
+    fontWeight: 600,
+    textTransform: "none",
+    borderRadius: 2,
+  }}
+>
+  {loading ? "Registering..." : "Register"}
+</LoadingButton>
 
-              <Typography variant="body2" sx={{ mt: 2, textAlign: "center", fontSize: { xs: 13, sm: 14 } }}>
+
+              <Typography
+                variant="body2"
+                sx={{ mt: 2, textAlign: "center", fontSize: { xs: 13, sm: 14 } }}
+              >
                 Have an Admin account?{" "}
                 <Typography
                   component="span"
@@ -488,7 +501,11 @@ export default function StudentRegistrationForm() {
           </Box>
         </Paper>
 
-        <Snackbar open={snack.open} autoHideDuration={3000} onClose={() => setSnack({ ...snack, open: false })}>
+        <Snackbar
+          open={snack.open}
+          autoHideDuration={3000}
+          onClose={() => setSnack({ ...snack, open: false })}
+        >
           <Alert severity={snack.severity}>{snack.message}</Alert>
         </Snackbar>
       </Box>
