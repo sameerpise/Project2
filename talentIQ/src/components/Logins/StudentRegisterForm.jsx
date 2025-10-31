@@ -301,83 +301,95 @@ const completedYears = ["2018", "2019", "2020", "2021", "2022", "2023", "2024"];
                 </Grid>
               </Grid>
 
-              {/* EDUCATION */}
-              <Typography variant="subtitle1" sx={{ fontWeight: 500, mt: 2, mb: 1 }}>
-                🎓 Education
-              </Typography>
-              <Grid container spacing={1.5}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="College"
-                    value={form.college}
-                    onChange={handleChange("college")}
-                    fullWidth
-                    variant="outlined"
-                    sx={textFieldStyle}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SchoolIcon color="primary" />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Department"
-                    value={form.department}
-                    onChange={handleChange("department")}
-                    fullWidth
-                    variant="outlined"
-                    sx={textFieldStyle}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <BusinessIcon color="primary" />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    select
-                    label="Status"
-                    value={form.pursuingYear}
-                    onChange={handleChange("pursuingYear")}
-                    SelectProps={{ native: true }}
-                    fullWidth
-                    variant="outlined"
-                    sx={textFieldStyle}
-                  >
-                    <option value=""></option>
-                    <option value="Completed">Completed</option>
-                    <option value="Pursuing">Pursuing</option>
-                  </TextField>
-                </Grid>
-                {(form.pursuingYear === "Completed" || form.pursuingYear === "Pursuing") && (
+         {/* 🎓 Education */}
+<Typography variant="subtitle1" sx={{ fontWeight: 500, mt: 2, mb: 1 }}>
+  🎓 Education
+</Typography>
+<Grid container spacing={1.5}>
+  <Grid item xs={12} sm={6}>
+    <TextField
+      label="College"
+      value={form.college}
+      onChange={handleChange("college")}
+      fullWidth
+      variant="outlined"
+      sx={textFieldStyle}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <SchoolIcon color="primary" />
+          </InputAdornment>
+        ),
+      }}
+    />
+  </Grid>
+
+  <Grid item xs={12} sm={6}>
+    <TextField
+      label="Department"
+      value={form.department}
+      onChange={handleChange("department")}
+      fullWidth
+      variant="outlined"
+      sx={textFieldStyle}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <BusinessIcon color="primary" />
+          </InputAdornment>
+        ),
+      }}
+    />
+  </Grid>
+
   <Grid item xs={12} sm={6}>
     <TextField
       select
-      label={form.pursuingYear === "Completed" ? "Completion Year *" : "Current Year *"}
-      value={form.whichYear}
-      onChange={handleChange("whichYear")}
+      label="Status"
+      value={form.pursuingYear}
+      onChange={(e) => {
+        const value = e.target.value;
+        setForm((prev) => ({
+          ...prev,
+          pursuingYear: value,
+          whichYear: "", // reset dependent field
+        }));
+      }}
       SelectProps={{ native: true }}
       fullWidth
       variant="outlined"
       sx={textFieldStyle}
     >
       <option value=""></option>
-      {(form.pursuingYear === "Completed" ? completedYears : pursuingYears).map((year) => (
-        <option key={year} value={year}>
-          {year}
-        </option>
-      ))}
+      <option value="Completed">Completed</option>
+      <option value="Pursuing">Pursuing</option>
     </TextField>
   </Grid>
-)}
-              </Grid>
+
+  {/* ✅ Conditionally Render Year Dropdown */}
+  {form.pursuingYear && (
+    <Grid item xs={12} sm={6}>
+      <TextField
+        select
+        label={form.pursuingYear === "Completed" ? "Completion Year *" : "Current Year *"}
+        value={form.whichYear}
+        onChange={handleChange("whichYear")}
+        SelectProps={{ native: true }}
+        fullWidth
+        variant="outlined"
+        sx={textFieldStyle}
+      >
+        <option value=""></option>
+        {(form.pursuingYear === "Completed" ? completedYears : pursuingYears).map((year) => (
+          <option key={year} value={year}>
+            {year}
+          </option>
+        ))}
+      </TextField>
+    </Grid>
+  )}
+</Grid>
+
 
               {/* ADDRESS */}
               <Typography variant="subtitle1" sx={{ fontWeight: 500, mt: 2, mb: 1 }}>
