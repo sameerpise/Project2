@@ -383,7 +383,7 @@ const completedYears = ["2018", "2019", "2020", "2021", "2022", "2023", "2024"];
     variant="outlined"
     sx={{
       ...textFieldStyle,
-      width: { xs: "100%", md: "120%" }, // optional width increase
+      width: { xs: "100%", md: "140%" }, // optional width increase
     }}
     InputLabelProps={{
       shrink: true, // 👈 keeps the label visible and properly positioned
