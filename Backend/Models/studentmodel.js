@@ -12,7 +12,7 @@ const studentSchema = new mongoose.Schema({
   gender: { type: String, required: true },
   address: { type: String },
   pursuingYear: { type: String, enum: ["Completed", "Pursuing"], required: true },
-  whichYear: { type: String, enum: ["1st", "2nd", "3rd", "4th"], required: false },
+  whichYear: { type: String, required: false },
   dob: { type: Date, required: true },
   password: { type: String, required: true },
   testGiven: { type: Boolean, default: false },
