@@ -182,7 +182,7 @@ export default function StudentRegistrationForm() {
       <Box
         sx={{
           minHeight: "100vh",
-          backgroundColor: ""#ffffff",
+          backgroundColor: "#ffffff",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
