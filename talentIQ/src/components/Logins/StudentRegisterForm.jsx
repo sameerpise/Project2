@@ -29,11 +29,13 @@ import LocationCityIcon from "@mui/icons-material/LocationCity";
 import LockIcon from "@mui/icons-material/Lock";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import img1 from "../../assets/website-registration-concept-create-account-login-illustration-vector.jpg";
+
 import { useNavigate } from "react-router-dom";
 
 const theme = createTheme({
   palette: {
     primary: { main: "#f6ae22" },
+    secondary: { main: "#857f7fff" },
     background: { default: "#f6f6f6", paper: "#ffffff" },
     text: { primary: "#333" },
   },
@@ -53,21 +55,20 @@ export default function StudentRegistrationForm() {
     department: "",
     pursuingYear: "",
     whichYear: "",
+    address: "",
     pincode: "",
     city: "",
     password: "",
     confirmPassword: "",
   });
-  const [errors, setErrors] = useState({});
-  const [snack, setSnack] = useState({ open: false, message: "", severity: "success" });
 
+  const [snack, setSnack] = useState({ open: false, message: "", severity: "success" });
   const isSmall = useMediaQuery("(max-width:900px)");
 
   const handleChange = (key) => (e) => {
     let value = e.target.value;
     if (["mobile", "pincode"].includes(key)) value = value.replace(/\D/g, "");
     setForm((prev) => ({ ...prev, [key]: value }));
-    setErrors((prev) => ({ ...prev, [key]: "" })); // clear error
   };
 
   const fetchCityFromPin = async (pin) => {
@@ -84,54 +85,13 @@ export default function StudentRegistrationForm() {
   const handlePinChange = async (e) => {
     const pincode = e.target.value.replace(/\D/g, "");
     setForm((prev) => ({ ...prev, pincode }));
-    setErrors((prev) => ({ ...prev, pincode: "" }));
     if (pincode.length === 6) {
       const city = await fetchCityFromPin(pincode);
       setForm((prev) => ({ ...prev, city }));
     }
   };
 
-  const completedYears = ["2018", "2019", "2020", "2021", "2022", "2023", "2024"];
-  const pursuingYears = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
-
-  const validateForm = () => {
-    let newErrors = {};
-    const requiredFields = [
-      "fullName",
-      "email",
-      "mobile",
-      "gender",
-      "dob",
-      "college",
-      "department",
-      "pursuingYear",
-      "whichYear",
-      "pincode",
-      "city",
-      "password",
-      "confirmPassword",
-    ];
-
-    requiredFields.forEach((field) => {
-      if (!form[field]) newErrors[field] = "This field is required";
-    });
-
-    if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      newErrors.email = "Enter a valid email";
-    if (form.mobile && form.mobile.length !== 10)
-      newErrors.mobile = "Mobile number must be 10 digits";
-    if (form.password && form.password.length < 6)
-      newErrors.password = "Password must be at least 6 characters";
-    if (form.password !== form.confirmPassword)
-      newErrors.confirmPassword = "Passwords do not match";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleSubmit = async () => {
-    if (!validateForm()) return;
-
     setLoading(true);
     try {
       const res = await fetch("https://project2-f2lk.onrender.com/api/students/register", {
@@ -157,6 +117,28 @@ export default function StudentRegistrationForm() {
       "&.Mui-focused fieldset": { borderColor: "#808080" },
     },
   };
+
+  const isFormValid = () => {
+    const requiredFields = [
+      "fullName",
+      "email",
+      "mobile",
+      "gender",
+      "dob",
+      "college",
+      "department",
+      "pursuingYear",
+      "whichYear",
+      "pincode",
+      "city",
+      "password",
+      "confirmPassword",
+    ];
+    return requiredFields.every((field) => form[field].trim() !== "") && form.password === form.confirmPassword;
+  };
+
+  const completedYears = ["2018", "2019", "2020", "2021", "2022", "2023", "2024"];
+  const pursuingYears = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
 
   return (
     <ThemeProvider theme={theme}>
@@ -192,12 +174,7 @@ export default function StudentRegistrationForm() {
               backgroundColor: "#fff7e6",
             }}
           >
-            <Box
-              component="img"
-              src={img1}
-              alt="Registration"
-              sx={{ width: "100%", height: "100%", objectFit: "cover" }}
-            />
+            <Box component="img" src={img1} alt="Registration" sx={{ width: "100%", height: "100%", objectFit: "cover" }} />
           </Box>
 
           {/* RIGHT FORM */}
@@ -213,9 +190,9 @@ export default function StudentRegistrationForm() {
           >
             <Box>
               <Typography
-                variant="h4"
+                variant="h3"
                 align="center"
-                sx={{ fontWeight: 600, color: "primary.main", mb: 1 }}
+                sx={{ fontWeight: 600, color: "primary.main", mb: 1, fontSize: { xs: 20, md: 29 } }}
               >
                 🎓 Student Registration
               </Typography>
@@ -228,13 +205,10 @@ export default function StudentRegistrationForm() {
               <Grid container spacing={1.5}>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    required
-                    label="Full Name"
+                    label="Full Name *"
                     value={form.fullName}
                     onChange={handleChange("fullName")}
                     fullWidth
-                    error={!!errors.fullName}
-                    helperText={errors.fullName}
                     variant="outlined"
                     sx={textFieldStyle}
                     InputProps={{
@@ -249,13 +223,10 @@ export default function StudentRegistrationForm() {
 
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    required
-                    label="Email"
+                    label="Email *"
                     value={form.email}
                     onChange={handleChange("email")}
                     fullWidth
-                    error={!!errors.email}
-                    helperText={errors.email}
                     variant="outlined"
                     sx={textFieldStyle}
                     InputProps={{
@@ -270,13 +241,10 @@ export default function StudentRegistrationForm() {
 
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    required
-                    label="Mobile"
+                    label="Mobile *"
                     value={form.mobile}
                     onChange={handleChange("mobile")}
                     fullWidth
-                    error={!!errors.mobile}
-                    helperText={errors.mobile}
                     variant="outlined"
                     sx={textFieldStyle}
                     InputProps={{
@@ -291,14 +259,11 @@ export default function StudentRegistrationForm() {
 
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    required
-                    label="Date of Birth"
+                    label="Date of Birth *"
                     type="date"
                     value={form.dob}
                     onChange={handleChange("dob")}
                     fullWidth
-                    error={!!errors.dob}
-                    helperText={errors.dob}
                     InputLabelProps={{ shrink: true }}
                     variant="outlined"
                     sx={textFieldStyle}
@@ -313,15 +278,12 @@ export default function StudentRegistrationForm() {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <FormControl component="fieldset" error={!!errors.gender}>
+                  <FormControl component="fieldset">
                     <RadioGroup row value={form.gender} onChange={handleChange("gender")}>
                       <FormControlLabel value="Male" control={<Radio color="primary" />} label="Male" />
                       <FormControlLabel value="Female" control={<Radio color="primary" />} label="Female" />
                       <FormControlLabel value="Other" control={<Radio color="primary" />} label="Other" />
                     </RadioGroup>
-                    <Typography variant="caption" color="error">
-                      {errors.gender}
-                    </Typography>
                   </FormControl>
                 </Grid>
               </Grid>
@@ -333,13 +295,10 @@ export default function StudentRegistrationForm() {
               <Grid container spacing={1.5}>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    required
-                    label="College"
+                    label="College *"
                     value={form.college}
                     onChange={handleChange("college")}
                     fullWidth
-                    error={!!errors.college}
-                    helperText={errors.college}
                     variant="outlined"
                     sx={textFieldStyle}
                     InputProps={{
@@ -351,16 +310,12 @@ export default function StudentRegistrationForm() {
                     }}
                   />
                 </Grid>
-
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    required
-                    label="Department"
+                    label="Department *"
                     value={form.department}
                     onChange={handleChange("department")}
                     fullWidth
-                    error={!!errors.department}
-                    helperText={errors.department}
                     variant="outlined"
                     sx={textFieldStyle}
                     InputProps={{
@@ -372,18 +327,14 @@ export default function StudentRegistrationForm() {
                     }}
                   />
                 </Grid>
-
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    required
                     select
-                    label="Status"
+                    label="Status *"
                     value={form.pursuingYear}
                     onChange={handleChange("pursuingYear")}
                     SelectProps={{ native: true }}
                     fullWidth
-                    error={!!errors.pursuingYear}
-                    helperText={errors.pursuingYear}
                     variant="outlined"
                     sx={textFieldStyle}
                   >
@@ -396,15 +347,12 @@ export default function StudentRegistrationForm() {
                 {form.pursuingYear && (
                   <Grid item xs={12} sm={6}>
                     <TextField
-                      required
                       select
-                      label={form.pursuingYear === "Completed" ? "Completion Year" : "Current Year"}
+                      label={form.pursuingYear === "Completed" ? "Completion Year *" : "Current Year *"}
                       value={form.whichYear}
                       onChange={handleChange("whichYear")}
                       SelectProps={{ native: true }}
                       fullWidth
-                      error={!!errors.whichYear}
-                      helperText={errors.whichYear}
                       variant="outlined"
                       sx={textFieldStyle}
                     >
@@ -426,13 +374,10 @@ export default function StudentRegistrationForm() {
               <Grid container spacing={1.5}>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    required
-                    label="PIN Code"
+                    label="PIN Code *"
                     value={form.pincode}
                     onChange={handlePinChange}
                     fullWidth
-                    error={!!errors.pincode}
-                    helperText={errors.pincode}
                     variant="outlined"
                     sx={textFieldStyle}
                     InputProps={{
@@ -446,12 +391,9 @@ export default function StudentRegistrationForm() {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    required
-                    label="City"
+                    label="City *"
                     value={form.city}
                     fullWidth
-                    error={!!errors.city}
-                    helperText={errors.city}
                     variant="outlined"
                     InputProps={{
                       readOnly: true,
@@ -473,14 +415,11 @@ export default function StudentRegistrationForm() {
               <Grid container spacing={1.5}>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    required
-                    label="Password"
+                    label="Password *"
                     type="password"
                     value={form.password}
                     onChange={handleChange("password")}
                     fullWidth
-                    error={!!errors.password}
-                    helperText={errors.password}
                     variant="outlined"
                     sx={textFieldStyle}
                     InputProps={{
@@ -492,17 +431,13 @@ export default function StudentRegistrationForm() {
                     }}
                   />
                 </Grid>
-
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    required
-                    label="Confirm Password"
+                    label="Confirm Password *"
                     type="password"
                     value={form.confirmPassword}
                     onChange={handleChange("confirmPassword")}
                     fullWidth
-                    error={!!errors.confirmPassword}
-                    helperText={errors.confirmPassword}
                     variant="outlined"
                     sx={textFieldStyle}
                     InputProps={{
@@ -521,10 +456,12 @@ export default function StudentRegistrationForm() {
             <Box sx={{ textAlign: "center", mt: 2 }}>
               <LoadingButton
                 loading={loading}
+                loadingPosition="start"
                 variant="contained"
                 color="primary"
                 size="medium"
                 onClick={handleSubmit}
+                disabled={!isFormValid()}
                 sx={{
                   px: { xs: 4, sm: 6 },
                   py: 1.2,
@@ -536,7 +473,7 @@ export default function StudentRegistrationForm() {
                 {loading ? "Registering..." : "Register"}
               </LoadingButton>
 
-              <Typography variant="body2" sx={{ mt: 2 }}>
+              <Typography variant="body2" sx={{ mt: 2, textAlign: "center", fontSize: { xs: 13, sm: 14 } }}>
                 Have an Admin account?{" "}
                 <Typography
                   component="span"
