@@ -356,28 +356,27 @@ const completedYears = ["2018", "2019", "2020", "2021", "2022", "2023", "2024"];
                     <option value="Pursuing">Pursuing</option>
                   </TextField>
                 </Grid>
-                {form.pursuingYear==="Completed" || form.pursuingYear==="Pursuing" && (
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      select
-                      label={form.pursuingYear === "Completed" ? "Completion Year *" : "Current Year *"}
-                      value={form.whichYear}
-                      onChange={handleChange("whichYear")}
-                      SelectProps={{ native: true }}
-                      fullWidth
-                      variant="outlined"
-                      sx={textFieldStyle}
-                    >
-                      <option value=""></option>
-                       <option value=""></option>
-                      {(form.pursuingYear === "Completed" ? completedYears : pursuingYears).map((year) => (
-                        <option key={year} value={year}>
-                          {year}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
-                )}
+                {(form.pursuingYear === "Completed" || form.pursuingYear === "Pursuing") && (
+  <Grid item xs={12} sm={6}>
+    <TextField
+      select
+      label={form.pursuingYear === "Completed" ? "Completion Year *" : "Current Year *"}
+      value={form.whichYear}
+      onChange={handleChange("whichYear")}
+      SelectProps={{ native: true }}
+      fullWidth
+      variant="outlined"
+      sx={textFieldStyle}
+    >
+      <option value=""></option>
+      {(form.pursuingYear === "Completed" ? completedYears : pursuingYears).map((year) => (
+        <option key={year} value={year}>
+          {year}
+        </option>
+      ))}
+    </TextField>
+  </Grid>
+)}
               </Grid>
 
               {/* ADDRESS */}
