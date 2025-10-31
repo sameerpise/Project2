@@ -368,29 +368,37 @@ const completedYears = ["2018", "2019", "2020", "2021", "2022", "2023", "2024"];
 
   {/* ✅ Conditionally Render Year Dropdown */}
   {form.pursuingYear && (
-    <Grid item xs={12} sm={6}>
-     <TextField
-  select
-  label={form.pursuingYear === "Completed" ? "Completion Year *" : "Current Year *"}
-  value={form.whichYear}
-  onChange={handleChange("whichYear")}
-  SelectProps={{ native: true }}
-  fullWidth
-  variant="outlined"
-  sx={{
-    ...textFieldStyle,
-    width: { xs: "100%", sm: "120%" }, // 👈 increase width here
-  }}
->
-  <option value=""></option>
-  {(form.pursuingYear === "Completed" ? completedYears : pursuingYears).map((year) => (
-    <option key={year} value={year}>
-      {year}
-    </option>
-  ))}
-</TextField>
-
-    </Grid>
+   <Grid item xs={12} sm={6}>
+  <TextField
+    select
+    label={
+      form.pursuingYear === "Completed"
+        ? "Completion Year *"
+        : "Current Year *"
+    }
+    value={form.whichYear}
+    onChange={handleChange("whichYear")}
+    SelectProps={{ native: true }}
+    fullWidth
+    variant="outlined"
+    sx={{
+      ...textFieldStyle,
+      width: { xs: "100%", md: "120%" }, // optional width increase
+    }}
+    InputLabelProps={{
+      shrink: true, // 👈 keeps the label visible and properly positioned
+    }}
+  >
+    <option value=""></option>
+    {(form.pursuingYear === "Completed" ? completedYears : pursuingYears).map(
+      (year) => (
+        <option key={year} value={year}>
+          {year}
+        </option>
+      )
+    )}
+  </TextField>
+</Grid>
   )}
 </Grid>
 
