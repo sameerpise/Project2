@@ -68,11 +68,7 @@ export default function StudentRegistrationForm() {
   const handleChange = (key) => (e) => {
     let value = e.target.value;
     if (["mobile", "pincode"].includes(key)) value = value.replace(/\D/g, "");
-    setForm((prev) => ({
-      ...prev,
-      [key]: value,
-      ...(key === "pursuingYear" ? { whichYear: "" } : {}), // reset year when status changes
-    }));
+    setForm((prev) => ({ ...prev, [key]: value }));
   };
 
   const fetchCityFromPin = async (pin) => {
@@ -138,22 +134,12 @@ export default function StudentRegistrationForm() {
       "password",
       "confirmPassword",
     ];
-    return (
-      requiredFields.every((field) => form[field].trim() !== "") &&
-      form.password === form.confirmPassword
-    );
+    return requiredFields.every((field) => form[field].trim() !== "") && form.password === form.confirmPassword;
   };
 
-  // 🧠 Dynamic Year Options Logic
-  const currentYear = new Date().getFullYear();
-  const completedYears = Array.from({ length: 8 }, (_, i) => currentYear - i).reverse(); // last 8 years
+  // Options for Completed and Pursuing
+  const completedYears = ["2018", "2019", "2020", "2021", "2022", "2023", "2024"];
   const pursuingYears = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
-  const yearOptions =
-    form.pursuingYear === "Completed"
-      ? completedYears
-      : form.pursuingYear === "Pursuing"
-      ? pursuingYears
-      : [];
 
   return (
     <ThemeProvider theme={theme}>
@@ -165,7 +151,6 @@ export default function StudentRegistrationForm() {
           justifyContent: "center",
           alignItems: "center",
           p: { xs: 1, sm: 2 },
-          pt: { xs: `calc(env(safe-area-inset-top, 20px) + 10px)`, md: 3 },
         }}
       >
         <Paper
@@ -185,10 +170,8 @@ export default function StudentRegistrationForm() {
             sx={{
               display: { xs: "none", sm: "none", md: "flex" },
               flex: "0 0 42%",
-              height: "auto",
               justifyContent: "center",
               alignItems: "center",
-              overflow: "hidden",
               backgroundColor: "#fff7e6",
             }}
           >
@@ -196,12 +179,7 @@ export default function StudentRegistrationForm() {
               component="img"
               src={img1}
               alt="Registration"
-              sx={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                display: "block",
-              }}
+              sx={{ width: "100%", height: "100%", objectFit: "cover" }}
             />
           </Box>
 
@@ -230,7 +208,91 @@ export default function StudentRegistrationForm() {
               <Typography variant="subtitle1" sx={{ fontWeight: 500, mb: 1 }}>
                 🧍 Personal Info
               </Typography>
-              {/* (Your existing personal info fields remain unchanged) */}
+              <Grid container spacing={1.5}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Full Name"
+                    value={form.fullName}
+                    onChange={handleChange("fullName")}
+                    fullWidth
+                    variant="outlined"
+                    sx={textFieldStyle}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <PersonIcon color="primary" />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Email"
+                    value={form.email}
+                    onChange={handleChange("email")}
+                    fullWidth
+                    variant="outlined"
+                    sx={textFieldStyle}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <EmailIcon color="primary" />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Mobile"
+                    value={form.mobile}
+                    onChange={handleChange("mobile")}
+                    fullWidth
+                    variant="outlined"
+                    sx={textFieldStyle}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <PhoneIcon color="primary" />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Date of Birth"
+                    type="date"
+                    value={form.dob}
+                    onChange={handleChange("dob")}
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    variant="outlined"
+                    sx={textFieldStyle}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <CalendarMonthIcon color="primary" />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <FormControl component="fieldset">
+                    <RadioGroup row value={form.gender} onChange={handleChange("gender")}>
+                      <FormControlLabel value="Male" control={<Radio color="primary" />} label="Male" />
+                      <FormControlLabel value="Female" control={<Radio color="primary" />} label="Female" />
+                      <FormControlLabel value="Other" control={<Radio color="primary" />} label="Other" />
+                    </RadioGroup>
+                  </FormControl>
+                </Grid>
+              </Grid>
 
               {/* EDUCATION */}
               <Typography variant="subtitle1" sx={{ fontWeight: 500, mt: 2, mb: 1 }}>
@@ -254,7 +316,6 @@ export default function StudentRegistrationForm() {
                     }}
                   />
                 </Grid>
-
                 <Grid item xs={12} sm={6}>
                   <TextField
                     label="Department"
@@ -272,8 +333,6 @@ export default function StudentRegistrationForm() {
                     }}
                   />
                 </Grid>
-
-                {/* 🎯 Dynamic Year Logic */}
                 <Grid item xs={12} sm={6}>
                   <TextField
                     select
@@ -295,7 +354,7 @@ export default function StudentRegistrationForm() {
                   <Grid item xs={12} sm={6}>
                     <TextField
                       select
-                      label={form.pursuingYear === "Completed" ? "Passing Year" : "Current Year"}
+                      label={form.pursuingYear === "Completed" ? "Completion Year" : "Current Year"}
                       value={form.whichYear}
                       onChange={handleChange("whichYear")}
                       SelectProps={{ native: true }}
@@ -304,7 +363,7 @@ export default function StudentRegistrationForm() {
                       sx={textFieldStyle}
                     >
                       <option value=""></option>
-                      {yearOptions.map((year) => (
+                      {(form.pursuingYear === "Completed" ? completedYears : pursuingYears).map((year) => (
                         <option key={year} value={year}>
                           {year}
                         </option>
@@ -314,7 +373,89 @@ export default function StudentRegistrationForm() {
                 )}
               </Grid>
 
-              {/* (Rest of your Address + Security section remains same) */}
+              {/* ADDRESS */}
+              <Typography variant="subtitle1" sx={{ fontWeight: 500, mt: 2, mb: 1 }}>
+                🏠 Address
+              </Typography>
+              <Grid container spacing={1.5}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="PIN Code"
+                    value={form.pincode}
+                    onChange={handlePinChange}
+                    fullWidth
+                    variant="outlined"
+                    sx={textFieldStyle}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <NumbersIcon color="primary" />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="City"
+                    value={form.city}
+                    fullWidth
+                    variant="outlined"
+                    InputProps={{
+                      readOnly: true,
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <LocationCityIcon color="primary" />
+                        </InputAdornment>
+                      ),
+                    }}
+                    sx={textFieldStyle}
+                  />
+                </Grid>
+              </Grid>
+
+              {/* SECURITY */}
+              <Typography variant="subtitle1" sx={{ fontWeight: 500, mt: 2, mb: 1 }}>
+                🔐 Security
+              </Typography>
+              <Grid container spacing={1.5}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Password"
+                    type="password"
+                    value={form.password}
+                    onChange={handleChange("password")}
+                    fullWidth
+                    variant="outlined"
+                    sx={textFieldStyle}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <LockIcon color="primary" />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Confirm Password"
+                    type="password"
+                    value={form.confirmPassword}
+                    onChange={handleChange("confirmPassword")}
+                    fullWidth
+                    variant="outlined"
+                    sx={textFieldStyle}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <LockIcon color="primary" />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+              </Grid>
             </Box>
 
             {/* REGISTER BUTTON */}
@@ -337,15 +478,23 @@ export default function StudentRegistrationForm() {
               >
                 {loading ? "Registering..." : "Register"}
               </LoadingButton>
+
+              <Typography variant="body2" sx={{ mt: 2, textAlign: "center", fontSize: { xs: 13, sm: 14 } }}>
+                Have an Admin account?{" "}
+                <Typography
+                  component="span"
+                  color="error"
+                  sx={{ cursor: "pointer", fontWeight: "bold" }}
+                  onClick={() => navigate("/login")}
+                >
+                  Login here
+                </Typography>
+              </Typography>
             </Box>
           </Box>
         </Paper>
 
-        <Snackbar
-          open={snack.open}
-          autoHideDuration={3000}
-          onClose={() => setSnack({ ...snack, open: false })}
-        >
+        <Snackbar open={snack.open} autoHideDuration={3000} onClose={() => setSnack({ ...snack, open: false })}>
           <Alert severity={snack.severity}>{snack.message}</Alert>
         </Snackbar>
       </Box>
