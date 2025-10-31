@@ -202,30 +202,33 @@ export default function StudentRegistrationForm() {
             height: { xs: "auto", md: "100vh" },
           }}
         >
-          {/* LEFT IMAGE */}
-          <Box
-            sx={{
-              display: { xs: "none", sm: "none", md: "flex" },
-              flex: "0 0 42%",
-              height: "auto",
-              justifyContent: "center",
-              alignItems: "center",
-              overflow: "hidden",
-              backgroundColor: "#fff7e6",
-            }}
-          >
-            <Box
-              component="img"
-              src={img1}
-              alt="Registration"
-              sx={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                display: "block",
-              }}
-            />
-          </Box>
+{/* LEFT IMAGE (Responsive Fixed Version) */}
+<Box
+  sx={{
+    display: { xs: "none", sm: "none", md: "flex" },
+    flex: "0 0 42%",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff7e6",
+    overflow: "hidden",
+    minHeight: "100%", // ensures full column height
+  }}
+>
+  <Box
+    component="img"
+    src={img1}
+    alt="Registration"
+    sx={{
+      width: "100%",
+      height: "auto",
+      maxHeight: "100vh", // keeps it from overflowing on big screens
+      objectFit: "contain", // prevents cutting
+      display: "block",
+      flexShrink: 0,
+    }}
+  />
+</Box>
+
 
           {/* RIGHT FORM */}
           <Box
