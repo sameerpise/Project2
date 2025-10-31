@@ -369,35 +369,45 @@ const completedYears = ["2018", "2019", "2020", "2021", "2022", "2023", "2024"];
   {/* ✅ Conditionally Render Year Dropdown */}
   {form.pursuingYear && (
    <Grid item xs={12} sm={6}>
-  <TextField
-    select
-    label={
-      form.pursuingYear === "Completed"
-        ? "Completion Year *"
-        : "Current Year *"
-    }
-    value={form.whichYear}
-    onChange={handleChange("whichYear")}
-    SelectProps={{ native: true }}
-    fullWidth
-    variant="outlined"
-    sx={{
-      ...textFieldStyle,
-      width: { xs: "100%", md: "170%" }, // optional width increase
-    }}
-    InputLabelProps={{
-      shrink: true, // 👈 keeps the label visible and properly positioned
-    }}
-  >
-    <option value=""></option>
-    {(form.pursuingYear === "Completed" ? completedYears : pursuingYears).map(
-      (year) => (
-        <option key={year} value={year}>
-          {year}
-        </option>
-      )
-    )}
-  </TextField>
+<TextField
+  select
+  label={
+    form.pursuingYear === "Completed"
+      ? "Completion Year *"
+      : "Current Year *"
+  }
+  value={form.whichYear}
+  onChange={handleChange("whichYear")}
+  SelectProps={{ native: true }}
+  fullWidth
+  variant="outlined"
+  sx={{
+    ...textFieldStyle,
+    width: { xs: "100%", md: "170%" },
+    "& .MuiInputLabel-root": {
+      fontSize: "0.95rem", // 👈 slightly smaller for full fit
+      whiteSpace: "nowrap", // 👈 prevents label from breaking into two lines
+      overflow: "visible",  // 👈 ensures text isn’t clipped
+      maxWidth: "100%",     // 👈 ensures full label fits inside
+    },
+    "& .MuiInputLabel-shrink": {
+      transform: "translate(14px, -8px) scale(0.85)", // 👈 keep proper float position
+    },
+  }}
+  InputLabelProps={{
+    shrink: true, // 👈 label always visible above
+  }}
+>
+  <option value=""></option>
+  {(form.pursuingYear === "Completed" ? completedYears : pursuingYears).map(
+    (year) => (
+      <option key={year} value={year}>
+        {year}
+      </option>
+    )
+  )}
+</TextField>
+
 </Grid>
   )}
 </Grid>
