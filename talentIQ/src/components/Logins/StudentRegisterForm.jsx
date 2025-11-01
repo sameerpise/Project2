@@ -250,6 +250,9 @@ export default function StudentRegistrationForm() {
               >
                 🎓 Student Registration
               </Typography>
+              <Typography sx={{ mt: 2, textAlign: "center" }}>
+            Please fill all required fields marked with *
+          </Typography>
               <Divider sx={{ mb: 2, bgcolor: "primary.main" }} />
 
               {/* PERSONAL INFO */}
