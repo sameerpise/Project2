@@ -288,6 +288,7 @@ export default function StudentRegistrationForm() {
                     variant="outlined"
                     sx={textFieldStyle}
                     error={!!errors.dob}
+                    style={{width:"255px"}}
                     helperText={errors.dob}
                     InputProps={{
                       startAdornment: (
