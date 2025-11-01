@@ -355,56 +355,68 @@ export default function StudentRegistrationForm() {
                   />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    select
-                    label="Status"
-                    value={form.pursuingYear}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      setForm((prev) => ({
-                        ...prev,
-                        pursuingYear: value,
-                        whichYear: "",
-                      }));
-                      setErrors((prev) => ({ ...prev, pursuingYear: validateField("pursuingYear", value) }));
-                    }}
-                    SelectProps={{ native: true }}
-                    fullWidth
-                    variant="outlined"
-                    sx={textFieldStyle}
-                    error={!!errors.pursuingYear}
-                    helperText={errors.pursuingYear}
-                  >
-                    <option value=""></option>
-                    <option value="Completed">Completed</option>
-                    <option value="Pursuing">Pursuing</option>
-                  </TextField>
-                </Grid>
+               <Grid item xs={12} sm={6}>
+    <TextField
+      select
+      label="Status"
+      value={form.pursuingYear}
+      onChange={(e) => {
+        const value = e.target.value;
+        setForm((prev) => ({
+          ...prev,
+          pursuingYear: value,
+          whichYear: "",
+        }));
+        setErrors((prev) => ({ ...prev, pursuingYear: validateField("pursuingYear", value) }));
+      }}
+      SelectProps={{ native: true }}
+      fullWidth
+      variant="outlined"
+      sx={textFieldStyle}
+      error={!!errors.pursuingYear}
+      helperText={errors.pursuingYear}
+    >
+      <option value=""></option>
+      <option value="Completed">Completed</option>
+      <option value="Pursuing">Pursuing</option>
+    </TextField>
+  </Grid>
 
-                {form.pursuingYear && (
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      select
-                      label={form.pursuingYear === "Completed" ? "Completion Year *" : "Current Year *"}
-                      value={form.whichYear}
-                      onChange={handleChange("whichYear")}
-                      SelectProps={{ native: true }}
-                      fullWidth
-                      variant="outlined"
-                      error={!!errors.whichYear}
-                      helperText={errors.whichYear}
-                      InputLabelProps={{ shrink: true }}
-                      sx={{ ...textFieldStyle, width: { xs: "100%", md: "170%" } }}
-                    >
-                      <option value=""></option>
-                      {(form.pursuingYear === "Completed" ? completedYears : pursuingYears).map((year) => (
-                        <option key={year} value={year}>
-                          {year}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
+  {/* Completion Year / Current Year Field (always side-by-side) */}
+  <Grid item xs={12} sm={6}>
+    <TextField
+      select
+      label={
+        form.pursuingYear === "Completed"
+          ? "Completion Year *"
+          : form.pursuingYear === "Pursuing"
+          ? "Current Year *"
+          : "Select Year *"
+      }
+      value={form.whichYear}
+      onChange={handleChange("whichYear")}
+      SelectProps={{ native: true }}
+      fullWidth
+      variant="outlined"
+      error={!!errors.whichYear}
+      helperText={errors.whichYear}
+      InputLabelProps={{ shrink: true }}
+      sx={textFieldStyle}
+      disabled={!form.pursuingYear} // disables until Status selected
+    >
+      <option value=""></option>
+      {(form.pursuingYear === "Completed"
+        ? completedYears
+        : form.pursuingYear === "Pursuing"
+        ? pursuingYears
+        : []
+      ).map((year) => (
+        <option key={year} value={year}>
+          {year}
+        </option>
+      ))}
+    </TextField>
+  </Grid>
                 )}
               </Grid>
 
