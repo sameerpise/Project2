@@ -192,7 +192,7 @@ export default function StudentRegistrationForm() {
         }}
       >
         <Paper
-          elevation={4}
+          elevation={0}
           sx={{
             display: "flex",
             flexDirection: { xs: "column", md: "row" },
