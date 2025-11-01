@@ -419,7 +419,7 @@ export default function StudentRegistrationForm() {
       disabled={!form.pursuingYear}
       style={{width:"255px"}}
     >
-      <option value=""></option>
+      <option value="">Select</option>
       {(form.pursuingYear === "Completed"
         ? completedYears
         : form.pursuingYear === "Pursuing"
