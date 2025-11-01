@@ -388,6 +388,7 @@ export default function StudentRegistrationForm() {
       error={!!errors.pursuingYear}
       helperText={errors.pursuingYear}
       style={{width:"255px"}}
+        InputLabelProps={{ shrink: true }}  
     >
       <option value=""></option>
       <option value="Completed">Completed</option>
