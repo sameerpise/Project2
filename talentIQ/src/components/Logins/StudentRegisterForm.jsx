@@ -390,7 +390,7 @@ export default function StudentRegistrationForm() {
       style={{width:"255px"}}
         InputLabelProps={{ shrink: true }}  
     >
-      <option value=""></option>
+      <option value="">Select</option>
       <option value="Completed">Completed</option>
       <option value="Pursuing">Pursuing</option>
     </TextField>
