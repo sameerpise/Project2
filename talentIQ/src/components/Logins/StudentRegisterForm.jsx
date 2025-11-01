@@ -312,102 +312,127 @@ export default function StudentRegistrationForm() {
               </Grid>
 
               {/* EDUCATION */}
-              <Typography variant="subtitle1" sx={{ fontWeight: 500, mt: 2, mb: 1 }}>
-                🎓 Education
-              </Typography>
-              <Grid container spacing={1.5}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="College"
-                    value={form.college}
-                    onChange={handleChange("college")}
-                    fullWidth
-                    variant="outlined"
-                    sx={textFieldStyle}
-                    error={!!errors.college}
-                    helperText={errors.college}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SchoolIcon color="primary" />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
+             <Typography variant="subtitle1" sx={{ fontWeight: 500, mt: 2, mb: 1 }}>
+  🎓 Education
+</Typography>
 
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Department"
-                    value={form.department}
-                    onChange={handleChange("department")}
-                    fullWidth
-                    variant="outlined"
-                    sx={textFieldStyle}
-                    error={!!errors.department}
-                    helperText={errors.department}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <BusinessIcon color="primary" />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
+<Grid container spacing={2}>
+  {/* ROW 1 — College & Department */}
+  <Grid container item spacing={2}>
+    <Grid item xs={12} sm={6}>
+      <TextField
+        label="College"
+        value={form.college}
+        onChange={handleChange("college")}
+        fullWidth
+        variant="outlined"
+        sx={textFieldStyle}
+        error={!!errors.college}
+        helperText={errors.college}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SchoolIcon color="primary" />
+            </InputAdornment>
+          ),
+        }}
+      />
+    </Grid>
 
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    select
-                    label="Status"
-                    value={form.pursuingYear}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      setForm((prev) => ({
-                        ...prev,
-                        pursuingYear: value,
-                        whichYear: "",
-                      }));
-                      setErrors((prev) => ({ ...prev, pursuingYear: validateField("pursuingYear", value) }));
-                    }}
-                    SelectProps={{ native: true }}
-                    fullWidth
-                    variant="outlined"
-                    sx={textFieldStyle}
-                    error={!!errors.pursuingYear}
-                    helperText={errors.pursuingYear}
-                  >
-                    <option value=""></option>
-                    <option value="Completed">Completed</option>
-                    <option value="Pursuing">Pursuing</option>
-                  </TextField>
-                </Grid>
+    <Grid item xs={12} sm={6}>
+      <TextField
+        label="Department"
+        value={form.department}
+        onChange={handleChange("department")}
+        fullWidth
+        variant="outlined"
+        sx={textFieldStyle}
+        error={!!errors.department}
+        helperText={errors.department}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <BusinessIcon color="primary" />
+            </InputAdornment>
+          ),
+        }}
+      />
+    </Grid>
+  </Grid>
 
-                {form.pursuingYear && (
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      select
-                      label={form.pursuingYear === "Completed" ? "Completion Year *" : "Current Year *"}
-                      value={form.whichYear}
-                      onChange={handleChange("whichYear")}
-                      SelectProps={{ native: true }}
-                      fullWidth
-                      variant="outlined"
-                      error={!!errors.whichYear}
-                      helperText={errors.whichYear}
-                      InputLabelProps={{ shrink: true }}
-                      sx={{ ...textFieldStyle, width: { xs: "100%", md: "170%" } }}
-                    >
-                      <option value=""></option>
-                      {(form.pursuingYear === "Completed" ? completedYears : pursuingYears).map((year) => (
-                        <option key={year} value={year}>
-                          {year}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
-                )}
-              </Grid>
+  {/* ROW 2 — Status & Completion/Current Year */}
+<Grid container item spacing={2}>
+  {/* Status */}
+  <Grid item xs={12} sm={6}>
+    <TextField
+      select
+      label="Status"
+      value={form.pursuingYear}
+      onChange={(e) => {
+        const value = e.target.value;
+        setForm((prev) => ({
+          ...prev,
+          pursuingYear: value,
+          whichYear: "",
+        }));
+        setErrors((prev) => ({
+          ...prev,
+          pursuingYear: validateField("pursuingYear", value),
+        }));
+      }}
+      SelectProps={{ native: true }}
+      fullWidth
+      variant="outlined"
+      sx={textFieldStyle}
+      error={!!errors.pursuingYear}
+      helperText={errors.pursuingYear}
+      style={{width:"255px"}}
+    >
+      <option value=""></option>
+      <option value="Completed">Completed</option>
+      <option value="Pursuing">Pursuing</option>
+    </TextField>
+  </Grid>
+
+  {/* Completion / Current Year */}
+  <Grid item xs={12} sm={6}>
+    <TextField
+      select
+      label={
+        form.pursuingYear === "Completed"
+          ? "Completion Year *"
+          : form.pursuingYear === "Pursuing"
+          ? "Current Year *"
+          : "Select Year *"
+      }
+      value={form.whichYear}
+      onChange={handleChange("whichYear")}
+      SelectProps={{ native: true }}
+      fullWidth
+      variant="outlined"
+      error={!!errors.whichYear}
+      helperText={errors.whichYear}
+      InputLabelProps={{ shrink: true }}
+      sx={textFieldStyle}
+      disabled={!form.pursuingYear}
+      style={{width:"255px"}}
+    >
+      <option value=""></option>
+      {(form.pursuingYear === "Completed"
+        ? completedYears
+        : form.pursuingYear === "Pursuing"
+        ? pursuingYears
+        : []
+      ).map((year) => (
+        <option key={year} value={year}>
+          {year}
+        </option>
+      ))}
+    </TextField>
+  </Grid>
+</Grid>
+
+</Grid>
 
               {/* ADDRESS */}
               <Typography variant="subtitle1" sx={{ fontWeight: 500, mt: 2, mb: 1 }}>
