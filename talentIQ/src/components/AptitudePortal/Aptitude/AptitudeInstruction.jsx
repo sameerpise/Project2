@@ -12,14 +12,12 @@ import {
 } from "@mui/material";
 import { CheckCircleOutline } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import DraggableCamera from "./CameraAcess";
 
 export default function AptitudeInstructions() {
   const navigate = useNavigate();
   const [countdown, setCountdown] = useState(0);
   const [startClicked, setStartClicked] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
   const isMobile = useMediaQuery("(max-width:600px)");
 
   // Countdown logic
@@ -32,7 +30,7 @@ export default function AptitudeInstructions() {
     }
   }, [countdown, startClicked, navigate]);
 
-  // Track mouse position
+  // Mouse tracker for light particles
   const handleMouseMove = (e) => {
     setMousePos({ x: e.clientX, y: e.clientY });
   };
@@ -49,15 +47,16 @@ export default function AptitudeInstructions() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" }, // fit below AppBar
-        bgcolor: "#f0f2f5",
-        overflow: "hidden",
+        minHeight: "100vh",
         position: "relative",
-        p: { xs: 0, sm: 0, md: 0 },
+        overflow: "hidden",
+        background: "linear-gradient(135deg, #007bff, #0052d4)",
+        p: 0,
+        m: 0,
       }}
     >
-      {/* Floating lights */}
-      {[...Array(12)].map((_, i) => {
+      {/* Floating glossy lights */}
+      {[...Array(10)].map((_, i) => {
         const size = Math.random() * 6 + 4;
         const offsetX = (Math.random() - 0.5) * 150;
         const offsetY = (Math.random() - 0.5) * 150;
@@ -69,7 +68,7 @@ export default function AptitudeInstructions() {
               width: size,
               height: size,
               borderRadius: "50%",
-              background: "rgba(255,255,255,0.3)",
+              background: "rgba(255,255,255,0.25)",
               top: mousePos.y + offsetY,
               left: mousePos.x + offsetX,
               transition: "top 0.2s ease, left 0.2s ease",
@@ -79,26 +78,26 @@ export default function AptitudeInstructions() {
         );
       })}
 
-      {/* Main Paper */}
+      {/* Main Content Card */}
       <Paper
-        elevation={0}
+        elevation={6}
         sx={{
-          maxWidth: 700,
+          maxWidth: 650,
           width: "100%",
-          p: { xs: 2, sm: 3, md: 5 },
+          p: { xs: 2, sm: 3, md: 4 },
           borderRadius: 4,
-          backgroundColor: "rgba(255,255,255,0.95)",
+          background: "rgba(255,255,255,0.9)",
+          backdropFilter: "blur(10px)",
           textAlign: "center",
           zIndex: 1,
         }}
       >
-        {/* Header */}
         <Typography
           variant={isMobile ? "h5" : "h4"}
           fontWeight="bold"
           mb={2}
           sx={{
-            background: "linear-gradient(90deg, #F6AE22, #FFB84C)",
+            background: "linear-gradient(90deg, #007bff, #00b4d8)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}
@@ -106,33 +105,18 @@ export default function AptitudeInstructions() {
           📝 Aptitude Test Instructions
         </Typography>
 
-        {/* Illustration */}
-        {/* <Box
-          component="img"
-          src=""
-          alt="All the Best"
-          sx={{
-            width: { xs: "80%", sm: "60%", md: "50%" },
-            maxWidth: 350,
-            mb: { xs: 2, sm: 3 },
-            borderRadius: 2,
-            objectFit: "contain",
-          }}
-        /> */}
-
-        {/* Motivational Text */}
         <Typography
           sx={{
-            fontSize: { xs: 14, sm: 16, md: 18 },
+            fontSize: { xs: 14, sm: 16 },
             fontWeight: 500,
-            color: "#444",
-            mb: { xs: 2, sm: 3 },
+            color: "#333",
+            mb: 3,
           }}
         >
           Prepare to test your skills! Stay focused and give your best shot 💪
         </Typography>
 
-        {/* Instructions */}
+        {/* Instructions List */}
         <List sx={{ textAlign: "left", mb: 3, px: { xs: 1, sm: 2 } }}>
           {[
             "Multiple-choice questions only.",
@@ -142,11 +126,12 @@ export default function AptitudeInstructions() {
           ].map((text, index) => (
             <ListItem key={index} sx={{ py: 0.5 }}>
               <ListItemIcon sx={{ minWidth: 32 }}>
-                <CheckCircleOutline sx={{ color: "#F6AE22" }} />
+                <CheckCircleOutline sx={{ color: "#007bff" }} />
               </ListItemIcon>
               <ListItemText
                 primaryTypographyProps={{
-                  fontSize: { xs: 12, sm: 13, md: 14 },
+                  fontSize: { xs: 13, sm: 14 },
+                  color: "#333",
                 }}
                 primary={`${index + 1}. ${text}`}
               />
@@ -159,7 +144,7 @@ export default function AptitudeInstructions() {
           <Typography
             variant={isMobile ? "h2" : "h3"}
             fontWeight="bold"
-            sx={{ color: "#F6AE22", mb: 2 }}
+            sx={{ color: "#007bff", mb: 2 }}
           >
             {countdown}
           </Typography>
@@ -170,16 +155,17 @@ export default function AptitudeInstructions() {
           variant="contained"
           size={isMobile ? "medium" : "large"}
           sx={{
-            background: "linear-gradient(90deg, #F6AE22, #FFB84C)",
+            background: "linear-gradient(90deg, #007bff, #00b4d8)",
             color: "#fff",
             fontWeight: "bold",
             px: { xs: 3, sm: 5 },
-            py: { xs: 1, sm: 1.5 },
+            py: { xs: 1, sm: 1.3 },
             borderRadius: 3,
             transition: "all 0.3s ease",
-            fontSize: { xs: 12, sm: 14, md: 15 },
+            fontSize: { xs: 13, sm: 15 },
             "&:hover": {
               transform: "scale(1.05)",
+              boxShadow: "0 4px 15px rgba(0,123,255,0.4)",
             },
           }}
           onClick={handleStart}
@@ -191,10 +177,10 @@ export default function AptitudeInstructions() {
         {/* Footer */}
         <Typography
           sx={{
-            fontSize: { xs: 16, sm: 18, md: 20 },
+            fontSize: { xs: 16, sm: 18 },
             fontWeight: "bold",
-            color: "#F6AE22",
-            mt: { xs: 2, sm: 3 },
+            color: "#007bff",
+            mt: 3,
           }}
         >
           🎯 All the Best!
