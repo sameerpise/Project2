@@ -28,7 +28,7 @@ export default function AdminLayout() {
           flexGrow: 1,
           transition: "margin-left 0.35s ease, width 0.35s ease",
           ml: isMobile ? 0 : collapsed ? "80px" : "250px",
-          p: 3,
+          
           width: isMobile
             ? "100%"
             : collapsed
