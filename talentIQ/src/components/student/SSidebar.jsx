@@ -53,8 +53,8 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
         sx={{
           height: "100%",
           justifyContent: "space-between",
-          background:
-            "linear-gradient(135deg, rgba(255,184,76,0.95), rgba(246,174,34,0.9))",
+         background:
+               "linear-gradient(135deg, rgba(0,123,255,0.95), rgba(0,82,212,0.9))",
           backdropFilter: "blur(15px)",
           color: "#fff",
           width: collapsed && !isMobile ? 80 : 250,
