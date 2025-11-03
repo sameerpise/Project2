@@ -146,14 +146,14 @@ export default function StudentDashboard() {
   position="sticky"
   elevation={3}
   sx={{
-    background: "linear-gradient(135deg, #f6ae22 0%, #ff7f50 50%, #050505 100%)",
+    background: "linear-gradient(135deg, #007bff 0%, #0052d4 50%, #002b80 100%)",
     backgroundSize: "400% 400%",
     animation: "gradientShift 8s ease infinite",
     p: 1,
     backdropFilter: "blur(12px)",
     borderBottom: "1px solid rgba(255,255,255,0.1)",
-    boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
-    zIndex: (theme) => theme.zIndex.drawer,
+    boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+    zIndex: (theme) => theme.zIndex.drawer + 1,
     "@keyframes gradientShift": {
       "0%": { backgroundPosition: "0% 50%" },
       "50%": { backgroundPosition: "100% 50%" },
@@ -161,6 +161,7 @@ export default function StudentDashboard() {
     },
   }}
 >
+
   <Toolbar
     sx={{
       display: "flex",
