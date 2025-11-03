@@ -1,121 +1,68 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Toolbar,
-  AppBar,
-  Typography,
-  IconButton,
-  useMediaQuery,
-  Slide,
-  Tooltip,
-} from "@mui/material";
+import { Box, IconButton, Typography, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import AdminSidebar from "./AdminSidebar";
 import { Outlet } from "react-router-dom";
-import { motion } from "framer-motion";
 
 export default function AdminLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
-  const isMobile = useMediaQuery("(max-width:900px)");
-
-  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
-  const handleCollapseToggle = () => setCollapsed((prev) => !prev);
-
-  const sidebarWidth = collapsed ? 80 : 270;
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        height: "100vh",
-        bgcolor: "linear-gradient(to top, #f3f4f6, #ffffff)",
-        overflow: "hidden",
-      }}
-    >
-      {/* 🟦 AppBar (Top Bar for both Mobile & Desktop) */}
+    <Box sx={{ display: "flex", minHeight: "100vh", width: "100%" }}>
+      {/* Sidebar */}
+      <AdminSidebar
+        mobileOpen={mobileOpen}
+        setMobileOpen={setMobileOpen}
+        collapsed={collapsed}
+        setCollapsed={setCollapsed}
+      />
 
-
-      {/* 🟪 Sidebar */}
-      <Slide direction="right" in={!isMobile || mobileOpen} mountOnEnter unmountOnExit>
-        <Box
-          sx={{
-            position: isMobile ? "fixed" : "fixed",
-            zIndex: isMobile ? 1200 : 1100,
-            height: "100vh",
-            width: sidebarWidth,
-            flexShrink: 0,
-            boxShadow: isMobile ? 6 : 0,
-            bgcolor: "background.paper",
-            borderRight: "1px solid #e0e0e0",
-            transition: "width 0.3s ease",
-            overflow: "hidden",
-          }}
-        >
-          <AdminSidebar
-            onClose={handleDrawerToggle}
-            onCollapseChange={setCollapsed}
-            collapsed={collapsed}
-          />
-        </Box>
-      </Slide>
-
-      {/* 🟨 Main Content Area */}
+      {/* Main Content Area */}
       <Box
-        component={motion.main}
-        initial={{ opacity: 0, x: 30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.4 }}
+        component="main"
         sx={{
           flexGrow: 1,
-          ml: { xs: 0, md: `${sidebarWidth}px` },
-      
-        
-          background: "linear-gradient(to bottom right, #f8fafc, #ffffff)",
-          borderTopLeftRadius: { md: 24 },
-          borderBottomLeftRadius: { md: 24 },
-          boxShadow: { md: "inset 4px 0px 20px rgba(0,0,0,0.05)" },
-          transition: "margin 0.3s ease",
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
+          transition: "margin-left 0.35s ease, width 0.35s ease",
+          ml: isMobile ? 0 : collapsed ? "80px" : "250px",
+          p: 3,
+          width: isMobile
+            ? "100%"
+            : collapsed
+            ? "calc(100% - 80px)"
+            : "calc(100% - 250px)",
+          boxSizing: "border-box",
+          backgroundColor: "#f7f9fc",
+          minHeight: "100vh",
         }}
       >
-        {/* 🧭 Scrollable Content */}
-        <Box
-          sx={{
-            flexGrow: 1,
-            overflowY: "auto",
-            overflowX: "hidden",
-            pr: 1,
-            pb: 2,
-            maxHeight: "calc(100vh - 64px)", // Prevent overflow beyond viewport
-            scrollbarWidth: "thin",
-            "&::-webkit-scrollbar": {
-              width: "8px",
-            },
-            "&::-webkit-scrollbar-thumb": {
-              backgroundColor: "#bdbdbd",
-              borderRadius: "4px",
-            },
-            "&::-webkit-scrollbar-thumb:hover": {
-              backgroundColor: "#9e9e9e",
-            },
-          }}
-        >
+        {/* Top Bar (for mobile menu toggle) */}
+        {isMobile && (
           <Box
             sx={{
-              maxWidth: "1400px",
-              mx: "auto",
-              borderRadius: 3,
-              p: { xs: 1, sm: 2 },
+              display: "flex",
+              alignItems: "center",
+              mb: 2,
+              bgcolor: "#fff",
+              p: 1.5,
+              borderRadius: 2,
+              boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
             }}
           >
-            <Outlet />
+            <IconButton onClick={() => setMobileOpen(true)}>
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" sx={{ ml: 1 }}>
+              Admin Dashboard
+            </Typography>
           </Box>
-        </Box>
+        )}
+
+        {/* --- Page Content --- */}
+        <Outlet />
       </Box>
     </Box>
   );
