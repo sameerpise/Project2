@@ -149,6 +149,7 @@ export default function StudentDashboard() {
     // background:
     //   "linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.05))",
      background: "linear-gradient(90deg, #f6ae22 0%, #ff7f50 50%, #050505 100%)",
+   // background: linear-gradient(90deg, #f6ae22 0%, #ff7f50 50%, #050505 100%);
     backgroundSize: "400% 400%",
     // animation: "gradientShift 8s ease infinite",
     p: 1,
