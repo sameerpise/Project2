@@ -147,15 +147,14 @@ export default function StudentDashboard() {
   elevation={3}
   sx={{
     background:
-      "linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.05))",
+               "linear-gradient(135deg, rgba(0,123,255,0.95), rgba(0,82,212,0.9))",
     backgroundSize: "400% 400%",
     animation: "gradientShift 8s ease infinite",
     p: 1,
     backdropFilter: "blur(12px)",
     borderBottom: "1px solid rgba(255,255,255,0.1)",
     boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-    // zIndex: (theme) => theme.zIndex.drawer + 1,
-    zIndex:-111,
+    zIndex: (theme) => theme.zIndex.drawer + 1,
     "@keyframes gradientShift": {
       "0%": { backgroundPosition: "0% 50%" },
       "50%": { backgroundPosition: "100% 50%" },
@@ -199,7 +198,7 @@ export default function StudentDashboard() {
         noWrap
         sx={{
           fontWeight: "bold",
-          color: "#f6ae22",
+          color: "white",
           letterSpacing: 0.5,
           textShadow: "1px 1px 5px rgba(0,0,0,0.3)",
           flexShrink: 1,
