@@ -144,16 +144,16 @@ export default function StudentDashboard() {
         {/* Header */}
 <AppBar
   position="sticky"
-  elevation={3}
+  elevation={0}
   sx={{
-    background:
-               "linear-gradient(135deg, rgba(0,123,255,0.95), rgba(0,82,212,0.9))",
-    backgroundSize: "400% 400%",
-    animation: "gradientShift 8s ease infinite",
+    background: "linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.05))",
+    backdropFilter: "blur(16px) saturate(180%)",
+    WebkitBackdropFilter: "blur(16px) saturate(180%)",
+    border: "1px solid rgba(255, 255, 255, 0.18)",
+    boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
     p: 1,
-    backdropFilter: "blur(12px)",
-    borderBottom: "1px solid rgba(255,255,255,0.1)",
-    boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+    animation: "gradientShift 8s ease infinite",
+    backgroundSize: "400% 400%",
     zIndex: (theme) => theme.zIndex.drawer + 1,
     "@keyframes gradientShift": {
       "0%": { backgroundPosition: "0% 50%" },
@@ -162,24 +162,18 @@ export default function StudentDashboard() {
     },
   }}
 >
-
   <Toolbar
     sx={{
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
       gap: 1,
-      flexWrap: "nowrap", // ✅ prevent wrapping
+      flexWrap: "nowrap",
       minHeight: 64,
     }}
   >
-    {/* Left Side - Title & Mobile Menu */}
-    <Stack
-      direction="row"
-      alignItems="center"
-      spacing={1}
-      sx={{ flexShrink: 1, minWidth: 0 }} // allow shrinking
-    >
+    {/* Left Side - Title & Menu */}
+    <Stack direction="row" alignItems="center" spacing={1} sx={{ flexShrink: 1, minWidth: 0 }}>
       {isMobile && (
         <IconButton
           onClick={() => setMobileOpen(true)}
@@ -194,13 +188,13 @@ export default function StudentDashboard() {
         </IconButton>
       )}
       <Typography
-        variant={isMobile ? "h6" : "h5"} // responsive font
+        variant={isMobile ? "h6" : "h5"}
         noWrap
         sx={{
           fontWeight: "bold",
-          color: "white",
+          color: "#fff",
           letterSpacing: 0.5,
-          textShadow: "1px 1px 5px rgba(0,0,0,0.3)",
+          textShadow: "1px 1px 4px rgba(0,0,0,0.4)",
           flexShrink: 1,
           minWidth: 0,
         }}
@@ -209,43 +203,38 @@ export default function StudentDashboard() {
       </Typography>
     </Stack>
 
-    {/* Right Side - Icons & Avatar */}
-    <Stack
-      direction="row"
-      spacing={1}
-      alignItems="center"
-      sx={{ flexShrink: 0 }}
-    >
+    {/* Right Side - Notifications & Avatar */}
+    <Stack direction="row" spacing={1} alignItems="center" sx={{ flexShrink: 0 }}>
       <Tooltip title="Notifications">
         <Box>
           <StudentNotifications studentId={student._id} />
         </Box>
       </Tooltip>
-<Tooltip title={student?.fullName || "Student"}>
-  <Avatar
-    onClick={() => navigate(`/student-profile/${student._id}`)} // ✅ works now
-    sx={{
-      bgcolor: "#fff",
-      color: "#f6ae22",
-      fontWeight: "bold",
-      border: "2px solid #fff",
-      cursor: "pointer",
-      width: isMobile ? 32 : 40,
-      height: isMobile ? 32 : 40,
-      "&:hover": {
-        transform: "scale(1.1)",
-        boxShadow: "0 0 15px rgba(255,255,255,0.4)",
-      },
-      transition: "all 0.3s ease",
-    }}
-  >
-    {student?.fullName?.[0]?.toUpperCase() || "S"}
-  </Avatar>
-</Tooltip>
-
+      <Tooltip title={student?.fullName || "Student"}>
+        <Avatar
+          onClick={() => navigate(`/student-profile/${student._id}`)}
+          sx={{
+            bgcolor: "rgba(255,255,255,0.8)",
+            color: "#1976d2",
+            fontWeight: "bold",
+            border: "2px solid rgba(255,255,255,0.5)",
+            cursor: "pointer",
+            width: isMobile ? 32 : 40,
+            height: isMobile ? 32 : 40,
+            "&:hover": {
+              transform: "scale(1.1)",
+              boxShadow: "0 0 20px rgba(255,255,255,0.4)",
+            },
+            transition: "all 0.3s ease",
+          }}
+        >
+          {student?.fullName?.[0]?.toUpperCase() || "S"}
+        </Avatar>
+      </Tooltip>
     </Stack>
   </Toolbar>
 </AppBar>
+
   {/* Main Content */}
         <Box sx={{ p: { xs: 2, sm: 3, md: 4 }, flexGrow: 1 }}>
           {!isDashboardRoute ? (
