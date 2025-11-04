@@ -29,7 +29,6 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
   const isMobile = useMediaQuery("(max-width:900px)");
   const [collapsed, setCollapsed] = useState(false);
 
-  // ✅ Reset collapse on mobile
   useEffect(() => {
     if (isMobile) setCollapsed(false);
   }, [isMobile]);
@@ -42,8 +41,8 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
 
   const menuItems = [
     { label: "Aptitude", path: "/student/AptitudePortal", icon: <SchoolIcon /> },
-    { label: "Results", path: "/student/AptitudePortal", icon: <BarChartIcon /> },
-    { label: "Assignments", path: "/student/AptitudePortal", icon: <AssignmentIcon /> },
+    { label: "Results", path: "/student/Results", icon: <BarChartIcon /> },
+    { label: "Assignments", path: "/student/Assignments", icon: <AssignmentIcon /> },
   ];
 
   const sidebarContent = (
@@ -53,14 +52,16 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
         sx={{
           height: "100%",
           justifyContent: "space-between",
-         background:
-               "linear-gradient(135deg, rgba(0,123,255,0.95), rgba(0,82,212,0.9))",
-          backdropFilter: "blur(15px)",
-          color: "#fff",
+          background:
+            "linear-gradient(135deg, rgba(255,255,255,0.85), rgba(255,255,255,0.65))",
+          backdropFilter: "blur(20px)",
+          color: "#f6ae22",
           width: collapsed && !isMobile ? 80 : 250,
           transition: "width 0.35s ease, all 0.3s ease",
           p: 2,
-          boxShadow: "4px 0 15px rgba(0,0,0,0.25)",
+          boxShadow: "4px 0 15px rgba(0,0,0,0.2)",
+          borderRight: "1px solid rgba(255,255,255,0.3)",
+          borderRadius: "0 20px 20px 0",
           boxSizing: "border-box",
           overflowX: "hidden",
           overflowY: "auto",
@@ -74,9 +75,10 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
               isMobile ? setMobileOpen(false) : setCollapsed(!collapsed)
             }
             sx={{
-              color: "#fff",
+              color: "#f6ae22",
               alignSelf: collapsed && !isMobile ? "center" : "flex-end",
-              "&:hover": { bgcolor: "rgba(255,255,255,0.15)" },
+              "&:hover": { bgcolor: "rgba(246,174,34,0.15)" },
+              transition: "all 0.3s ease",
             }}
           >
             {isMobile ? <CloseIcon /> : <MenuIcon />}
@@ -91,8 +93,8 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
                   width: 70,
                   height: 70,
                   mx: "auto",
-                  border: "2px solid rgba(255,255,255,0.4)",
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+                  border: "2px solid #f6ae22",
+                  boxShadow: "0 4px 20px rgba(246,174,34,0.4)",
                 }}
               />
               <Typography
@@ -100,17 +102,17 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
                 mt={1}
                 fontWeight="600"
                 noWrap
-                sx={{ textOverflow: "ellipsis", overflow: "hidden" }}
+                sx={{ color: "#f6ae22" }}
               >
                 {student?.fullName || "Student Name"}
               </Typography>
               <Typography
                 variant="body2"
                 sx={{
-                  opacity: 0.9,
+                  opacity: 0.8,
                   whiteSpace: "nowrap",
-                  textOverflow: "ellipsis",
-                  overflow: "hidden",
+                  color: "#000",
+                  fontWeight: 500,
                 }}
               >
                 {student?.email || "student@email.com"}
@@ -118,7 +120,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
             </Box>
           )}
 
-          <Divider sx={{ bgcolor: "rgba(255,255,255,0.3)", width: "100%", my: 1 }} />
+          <Divider sx={{ bgcolor: "rgba(0,0,0,0.1)", width: "100%", my: 1 }} />
 
           {/* Menu Buttons */}
           <Stack spacing={1} width="100%">
@@ -140,19 +142,19 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
                     }}
                     startIcon={showLabel ? item.icon : null}
                     sx={{
-                      color: "#fff",
+                      color: isActive ? "#fff" : "#f6ae22",
+                      bgcolor: isActive ? "#f6ae22" : "transparent",
                       justifyContent: !showLabel ? "center" : "flex-start",
                       py: 1.2,
                       borderRadius: 2,
-                      fontWeight: isActive ? 600 : 400,
+                      fontWeight: isActive ? 600 : 500,
                       fontSize: "0.95rem",
-                      backgroundColor: isActive
-                        ? "rgba(255,255,255,0.25)"
-                        : "transparent",
-                      boxShadow: isActive ? "0 0 10px rgba(255,255,255,0.3)" : "none",
+                      boxShadow: isActive ? "0 0 10px rgba(246,174,34,0.6)" : "none",
                       "&:hover": {
-                        backgroundColor: "rgba(255,255,255,0.35)",
+                        backgroundColor: "#f6ae22",
+                        color: "#fff",
                         transform: "scale(1.05)",
+                        boxShadow: "0 0 15px rgba(246,174,34,0.5)",
                       },
                       textTransform: "none",
                       transition: "all 0.25s ease",
@@ -179,15 +181,14 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
               mt: 2,
               py: 1.2,
               borderRadius: 2,
-              background: "rgba(255,255,255,0.25)",
-              backdropFilter: "blur(8px)",
+              background: "#f6ae22",
               color: "#fff",
               fontWeight: 600,
               textTransform: "none",
               "&:hover": {
-                background: "rgba(255,255,255,0.4)",
+                background: "#ffb733",
                 transform: "scale(1.05)",
-                boxShadow: "0 0 12px rgba(255,255,255,0.4)",
+                boxShadow: "0 0 15px rgba(246,174,34,0.5)",
               },
               transition: "all 0.3s ease",
             }}
@@ -218,11 +219,12 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
               overflowX: "hidden",
               overflowY: "auto",
               background:
-                "linear-gradient(135deg, rgba(255,184,76,0.95), rgba(246,174,34,0.9))",
-              color: "#fff",
-              backdropFilter: "blur(12px)",
+                "linear-gradient(135deg, rgba(255,255,255,0.85), rgba(255,255,255,0.65))",
+              color: "#f6ae22",
+              backdropFilter: "blur(18px)",
               transition: "transform 0.4s ease-in-out",
               zIndex: (theme) => theme.zIndex.drawer + 2,
+              borderRight: "1px solid rgba(255,255,255,0.3)",
             },
           }}
         >
