@@ -198,7 +198,7 @@ export default function StudentDashboard() {
         noWrap
         sx={{
           fontWeight: "bold",
-          color: "white",
+          color: "#f6ae22",
           letterSpacing: 0.5,
           textShadow: "1px 1px 5px rgba(0,0,0,0.3)",
           flexShrink: 1,
