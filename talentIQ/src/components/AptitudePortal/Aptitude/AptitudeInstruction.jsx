@@ -50,7 +50,8 @@ export default function AptitudeInstructions() {
         minHeight: "100vh",
         position: "relative",
         overflow: "hidden",
-        background: "linear-gradient(135deg, #007bff, #0052d4)",
+        // background: "linear-gradient(135deg, #007bff, #0052d4)",
+        background: linear-gradient(90deg, #f6ae22 0%, #ff7f50 50%, #050505 100%)
         p: 0,
         m: 0,
       }}
