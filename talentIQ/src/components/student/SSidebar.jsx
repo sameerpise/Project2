@@ -207,32 +207,36 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
     <>
       {/* --- Drawer for Mobile --- */}
       {isMobile ? (
-        <Drawer
-          anchor="left"
-          open={mobileOpen}
-          onClose={() => setMobileOpen(false)}
-          ModalProps={{
-            keepMounted: true,
-            onBackdropClick: () => setMobileOpen(false),
-          }}
-          sx={{
-            "& .MuiDrawer-paper": {
-              width: 250,
-              boxSizing: "border-box",
-              overflowX: "hidden",
-              overflowY: "auto",
-              background:
-                "linear-gradient(135deg, rgba(255,255,255,0.85), rgba(255,255,255,0.65))",
-              color: "#f6ae22",
-              backdropFilter: "blur(18px)",
-              transition: "transform 0.4s ease-in-out",
-              zIndex: (theme) => theme.zIndex.drawer + 5,
-              borderRight: "1px solid rgba(255,255,255,0.3)",
-            },
-          }}
-        >
-          {sidebarContent}
-        </Drawer>
+       <Drawer
+  variant={isMobile ? "temporary" : "permanent"}
+  anchor="left"
+  open={mobileOpen}
+  onClose={() => setMobileOpen(false)}
+  ModalProps={{
+    keepMounted: true,
+    onBackdropClick: () => setMobileOpen(false),
+    BackdropProps: {
+      sx: { backgroundColor: "rgba(0,0,0,0.3)" }, // adds a dim overlay
+    },
+  }}
+  sx={{
+    display: { xs: "block", sm: "block" },
+    zIndex: (theme) => theme.zIndex.drawer + 10, // ⬅️ increase above AppBar
+    "& .MuiDrawer-paper": {
+      width: 250,
+      background:
+        "linear-gradient(135deg, rgba(255,255,255,0.85), rgba(255,255,255,0.65))",
+      backdropFilter: "blur(20px)",
+      boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
+      borderRight: "1px solid rgba(255,255,255,0.3)",
+      zIndex: 9999, // ⬅️ ensure it’s highest
+      position: "fixed", // ⬅️ makes it float above content
+    },
+  }}
+>
+  {sidebarContent}
+</Drawer>
+
       ) : (
         <Box
           sx={{
