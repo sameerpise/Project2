@@ -200,7 +200,7 @@ export default function StudentDashboard() {
           fontWeight: "bold",
           color: "#f6ae22",
           letterSpacing: 0.5,
-          textShadow: "1px 1px 5px rgba(0,0,0,0.3)",
+          // textShadow: "1px 1px 5px rgba(0,0,0,0.3)",
           flexShrink: 1,
           minWidth: 0,
         }}
