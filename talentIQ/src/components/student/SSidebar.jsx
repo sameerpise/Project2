@@ -48,25 +48,27 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
   const sidebarContent = (
     <Slide direction="right" in={true} mountOnEnter unmountOnExit>
       <Stack
-        spacing={2}
-        sx={{
-          height: "100%",
-          justifyContent: "space-between",
-          background:
-            "linear-gradient(135deg, rgba(255,255,255,0.85), rgba(255,255,255,0.65))",
-          backdropFilter: "blur(20px)",
-          color: "#f6ae22",
-          width: collapsed && !isMobile ? 80 : 250,
-          transition: "width 0.35s ease, all 0.3s ease",
-          p: 2,
-          boxShadow: "4px 0 15px rgba(0,0,0,0.2)",
-          borderRight: "1px solid rgba(255,255,255,0.3)",
-          borderRadius: "0 20px 20px 0",
-          boxSizing: "border-box",
-          overflowX: "hidden",
-          overflowY: "auto",
-        }}
-      >
+  spacing={2}
+  sx={{
+    height: "100%",
+    justifyContent: "space-between",
+    background:
+      "linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.05))",
+    backdropFilter: "blur(20px) saturate(180%)",
+    WebkitBackdropFilter: "blur(20px) saturate(180%)",
+    border: "1px solid rgba(255, 255, 255, 0.3)",
+    boxShadow: "4px 0 30px rgba(0,0,0,0.1)",
+    borderRight: "1px solid rgba(255,255,255,0.3)",
+    borderRadius: "0 20px 20px 0",
+    color: "#f6ae22",
+    width: collapsed && !isMobile ? 80 : 250,
+    transition: "width 0.35s ease, all 0.3s ease",
+    p: 2,
+    boxSizing: "border-box",
+    overflowX: "hidden",
+    overflowY: "auto",
+  }}
+>
         {/* --- TOP SECTION --- */}
         <Stack spacing={2} alignItems={collapsed && !isMobile ? "center" : "flex-start"}>
           {/* Collapse / Close Button */}
