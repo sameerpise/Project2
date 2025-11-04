@@ -147,7 +147,7 @@ export default function StudentDashboard() {
   elevation={3}
   sx={{
     background:
-               "linear-gradient(135deg, rgba(0,123,255,0.95), rgba(0,82,212,0.9))",
+      "linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.05))",
     backgroundSize: "400% 400%",
     animation: "gradientShift 8s ease infinite",
     p: 1,
