@@ -59,7 +59,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
     border: "1px solid rgba(255, 255, 255, 0.3)",
     boxShadow: "4px 0 30px rgba(0,0,0,0.1)",
     borderRight: "1px solid rgba(255,255,255,0.3)",
-    borderRadius: "0 20px 20px 0",
+    // borderRadius: "0 20px 20px 0",
     color: "#f6ae22",
     width: collapsed && !isMobile ? 80 : 250,
     transition: "width 0.35s ease, all 0.3s ease",
