@@ -146,8 +146,9 @@ export default function StudentDashboard() {
   position="sticky"
   elevation={3}
   sx={{
-    background:
-      "linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.05))",
+    // background:
+    //   "linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.05))",
+     background: "linear-gradient(90deg, #f6ae22 0%, #ff7f50 50%, #050505 100%)",
     backgroundSize: "400% 400%",
     animation: "gradientShift 8s ease infinite",
     p: 1,
@@ -198,7 +199,8 @@ export default function StudentDashboard() {
         noWrap
         sx={{
           fontWeight: "bold",
-          color: "#f6ae22",
+          // color: "#f6ae22",
+             color: "white",
           letterSpacing: 0.5,
           // textShadow: "1px 1px 5px rgba(0,0,0,0.3)",
           flexShrink: 1,
