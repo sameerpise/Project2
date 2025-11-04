@@ -226,7 +226,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
               color: "#f6ae22",
               backdropFilter: "blur(18px)",
               transition: "transform 0.4s ease-in-out",
-              zIndex: (theme) => theme.zIndex.drawer + 2,
+              zIndex: (theme) => theme.zIndex.drawer + 5,
               borderRight: "1px solid rgba(255,255,255,0.3)",
             },
           }}
@@ -241,7 +241,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
             left: 0,
             height: "100vh",
             width: collapsed ? 80 : 250,
-            zIndex: 100,
+            zIndex: 999,
             overflow: "hidden",
           }}
         >
