@@ -203,7 +203,7 @@ export default function StudentDashboard() {
           textShadow: "1px 1px 5px rgba(0,0,0,0.3)",
           flexShrink: 1,
           minWidth: 0,
-          color:#f6ae22
+         
         }}
       >
         Student Dashboard
