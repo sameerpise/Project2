@@ -67,6 +67,7 @@ export default function SSidebar({ mobileOpen, setMobileOpen }) {
     boxSizing: "border-box",
     overflowX: "hidden",
     overflowY: "auto",
+    z-Index:1111
   }}
 >
         {/* --- TOP SECTION --- */}
