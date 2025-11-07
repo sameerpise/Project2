@@ -86,7 +86,7 @@ export default function AptitudeInstructions() {
           maxWidth: 650,
           width: "100%",
           // p: { xs: 2, sm: 3, md: 4 },
-          p:2
+          p:2,
           borderRadius: 4,
           background: "rgba(255,255,255,0.9)",
           backdropFilter: "blur(10px)",
